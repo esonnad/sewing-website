@@ -12,6 +12,24 @@ const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
+function ensureAuthenticated(req, res, next) {
+  if (req.user) {
+    return next();
+  } else {
+    res.redirect('/auth/login')
+  }
+}
+
+function checkRole(role) {
+  return (req, res, next) => {
+    if (req.user && req.user.role === role) {
+      next()
+    }
+    else {
+      res.redirect('/noAccess')
+    }
+  }
+}
 
 router.get("/login", (req, res, next) => {
   res.render("auth/login", { "message": req.flash("error") });
@@ -24,11 +42,11 @@ router.post("/login", passport.authenticate("local", {
   passReqToCallback: true
 }));
 
-router.get("/signup", (req, res, next) => {
+router.get("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render("auth/signup");
 });
 
-router.post("/signup", (req, res, next) => {
+router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   const name = req.body.name;
   const password = req.body.password;
   const email = req.body.email;

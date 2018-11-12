@@ -62,13 +62,28 @@
             </li>
             {{/if}}
             {{#if isAdmin}}
-            <li class="nav-item">
+            {{!-- <li class="nav-item">
               <a class="nav-style" href="/admin-page">Admin Page</a>
+            </li> --}}
+            <li class="nav-item">
+              <a class="nav-style" href="/auth/signup">Create user</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-style" href="/admin/postAdmin">Erstelle einen Beitrag</a>
             </li>
             {{/if}}
             {{#if isStudent}}
             <li class="nav-item">
               <a class="nav-style" href="/student-page">Student Page</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-style" href="/student/postStudent">Erstelle eine Beitrag</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-style" href="/student/myCourse">Meine Kurse</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-style" href="/student/myProfile">Mein Profil</a>
             </li>
             {{/if}}
 
@@ -77,15 +92,15 @@
       </nav>
 
 
-      <nav>
+      {{!-- <nav>
 
 
-        <!–– {{#if isAdmin}}
-    <a href="/auth/signup">Create user</a>
+        {{#if isAdmin}}
+        <a href="/auth/signup">Create user</a>
         <a href="/admin/postAdmin">Erstelle einen Beitrag</a>
         {{/if}}
 
-      </nav>
+      </nav> --}}
 
     </div>
 
