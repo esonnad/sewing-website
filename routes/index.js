@@ -5,10 +5,11 @@ const Course = require('../models/Course')
 const User = require('../models/User')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
+const nodemailer = require('nodemailer')
 
 /* GET home page */
 router.get('/', (req, res, next) => {
-  Post.find(null, null, { sort: { created_at: -1 }, limit: 10 })
+  Post.find({ status: "ACTIVE" }, null, { sort: { created_at: -1 }, limit: 10 })
     .populate('_creator')
     .then(posts => {
       res.render('index', { posts: posts });

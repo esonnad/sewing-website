@@ -7,6 +7,7 @@ const postSchema = new Schema({
   imgPath: String,
   imgName: String,
   _creator: { type: Schema.Types.ObjectId, ref: "User" },
+  status: { type: String, enum: ["PENDING", "ACTIVE"], default: "PENDING" }
 }, {
     timestamps: {
       createdAt: 'created_at',

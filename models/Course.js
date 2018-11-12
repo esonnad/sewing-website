@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const courseSchema = new Schema({
   name: String,
-  _students: [Schema.Types.ObjectId],
+  _students: [{ type: Schema.Types.ObjectId, ref: "User" }],
   dates: [Object]
 }, {
     timestamps: {

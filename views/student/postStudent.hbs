@@ -1,1 +1,13 @@
 <h1>Post as a student</h1>
+<form action="/student/postStudent" method="post" enctype="multipart/form-data">
+  <label for="photo">Your photo:</label>
+  <input type="file" name="photo" id="photo">
+  <br><br>
+  <label for="title">Title:</label>
+  <input type="text" name="title" id="title">
+  <br><br>
+  <label for="text">Text:</label>
+  <input type="text" name="text" id="text">
+  <br><br>
+  <button type="submit">Create Post</button>
+</form>

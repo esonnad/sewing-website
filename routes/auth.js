@@ -6,6 +6,7 @@ const Course = require('../models/Course')
 const User = require('../models/User')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
+const nodemailer = require('nodemailer')
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");

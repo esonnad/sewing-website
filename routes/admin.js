@@ -5,6 +5,7 @@ const Course = require('../models/Course')
 const User = require('../models/User')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
+const nodemailer = require('nodemailer');
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) {
@@ -29,8 +30,6 @@ router.get('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), (req, res, nex
   res.render('admin/postAdmin')
 })
 
-const upload = multer({ dest: './public/uploads/' });
-
 router.post('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.single('photo'), (req, res, next) => {
   const content = req.body.text;
   const header = req.body.title;
@@ -41,7 +40,8 @@ router.post('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.s
     content: content,
     imgPath: req.file.url,
     imgName: req.file.originalname,
-    _creator: creatorId
+    _creator: creatorId,
+    status: "ACTIVE"
   })
   newPost.save()
     .then(() => {
@@ -50,6 +50,15 @@ router.post('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.s
     .catch(err => {
       console.log(err)
     })
+})
+
+router.get('/confirmPost/:id', (req, res, next) => {
+  let id = req.params.id;
+  Post.findByIdAndUpdate(id, { status: "ACTIVE" })
+    .then(post => {
+      res.render("admin/confirmed-post")
+    })
+    .catch(err => { console.log(err), res.render("admin/confirmed-failed") })
 })
 
 module.exports = router;
