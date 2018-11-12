@@ -92,5 +92,11 @@ app.use('/', index);
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
+const studentRoutes = require('./routes/student');
+app.use('/student', studentRoutes);
+
+const adminRoutes = require('./routes/admin');
+app.use('/admin', adminRoutes);
+
 
 module.exports = app;
