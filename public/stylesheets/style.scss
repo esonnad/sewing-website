@@ -7,23 +7,76 @@ light purple #F9F3FD
 
 */
 
+html {
+  font-size: 10px;
+}
 
 body {
   padding: 0px;
   margin: 0px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: #F9F3FD;
   color: #5A1F69;
   font-family: 'Alegreya', serif;
+  font-size: 1.5rem;
+  background-image: url("../images/woman.png");
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-attachment: fixed;
+
+}
+
+#header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
 }
 
 #header {
   background-color: white;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-items: center;
   margin: 0;
-  border-bottom: 2px solid #5A1F69;
+  padding: 10px;
+}
+
+#icon {
+  width: 50px;
+  height: 50px;
+}
+
+.nav-style {
+  color: #5A1F69; 
+  font-family: 'Alegreya', serif; 
+  font-size: 2rem;
+}
+
+.nav-style:hover {
+  color: #5A1F69; 
+  text-decoration: none;
+  background-color: #A5ABBC;
+}
+
+.nav-style:active {
+  color: #351F69; 
+  text-decoration: none;
+  background-color: #A5ABBC;
+}
+
+#border-container {
+  border-top: 2px solid #351F69;
+  width: 80%;
+  display: flex;
+  justify-self: center;
+  height: 20px;
+  background-color: white;
+}
+
+
+#title {
+  font-size: 3.5rem;
 }
 
 #login-container {
@@ -39,3 +92,5 @@ a {
   font-family: 'Open Sans', sans-serif;
   color: #5A1F69;
 }
+
+
