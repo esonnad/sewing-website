@@ -4,7 +4,7 @@
   {{#each posts}}
   <div class="card" style="width: 18rem;">
     {{#if this.imgPath}}
-    <img class="card-img-top" src=".../100px180/" alt="Card image cap">
+    <img src="{{ this.imgPath }}" alt="{{ this.imgName }}" class="card-img-top" />
     {{/if}}
     <div class="card-body">
       <h5 class="card-title">{{this.header}}</h5>

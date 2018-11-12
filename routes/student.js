@@ -3,6 +3,8 @@ const router = express.Router();
 const Post = require('../models/Post')
 const Course = require('../models/Course')
 const User = require('../models/User')
+const multer = require('multer');
+const uploadCloud = require('../config/cloudinary.js');
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) {

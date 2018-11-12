@@ -4,6 +4,8 @@ const router = express.Router();
 const Post = require('../models/Post')
 const Course = require('../models/Course')
 const User = require('../models/User')
+const multer = require('multer');
+const uploadCloud = require('../config/cloudinary.js');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
