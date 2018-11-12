@@ -3,6 +3,7 @@ const router = express.Router();
 const Post = require('../models/Post')
 const Course = require('../models/Course')
 const User = require('../models/User')
+const Equipment = require('../models/Equipment')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer');
@@ -59,6 +60,46 @@ router.get('/confirmPost/:id', (req, res, next) => {
       res.render("admin/confirmed-post")
     })
     .catch(err => { console.log(err), res.render("admin/confirmed-failed") })
+})
+
+router.get('/equipment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  Equipment.find()
+    .then(eq => {
+      res.render('admin/equipment', { equipment: eq })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+})
+
+router.get('/equipment/new', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  res.render('admin/newEquipment')
+})
+
+router.post('/equipment/new', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.single('photo'), (req, res, next) => {
+  const content = req.body.text;
+  const header = req.body.title;
+
+  const newEquipment = new Equipment({
+    header: header,
+    content: content,
+    imgPath: req.file.url,
+    imgName: req.file.originalname,
+  })
+  newEquipment.save()
+    .then(() => {
+      res.redirect('/admin/equipment')
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+
+  Equipment.findByIdAndRemove(id)
+    .then(sth => {
+      res.redirect('/admin/equipment')
+    })
 })
 
 module.exports = router;

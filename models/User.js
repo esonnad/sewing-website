@@ -7,7 +7,9 @@ const userSchema = new Schema({
   role: { type: String, enum: ["ADMIN", "STUDENT"], default: "STUDENT" },
   password: String,
   passwordReset: String,
-  _course: { type: Schema.Types.ObjectId, ref: "Course" }
+  _course: { type: Schema.Types.ObjectId, ref: "Course" },
+  address: String,
+  phone: String,
 }, {
     timestamps: {
       createdAt: 'created_at',

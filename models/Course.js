@@ -1,3 +1,5 @@
+// TODO: check if a Workshop can be a Course document
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const Post = require('../models/Post')
 const Course = require('../models/Course')
 const User = require('../models/User')
+const Equipment = require('../models/Equipment')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer')
@@ -31,7 +32,13 @@ router.get('/naehkurse', (req, res, next) => {
 })
 
 router.get('/atelier', (req, res, next) => {
-  res.render('atelier')
+  Equipment.find()
+    .then(equipment => {
+      res.render('atelier', { equipment: equipment })
+    })
+    .catch(err => {
+      console.log(err)
+    })
 })
 
 router.get('/about', (req, res, next) => {

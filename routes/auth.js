@@ -4,6 +4,7 @@ const router = express.Router();
 const Post = require('../models/Post')
 const Course = require('../models/Course')
 const User = require('../models/User')
+const Equipment = require('../models/Equipment')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer')
