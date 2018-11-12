@@ -6,7 +6,7 @@ const postSchema = new Schema({
   content: String,
   imgPath: String,
   imgName: String,
-  _creator: Schema.Types.ObjectId,
+  _creator: { type: Schema.Types.ObjectId, ref: "User" },
 }, {
     timestamps: {
       createdAt: 'created_at',
