@@ -1,1 +1,14 @@
 <h1>Manage next cohort page</h1>
+
+<h1>Courses</h1>
+
+<table style="width:100%">
+  <tr>
+    {{#each courses}}
+    <th>{{this.name}}</th>
+    {{/each}}
+  </tr>
+</table>
+
+
+<form action="generate-enrollment" method="POST"></form>
