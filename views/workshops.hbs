@@ -1,0 +1,21 @@
+<h1>Workshop</h1>
+<p>Information über Workshops</p>
+<a href="/anmeldung/workshops">Buchen</a>
+<p>
+
+  <section class="card-container">
+
+    {{#each workshops}}
+
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{this.name}}</h5>
+        <p class="card-text">{{this.description}}</p>
+        <p class="card-text">Dates: {{this.dates}}</p>
+        <h6 class="card-subtitle mb-2 text-muted">by {{this.teacher}}</h6>
+      </div>
+    </div>
+    {{/each}}
+
+    <section class="card-container">
+</p>

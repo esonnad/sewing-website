@@ -1,0 +1,10 @@
+<h1>Kurse</h1>
+<p>Information über Kurse</p>
+<p><a href="/anmeldung/kurse">Einen Workshop buchen</a><br><br>
+  Upcoming courses:<br>
+  <ul>
+    {{#each courses}}
+    <li>{{this.dates.length}}x {{this.name}}, Startdate:{{this.dates[0]}}. Teacher: {{this.teacher}}</li>
+    {{/each}}
+  </ul>
+</p>
