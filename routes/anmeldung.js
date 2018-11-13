@@ -61,7 +61,7 @@ router.post('/kurse', (req, res, next) => {
             })
             newRequest.save()
               .then(sth => { res.render('registration-success') })
-              .catch(err => { res.render('registration-failed') })
+              .catch(err => { res.render('registration-failed'), console.log(err) })
           }
           else {
             const newUser = new User({
@@ -80,12 +80,12 @@ router.post('/kurse', (req, res, next) => {
                 })
                 newRequest.save()
                   .then(sth => { res.render('registration-success') })
-                  .catch(err => { res.render('registration-failed') })
+                  .catch(err => { res.render('registration-failed'), console.log(err) })
               })
-              .catch(err => { res.render('registration-failed') })
+              .catch(err => { res.render('registration-failed'), console.log(err) })
           }
         })
-        .catch(err => { res.render('registration-failed') })
+        .catch(err => { res.render('registration-failed'), console.log(err) })
     })
     .catch(error => console.log(error));
 })

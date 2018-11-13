@@ -161,8 +161,19 @@ router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req
 })
 router.post('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
+  const name = req.body.name;
+  const teacher = req.body.teacher;
+  const capacity = req.body.capacity;
+  const description = req.body.description;
 
-
+  Course.findByIdAndUpdate(id, {
+    name: name,
+    teacher: teacher,
+    capacity: capacity,
+    description: description,
+  })
+    .then(course => { res.redirect('/admin/courses') })
+    .catch(err => { console.log(err) })
 })
 
 router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
@@ -175,11 +186,41 @@ router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req,
 })
 
 router.get('/students', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  res.render('admin/students')
+  Promise.all([User.find({ role: "STUDENT", status: "PENDING" }), User.find({ role: "STUDENT", status: "ACTIVE" })])
+    .then(([pendingStudents, activeStudents]) => {
+      res.render('admin/students', { pendingStudents: pendingStudents, activeStudents: activeStudents })
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.get('/students/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+
+  User.findByIdAndRemove(id)
+    .then(sth => {
+      res.redirect('/admin/students')
+    })
+})
+
+router.get('/students/edit/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  User.findById(id)
+    .then(student => { res.render('admin/student-detail', { student: student }) })
+    .catch(err => { console.log(err) })
+})
+
+router.post('/students/edit/:id', (req, res, next) => {
+  let id = req.params.id;
+  const email = req.body.email;
+
+  User.findByIdAndUpdate(id, { email: email })
+    .then(student => { res.redirect('/admin/students') })
+    .catch(err => { console.log(err) })
 })
 
 router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  res.render('admin/manage')
+  res.render('admin/students')
 })
 
 module.exports = router;

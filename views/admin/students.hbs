@@ -1,2 +1,23 @@
 <h1>All students</h1>
 <a href="/auth/signup">Add a new</a>
+<h2>Active Students</h2>
+<ul>
+  {{#each activeStudents}}
+  <li>{{this.name}}, (Email: {{this.email}}, Phone: {{this.phone}}),
+    {{#if this.adress}}
+    Adress: {{this.adress}},
+    {{/if}}
+    <a href="/admin/students/edit/{{this._id}}">Edit, </a>
+    <a href="/admin/students/delete/{{this._id}}">Delete</a></li>
+  {{/each}}
+</ul>
+<h2>Pending Students</h2>
+<ul>
+  {{#each pendingStudents}}
+  <li>{{this.name}}, (Email: {{this.email}}, Phone: {{this.phone}}),
+    {{#if this.adress}}
+    Adress: {{this.adress}},
+    {{/if}}
+    <a href="/admin/students/delete/{{this._id}}">Delete</a></li>
+  {{/each}}
+</ul>
