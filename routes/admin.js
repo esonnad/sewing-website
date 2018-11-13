@@ -219,8 +219,72 @@ router.post('/students/edit/:id', (req, res, next) => {
     .catch(err => { console.log(err) })
 })
 
+//make sure requests are sorted by timestamp
+function enrollmentSuggestion(requests, courses) {
+  const suggestion = {}; //empty suggestion object
+  for (let i = 0; i < courses.length; i++) { //iterates through courses
+    let tempCourse = {id: courses[i]._id, students:[], capacity: courses[i].capacity}; //copies course info 
+    let name = courses[i].name
+    suggestion[name] = tempCourse; //suggestion is now an object with course name as key, course info as value 
+  }
+  for (let i = 0; i < requests.length; i++) { //iterates through students
+    let request = requests[i];
+    let enrolled = false;
+    console.log("enrolling", request._user.name)
+    for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
+      if (request._preferences[j] != '') {
+        let course = request._preferences[j]; //course is the current preference 
+        let courseCopy = suggestion[course.name]; //copy of the current preference (to not alter real course)
+        console.log("checking", course.name)
+        console.log("Course:", course, "courseCopy", courseCopy)
+        if (courseCopy.students.length < courseCopy.capacity) {
+          courseCopy.students.push(request._user)
+          console.log("student added", request._user, course.name )
+          console.log("COURSE COPY:", courseCopy, "SUGGESTION", suggestion[j])
+          enrolled = true;
+          break;
+      }
+      else console.log("no space in", course.name)
+      }   
+    }
+    // if (enrolled == false) {
+    //   console.log("add to waitlist")
+    //   suggestion[waitlist] = (student.name);
+    // }
+   }
+  return suggestion;
+
+}
+
 router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  res.render('admin/students')
+  Request.find() 
+  .populate('_user', 'name')
+  .populate('_preferences', 'name')
+  .then(requests => {
+    Course.find({status: "FUTURE"})
+    .then(courses => {
+      res.render('admin/manage', {requests: requests, courses: courses})
+    })
+    .catch(err => { console.log(err) })
+  })
+  .catch(err => { console.log(err) })
 })
+
+router.post('/generate-enrollment', (req, res, next) => {
+  Request.find()
+  .populate('_user', 'name')
+  .populate('_preferences', 'name')
+  .then(requests => {
+    Course.find({status: "FUTURE"})
+      .then(courses => {
+        let suggestion = enrollmentSuggestion(requests, courses);
+        console.log("suggestion:", suggestion)
+        res.render('admin/manage', {requests: requests, courses: courses, suggestion: suggestion})
+      })
+      .catch(err => { console.log(err) })
+  })
+  .catch(err => { console.log(err) })
+})
+
 
 module.exports = router;

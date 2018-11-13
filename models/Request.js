@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const requestSchema = new Schema({
-  _user: Schema.Types.ObjectId,
+  _user: { type: Schema.Types.ObjectId, ref: "User" },
   _preferences: [{ type: Schema.Types.ObjectId, ref: "Course" }]
 }, {
     timestamps: {
