@@ -1,7 +1,7 @@
 <h1>Course detail page</h1>
 <form action="/admin/courses/details/{{course._id}}" method="post">
   <label for="name">Name</label>
-  <input type="text" name="text" id="text" value="{{course.name}}">
+  <input type="text" name="name" id="name" value="{{course.name}}">
   <br><br>
   <label for="teacher">Teacher</label>
   <input type="text" name="teacher" id="teacher" value="{{course.teacher}}">
@@ -22,5 +22,5 @@
   <input type="text" name="description" id="description" value="{{course.description}}">
   {{/if}}
   <br><br>
-  <button type="submit"></button>
+  <button type="submit">Update</button>
 </form>
