@@ -124,7 +124,9 @@ router.get('/courses/add', (req, res, next) => {
   res.render('admin/add-course')
 })
 
-router.post('/courses/add')
+router.post('/courses/add', (req, res, next) => {
+  console.log(req.body)
+})
 
 router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
