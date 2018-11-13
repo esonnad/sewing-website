@@ -1,1 +1,26 @@
 <h1>Course detail page</h1>
+<form action="/admin/courses/details/{{course._id}}" method="post">
+  <label for="name">Name</label>
+  <input type="text" name="text" id="text" value="{{course.name}}">
+  <br><br>
+  <label for="teacher">Teacher</label>
+  <input type="text" name="teacher" id="teacher" value="{{course.teacher}}">
+  <br><br>
+  <label for="capacity">Capacity</label>
+  <input type="text" name="capacity" id="capacity" value="{{course.capacity}}">
+  <br><br>
+  {{#if course._students}}
+  <ul>
+    {{#each course._student}}
+    <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  <br><br>
+  {{/if}}
+  {{#if course.description}}
+  <label for="description">Description</label>
+  <input type="text" name="description" id="description" value="{{course.description}}">
+  {{/if}}
+  <br><br>
+  <button type="submit"></button>
+</form>

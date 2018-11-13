@@ -6,7 +6,6 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Code</th>
     <th>Teacher</th>
     <th>Students</th>
     <th>Dates</th>
@@ -15,7 +14,6 @@
   {{#each activeCourses}}
   <tr>
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
-    <td>{{this.code}}</td>
     <td>{{this.teacher}}</td>
     <td>{{this._students}}</td>
     <td>{{this.dates}}</td>
@@ -29,18 +27,14 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Code</th>
     <th>Teacher</th>
-    <th>Students</th>
     <th>Dates</th>
     <th> </th>
   </tr>
   {{#each futureCourses}}
   <tr>
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
-    <td>{{this.code}}</td>
     <td>{{this.teacher}}</td>
-    <td>{{this._students}}</td>
     <td>{{this.dates}}</td>
     <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
   </tr>
@@ -52,7 +46,6 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Code</th>
     <th>Teacher</th>
     <th>Students</th>
     <th>Dates</th>
@@ -62,7 +55,6 @@
   {{#each workshops}}
   <tr>
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
-    <td>{{this.code}}</td>
     <td>{{this.teacher}}</td>
     <td>{{this._students}}</td>
     <td>{{this.dates}}</td>
