@@ -4,9 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("addDate").onclick = function (event) {
     event.preventDefault()
-    var innerValue = document.getElementById("dates").value
-    console.log(innerValue)
-    document.getElementById("class-dates").innerHTML += `<li class="newDates">${innerValue}</li>`
+    document.getElementById("class-dates").innerHTML += `<input type="date" name="date">`
   }
 
 }, false);
