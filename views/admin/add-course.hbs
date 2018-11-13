@@ -1,0 +1,30 @@
+<h1>Add a course</h1>
+<form action="/admin/courses/add" method="post">
+
+  <label for="name">Name</label>
+  <input type="text" name="name" id="name">
+  <br><br>
+
+  <label for="teacher">Teacher</label>
+  <input type="text" name="teacher" id="teacher">
+  <br><br>
+
+  <label for="capacity">Capacity</label>
+  <input type="text" name="capacity" id="capacity">
+  <br><br>
+
+  <label for="type">Type</label>
+  <select name="type" id="type">
+    <option value="COURSE">Kurs</option>
+    <option value="WORKSHOP">Workshop</option>
+  </select>
+  <br><br>
+
+  <label for="dates">Dates</label>
+  <ul id="class-dates"></ul>
+  <input type="date" name="dates" id="dates">
+  <button id="addDate" type="button">Add date</button>
+
+  <br><br>
+  <button type="submit">Create</button>
+</form>

@@ -8,7 +8,7 @@ const courseSchema = new Schema({
   teacher: String,
   capacity: Number,
   _students: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  status: { type: String, enum: ["FUTURE", "ACTIVE"] },
+  status: { type: String, enum: ["FUTURE", "ACTIVE"], default: "FUTURE" },
   type: { type: String, enum: ["COURSE", "WORKSHOP"] },
   dates: [Object]
 }, {

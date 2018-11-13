@@ -76,7 +76,7 @@ router.post('/kurse', (req, res, next) => {
               .then(user2 => {
                 const newRequest = new Request({
                   _user: user2._id,
-                  preferences: preferences,
+                  _preferences: preferences,
                 })
                 newRequest.save()
                   .then(sth => { res.render('registration-success') })

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const requestSchema = new Schema({
   _user: Schema.Types.ObjectId,
-  preferences: [String]
+  _preferences: [{ type: Schema.Types.ObjectId, ref: "Course" }]
 }, {
     timestamps: {
       createdAt: 'created_at',

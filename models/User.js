@@ -8,7 +8,7 @@ const userSchema = new Schema({
   status: { type: String, enum: ["PENDING", "ACTIVE"], default: "PENDING" },
   password: String,
   passwordReset: String,
-  _course: { type: Schema.Types.ObjectId, ref: "Course" },
+  _course: [{ type: Schema.Types.ObjectId, ref: "Course" }],
   address: String,
   phone: String,
 }, {
