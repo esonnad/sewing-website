@@ -7,6 +7,7 @@ const courseSchema = new Schema({
   name: String,
   teacher: String,
   capacity: Number,
+  description: String,
   _students: [{ type: Schema.Types.ObjectId, ref: "User" }],
   status: { type: String, enum: ["FUTURE", "ACTIVE"], default: "FUTURE" },
   type: { type: String, enum: ["COURSE", "WORKSHOP"] },

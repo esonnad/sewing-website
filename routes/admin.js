@@ -126,6 +126,27 @@ router.get('/courses/add', (req, res, next) => {
 
 router.post('/courses/add', (req, res, next) => {
   console.log(req.body)
+  const name = req.body.name;
+  const teacher = req.body.teacher;
+  const capacity = req.body.capacity;
+  const type = req.body.type;
+  const dates = req.body.date;
+  const description = req.body.description;
+
+  const newCourse = new Course({
+    name: name,
+    teacher: teacher,
+    capacity: capacity,
+    status: "FUTURE",
+    type: type,
+    dates: dates,
+    description: description,
+  })
+  newCourse.save()
+    .then(() => {
+      res.redirect('/admin/courses')
+    })
+    .catch(err => { console.log(err) })
 })
 
 router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
@@ -138,6 +159,11 @@ router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req
       })
     })
 })
+router.post('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+
+
+})
 
 router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
@@ -148,8 +174,12 @@ router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req,
     })
 })
 
-router.get('/students', (req, res, next) => {
+router.get('/students', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/students')
+})
+
+router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  res.render('admin/manage')
 })
 
 module.exports = router;
