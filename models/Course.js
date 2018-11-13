@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 
 const courseSchema = new Schema({
   name: String,
-  code: String,
   teacher: String,
+  capacity: Number,
   _students: [{ type: Schema.Types.ObjectId, ref: "User" }],
   status: { type: String, enum: ["FUTURE", "ACTIVE"] },
   type: { type: String, enum: ["COURSE", "WORKSHOP"] },

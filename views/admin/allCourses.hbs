@@ -1,0 +1,73 @@
+<h1>Here you can see and edit all courses. this page is only accessible by admin</h1>
+<br>
+<h2><a href="/admin/courses/add">Add a new course</a></h2>
+
+<h3>Active Courses</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Teacher</th>
+    <th>Students</th>
+    <th>Dates</th>
+    <th> </th>
+  </tr>
+  {{#each activeCourses}}
+  <tr>
+    <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
+    <td>{{this.code}}</td>
+    <td>{{this.teacher}}</td>
+    <td>{{this._students}}</td>
+    <td>{{this.dates}}</td>
+    <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
+  </tr>
+  {{/each}}
+</table>
+<br><br>
+
+<h3>Future Courses</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Teacher</th>
+    <th>Students</th>
+    <th>Dates</th>
+    <th> </th>
+  </tr>
+  {{#each futureCourses}}
+  <tr>
+    <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
+    <td>{{this.code}}</td>
+    <td>{{this.teacher}}</td>
+    <td>{{this._students}}</td>
+    <td>{{this.dates}}</td>
+    <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
+  </tr>
+  {{/each}}
+</table>
+<br><br>
+
+<h3>Workshops</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Teacher</th>
+    <th>Students</th>
+    <th>Dates</th>
+    <th>Description</th>
+    <th> </th>
+  </tr>
+  {{#each workshops}}
+  <tr>
+    <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
+    <td>{{this.code}}</td>
+    <td>{{this.teacher}}</td>
+    <td>{{this._students}}</td>
+    <td>{{this.dates}}</td>
+    <td>{{this.description}}</td>
+    <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
+  </tr>
+  {{/each}}
+</table>

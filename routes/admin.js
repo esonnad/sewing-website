@@ -28,6 +28,10 @@ function checkRole(role) {
   }
 }
 
+router.get('/', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  res.render('admin/adminPage')
+})
+
 router.get('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/postAdmin')
 })
@@ -101,6 +105,49 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
     .then(sth => {
       res.redirect('/admin/equipment')
     })
+})
+
+router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  Promise.all([Course.find({ type: "WORKSHOP" }), Course.find({ type: "COURSE", status: "ACTIVE" }), Course.find({ type: "COURSE", status: "FUTURE" })])
+    .then(([workshops, activeCourses, futureCourses]) => {
+      console.log("workshops", workshops, "activeCourse", activeCourses, "futureCourse", futureCourses);
+      res.render('admin/allCourses', {
+        workshops: workshops,
+        futureCourses: futureCourses,
+        activeCourses: activeCourses,
+      })
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.get('/courses/add', (req, res, next) => {
+  res.render('admin/add-course')
+})
+
+router.post('/courses/add')
+
+router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+
+  Course.findById(id)
+    .then(course => {
+      res.render('admin/course-detail', {
+        course: course
+      })
+    })
+})
+
+router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+
+  Course.findByIdAndRemove(id)
+    .then(sth => {
+      res.redirect('/admin/courses')
+    })
+})
+
+router.get('/students', (req, res, next) => {
+  res.render('admin/students')
 })
 
 module.exports = router;
