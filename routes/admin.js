@@ -110,7 +110,6 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
 router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Promise.all([Course.find({ type: "WORKSHOP" }), Course.find({ type: "COURSE", status: "ACTIVE" }), Course.find({ type: "COURSE", status: "FUTURE" })])
     .then(([workshops, activeCourses, futureCourses]) => {
-      console.log("workshops", workshops, "activeCourse", activeCourses, "futureCourse", futureCourses);
       res.render('admin/allCourses', {
         workshops: workshops,
         futureCourses: futureCourses,
@@ -123,15 +122,14 @@ router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
 router.get('/courses/add', (req, res, next) => {
   res.render('admin/add-course')
 })
-
 router.post('/courses/add', (req, res, next) => {
-  console.log(req.body)
   const name = req.body.name;
   const teacher = req.body.teacher;
   const capacity = req.body.capacity;
   const type = req.body.type;
   const dates = req.body.date;
   const description = req.body.description;
+  const startDate = req.body.startDate;
 
   const newCourse = new Course({
     name: name,
@@ -141,6 +139,7 @@ router.post('/courses/add', (req, res, next) => {
     type: type,
     dates: dates,
     description: description,
+    startDate: startDate,
   })
   newCourse.save()
     .then(() => {
@@ -151,13 +150,47 @@ router.post('/courses/add', (req, res, next) => {
 
 router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
-
-  Course.findById(id)
-    .then(course => {
+  Promise.all([Course.findById(id).populate("_students"), User.find()])
+    .then(([course, student]) => {
       res.render('admin/course-detail', {
-        course: course
+        course: course,
+        student: student
       })
     })
+    .catch(err => { console.log(err) })
+})
+router.post('/courses/details/:id/add-student', (req, res, next) => {
+  let id = req.params.id;
+  const student = req.body.student;
+  Course.findByIdAndUpdate(id, { $push: { _students: student } })
+    .then(sth => { res.redirect(`/admin/courses/details/${id}`) })
+    .catch(err => { console.log(err) })
+})
+router.get('/courses/details/:courseid/remove-student/:studentid', (req, res, next) => {
+  let studentid = req.params.studentid;
+  let courseid = req.params.courseid;
+  Course.findByIdAndUpdate(courseid, { $pull: { _students: studentid } })
+    .then(sth => { res.redirect(`/admin/courses/details/${courseid}`) })
+    .catch(err => { console.log(err) })
+})
+router.post('/courses/details/:id/add-date', (req, res, next) => {
+  let id = req.params.id;
+  const date = req.body.date;
+  if (date !== "") {
+    Course.findByIdAndUpdate(id, { $push: { dates: { date: date } } })
+      .then(sth => { res.redirect(`/admin/courses/details/${id}`) })
+      .catch(err => { console.log(err) })
+  }
+  else {
+    res.redirect(`/admin/courses/details/${id}`)
+  }
+})
+router.get('/courses/details/:courseid/remove-date/:date', (req, res, next) => {
+  let date = req.params.date;
+  let courseid = req.params.courseid;
+  Course.findByIdAndUpdate(courseid, { $pull: { dates: { date: date } } })
+    .then(sth => { res.redirect(`/admin/courses/details/${courseid}`) })
+    .catch(err => { console.log(err) })
 })
 router.post('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
@@ -165,12 +198,16 @@ router.post('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (re
   const teacher = req.body.teacher;
   const capacity = req.body.capacity;
   const description = req.body.description;
+  const dates = req.body.date;
+  const startDate = req.body.startDate;
 
   Course.findByIdAndUpdate(id, {
     name: name,
     teacher: teacher,
     capacity: capacity,
     description: description,
+    dates: dates,
+    startDate: startDate,
   })
     .then(course => { res.redirect('/admin/courses') })
     .catch(err => { console.log(err) })

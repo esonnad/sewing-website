@@ -1,5 +1,3 @@
-// TODO: check if a Workshop can be a Course document
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -8,6 +6,7 @@ const courseSchema = new Schema({
   teacher: String,
   capacity: Number,
   description: String,
+  startDate: String,
   _students: [{ type: Schema.Types.ObjectId, ref: "User" }],
   status: { type: String, enum: ["FUTURE", "ACTIVE"], default: "FUTURE" },
   type: { type: String, enum: ["COURSE", "WORKSHOP"] },

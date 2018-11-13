@@ -3,24 +3,51 @@
   <label for="name">Name</label>
   <input type="text" name="name" id="name" value="{{course.name}}">
   <br><br>
+
   <label for="teacher">Teacher</label>
   <input type="text" name="teacher" id="teacher" value="{{course.teacher}}">
   <br><br>
+
   <label for="capacity">Capacity</label>
   <input type="text" name="capacity" id="capacity" value="{{course.capacity}}">
   <br><br>
-  {{#if course._students}}
-  <ul>
-    {{#each course._student}}
-    <li>{{this}}</li>
-    {{/each}}
-  </ul>
+
+  <label for="startDate">Start Date:</label>
+  <input type="text" name="startDate" id="startDate" value="{{course.startDate}}">
   <br><br>
-  {{/if}}
-  {{#if course.description}}
+
   <label for="description">Description</label>
   <input type="text" name="description" id="description" value="{{course.description}}">
-  {{/if}}
   <br><br>
+
   <button type="submit">Update</button>
 </form>
+<br><br>
+
+<form action="/admin/courses/details/{{course._id}}/add-student" method="post">
+  <select name="student" id="studentOption">
+    {{#each student}}
+    <option value="{{this._id}}">{{this.name}}</option>
+    {{/each}}
+  </select>
+  <button type="submit">Add student</button>
+  <ul>
+    {{#each course._students}}
+    <li>{{this.name}}, (<a href="/admin/courses/details/{{../course._id}}/remove-student/{{this._id}}">Delete</a>)</li>
+    {{/each}}
+  </ul>
+</form>
+<form action="/admin/courses/details/{{course._id}}/add-date" method="post">
+  <label for="date">Date:</label>
+  <input type="date" name="date" id="date">
+  <button type="submit">Add Date</button>
+  <ul>
+    {{#each course.dates}}
+    <li>{{this.date}}, (<a href="/admin/courses/details/{{../course._id}}/remove-date/{{this.date}}">Delete</a>)</li>
+    {{/each}}
+  </ul>
+</form>
+<br><br><br>
+
+{{!--
+<script src="../../../javascripts/course-detail.js"></script> --}}
