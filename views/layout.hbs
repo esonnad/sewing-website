@@ -15,12 +15,18 @@
 <body>
 
   <section id="header-container">
-    <div id="header">
-      {{#unless isConnected}}
+     {{#unless isConnected}}
       <div id="login-container">
-        <!---<a id="login" href="/auth/login">Login</a> --->
+        <a class="login-logout" href="/auth/login">Login</a> 
       </div>
       {{/unless}}
+      {{#if isConnected}}
+        <div id="logout-container">
+          <a class="login-logout" href="/auth/logout">Logout</a> 
+        </div>
+      {{/if}}
+    <div id="header">
+     
 
       <img id="icon" src="../images/icon.png">
       <h1 id="title">Elvira's Nähspass</h1>
@@ -54,12 +60,12 @@
               <a class="nav-style" href="/contact">Contact</a>
             </li>
             {{#unless isConnected}}
-            <li class="nav-item">
+            <li class="nav-item" id="login-nav">
               <a class="nav-style" href="/auth/login">Login</a>
             </li>
             {{/unless}}
             {{#if isConnected}}
-            <li class="nav-item">
+            <li class="nav-item" id="logout-nav">
               <a class="nav-style" href="/auth/logout">Logout</a>
             </li>
             {{/if}}
