@@ -5,6 +5,7 @@ const userSchema = new Schema({
   name: String,
   email: { type: String, unique: true },
   role: { type: String, enum: ["ADMIN", "STUDENT"], default: "STUDENT" },
+  status: { type: String, enum: ["PENDING", "ACTIVE"], default: "PENDING" },
   password: String,
   passwordReset: String,
   _course: { type: Schema.Types.ObjectId, ref: "Course" },

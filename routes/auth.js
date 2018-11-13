@@ -8,6 +8,7 @@ const Equipment = require('../models/Equipment')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer')
+const Request = require('../models/Request')
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");

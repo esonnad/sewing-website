@@ -7,6 +7,7 @@ const Equipment = require('../models/Equipment')
 const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer')
+const Request = require('../models/Request')
 
 /* GET home page */
 router.get('/', (req, res, next) => {
@@ -31,6 +32,22 @@ router.get('/naehkurse', (req, res, next) => {
   res.render('naehkurse')
 })
 
+router.get('/naehkurse/kurse', (req, res, next) => {
+  Course.find({ status: "FUTURE", type: "COURSE" })
+    .then(courses => {
+      res.render('kurse', { courses: courses })
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.get('/naehkurse/workshops', (req, res, next) => {
+  Course.find({ type: "WORKSHOP" })
+    .then(workshops => {
+      res.render('workshops', { workshops: workshops })
+    })
+    .catch(err => { console.log(err) })
+})
+
 router.get('/atelier', (req, res, next) => {
   Equipment.find()
     .then(equipment => {
@@ -47,10 +64,6 @@ router.get('/about', (req, res, next) => {
 
 router.get('/galerie', (req, res, next) => {
   res.render('galerie')
-})
-
-router.get('/anmeldung', (req, res, next) => {
-  res.render('anmeldung')
 })
 
 router.get('/contact', (req, res, next) => {

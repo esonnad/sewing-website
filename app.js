@@ -98,5 +98,8 @@ app.use('/student', studentRoutes);
 const adminRoutes = require('./routes/admin');
 app.use('/admin', adminRoutes);
 
+const anmeldungRoutes = require('./routes/anmeldung');
+app.use('/anmeldung', anmeldungRoutes);
+
 
 module.exports = app;
