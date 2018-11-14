@@ -76,7 +76,11 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
 })
 
 router.get('/myCourse', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {
-  res.render('student/myCourse')
+  Course.find({ _students: { $in: req.user._id } })
+    .then(course => {
+      res.render('student/myCourse', { course: course })
+    })
+    .catch(err => { console.log(err) })
 })
 
 router.get('/myProfile', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {

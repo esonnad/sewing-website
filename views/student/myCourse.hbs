@@ -1,1 +1,20 @@
 <h1>My course</h1>
+<h2>{{course.[0].name}}</h2>
+<p>
+  <div class="card" style="width: 30rem;">
+    <div class="card-body">
+      <table>
+        <tr>
+          {{#each course.[0].dates}}
+          <th>{{this.date}}</th>
+          {{/each}}
+        </tr>
+        <tr>
+          {{#each course.[0].dates}}
+          <td>{{this.skip}}</td>
+          {{/each}}
+        </tr>
+      </table>
+    </div>
+  </div>
+</p>
