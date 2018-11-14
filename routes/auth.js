@@ -44,11 +44,11 @@ router.post("/login", passport.authenticate("local", {
   passReqToCallback: true
 }));
 
-router.get("/signup", (req, res, next) => {
+router.get("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render("auth/signup");
 });
 
-router.post("/signup", (req, res, next) => {
+router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   const name = req.body.name;
   const password = req.body.password;
   const email = req.body.email;
