@@ -1,53 +1,39 @@
-<h1>Course detail page</h1>
-<form action="/admin/courses/details/{{course._id}}" method="post">
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name" value="{{course.name}}">
-  <br><br>
+<div class="page-title">
+  <h1 class="page-title">Admin - Course Detail</h1>
+</div>
+<p>
+  <section class="card-container">
 
-  <label for="teacher">Teacher</label>
-  <input type="text" name="teacher" id="teacher" value="{{course.teacher}}">
-  <br><br>
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{course.name}}</h5>
+        <p class="card-text">
+          <ul>
+            <li>Teacher: {{course.teacher}}</li>
+            <li>Capacity: {{course.capacity}}</li>
+            <li>Description: {{course.description}}</li>
+            <li>Start Date: {{course.startDate}}</li>
+            <li>Status: {{course.status}}</li>
+            <li>Type: {{course.type}}</li>
+          </ul>
+          <br>
+          <h5>Students:</h5>
+          <ul>
+            {{#each course._students}}
+            <li>{{this.name}}</li>
+            {{/each}}
+          </ul>
+          <br>
+          <h5>Dates:</h5>
+        </p>
+        <ul>
+          {{#each course.dates}}
+          <li>{{this.date}}</li>
+          {{/each}}
+        </ul>
+        <a href="/admin/courses/details/{{course._id}}/edit" class="btn btn-primary">Edit</a>
+      </div>
+    </div>
 
-  <label for="capacity">Capacity</label>
-  <input type="text" name="capacity" id="capacity" value="{{course.capacity}}">
-  <br><br>
-
-  <label for="startDate">Start Date:</label>
-  <input type="text" name="startDate" id="startDate" value="{{course.startDate}}">
-  <br><br>
-
-  <label for="description">Description</label>
-  <input type="text" name="description" id="description" value="{{course.description}}">
-  <br><br>
-
-  <button type="submit">Update</button>
-</form>
-<br><br>
-
-<form action="/admin/courses/details/{{course._id}}/add-student" method="post">
-  <select name="student" id="studentOption">
-    {{#each student}}
-    <option value="{{this._id}}">{{this.name}}</option>
-    {{/each}}
-  </select>
-  <button type="submit">Add student</button>
-  <ul>
-    {{#each course._students}}
-    <li>{{this.name}}, (<a href="/admin/courses/details/{{../course._id}}/remove-student/{{this._id}}">Delete</a>)</li>
-    {{/each}}
-  </ul>
-</form>
-<form action="/admin/courses/details/{{course._id}}/add-date" method="post">
-  <label for="date">Date:</label>
-  <input type="date" name="date" id="date">
-  <button type="submit">Add Date</button>
-  <ul>
-    {{#each course.dates}}
-    <li>{{this.date}}, (<a href="/admin/courses/details/{{../course._id}}/remove-date/{{this.date}}">Delete</a>)</li>
-    {{/each}}
-  </ul>
-</form>
-<br><br><br>
-
-{{!--
-<script src="../../../javascripts/course-detail.js"></script> --}}
+  </section>
+</p>
