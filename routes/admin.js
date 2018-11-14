@@ -284,7 +284,7 @@ function enrollmentSuggestion(requests, courses) {
     let request = requests[i];
     let enrolled = false;
     let student = { name: request._user.name, id: request._user._id }; //student object with name and id values 
-    allStudents.push({name: student.name, id: student.id}); //adds student object to array of all students 
+    allStudents.push({ name: student.name, id: student.id }); //adds student object to array of all students 
     for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
       if (request._preferences[j] != '') {
         let course = request._preferences[j]; //course is the current preference 
@@ -327,7 +327,7 @@ router.post('/generate-enrollment', (req, res, next) => {
         .then(courses => {
           let suggestion = enrollmentSuggestion(requests, courses);
           console.log("suggestion:", suggestion)
-          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2]})
+          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2] })
         })
         .catch(err => { console.log(err) })
     })
@@ -335,6 +335,7 @@ router.post('/generate-enrollment', (req, res, next) => {
 })
 
 router.post('/enroll', (req, res, next) => {
+<<<<<<< HEAD
   console.log("req body", req.body)
   console.log("keys", Object.keys(req.body))
   Object.keys(req.body).forEach(function(key) {
@@ -426,7 +427,104 @@ router.post('/enroll', (req, res, next) => {
 //     .catch(err => { console.log(err) })
 })
 
+=======
+  const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids
 
+  courseidfrombody.forEach(courseid => {
+    const studentArray = req.body[courseid]
+    const studentIdArray = [] // am Ende ein array mit allen Student Ids
+    if (typeof studentArray == "string") {
+      var studentArrayarray = []
+      studentArrayarray.push(studentArray)
+      studentArrayarray.forEach(str => {
+        var input = str.split(", ")
+        studentIdArray.push(input[1])
+      })
+    } else {
+      studentArray.forEach(str => {
+        var input = str.split(", ")
+        studentIdArray.push(input[1])
+      })
+    }
+>>>>>>> b6bf6b468a2c4ac3aacf5c00cc79a54e0a93c97a
+
+    Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray })
+      .then(course => {
+        studentIdArray.forEach(studentid => {
+          User.findById(studentid)
+            .then(student => {
+              if (student.status == "ACTIVE") {
+                //Code for what happens to active students
+                //Confirmation email
+                var mailOptions = {
+                  to: student.email,
+                  from: '"Elviras Nähspass Website"',
+                  subject: 'You entered a course!',
+                  text: 'You are receiving this because you have signed up for a course!\n\n' +
+                    'You have sucessfully entered the course:' + course.name + '\n\n' +
+                    'The course starts on ' + course.startDate + '\n\n' +
+                    "If you have any questions, don't hesitate to contact us!\n"
+                };
+                transporter.sendMail(mailOptions)
+
+              } else if (student.status == "PENDING") {
+                //Code what happens to pending students
+                //Confirmation email
+                var mailOptions = {
+                  to: student.email,
+                  from: '"Elviras Nähspass Website"',
+                  subject: 'You entered a course!',
+                  text: 'You are receiving this because you have signed up for a course!\n\n' +
+                    'You have sucessfully entered the course:' + course.name + '\n\n' +
+                    'The course starts on ' + course.startDate + '\n\n' +
+                    'If you have any questions, don\'t hesitate to contact us!\n\n' +
+                    'You will soon receive an email, with all your login information for the webiste!\n'
+                };
+                transporter.sendMail(mailOptions)
+                //Login info email
+                var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                var pwdLen = 10;
+                var randPassword = Array(pwdLen).fill(pwdChars).map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+                const salt = bcrypt.genSaltSync(bcryptSalt);
+                const hashPass = bcrypt.hashSync(randPassword, salt);
+
+                User.findByIdAndUpdate(studentid, { status: "ACTIVE", password: hashPass })
+                  .then(user => { console.log(user) })
+                  .catch(err => { console.log(err) })
+
+                var mailOptions = {
+                  to: student.email,
+                  from: '"Elviras Nähspass Website"',
+                  subject: 'Your login information!',
+                  text: 'You have successfully entered a course, and here comes you login information!\n\n' +
+                    'From now on, you can login in on our website, and view your course information.\n\n' +
+                    'Here you can find all dates, and see on what day you can skip. You are not able to edit anything on the course.\n\n' +
+                    'If you want to a skip one day, please contact us.\n\n' +
+                    'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
+                    'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
+                    'This is your login information:\n\n' +
+                    'Your email:' + student.email + '\n\n' +
+                    'Your temporary password:' + randPassword + '\n\n' +
+                    'You can change your password on your profile page. Please do that as soon as possible!\n'
+                };
+                transporter.sendMail(mailOptions)
+              }
+            })
+            .catch(err => { console.log(err) })
+        })
+      })
+      .then(course => {
+        studentIdArray.forEach(studentid => {
+          Request.findOneAndDelete({ _user: studentid })
+            .then(sth => { console.log(sth) })
+            .catch(err => { console.log(err) })
+        })
+      })
+      .then(sth => { res.next() })
+      .catch(err => { console.log(err) })
+  });
+  res.redirect('/admin/manage')
+})
 
 
 module.exports = router;
