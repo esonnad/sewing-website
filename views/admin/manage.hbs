@@ -1,1 +1,54 @@
 <h1>Manage next cohort page</h1>
+
+<h1>Requests</h1>
+
+<table style="width:100%">
+  <tr>
+    <th>Student Name</th>
+    <th>Choice 1</th>
+    <th>Choice 2</th>
+    <th>Choice 3</th>
+  </tr>
+{{#each requests}}
+  <tr>
+  <td>{{this._user.name}}</td>
+  {{#each this._preferences}}
+    <td>{{this.name}}</td>
+  {{/each}}
+  </tr>
+{{/each}}
+</table>
+<br><br><br>
+<h1>Enrollment</h1>
+
+
+<form action="/admin/generate-enrollment" method="POST">
+  <button action="submit">Generate Suggested Enrollment</button>
+</form>
+
+<table style="width:100%">
+  <tr>
+    {{#each suggestion}}
+    <th>{{@key}}</th>
+    {{/each}}
+  </tr>
+  <tr>
+    {{#each suggestion}}
+    <td>
+      {{#each this.students}}
+        <input type="text" value="{{this.name}}">
+        <br>
+      {{/each}}
+    </td>
+    {{/each}}
+  </tr>
+</table>
+
+
+<br><br><br><br><br>
+
+
+
+
+
+
