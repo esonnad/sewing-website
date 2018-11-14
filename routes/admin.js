@@ -275,20 +275,16 @@ router.post('/students/edit/:id', (req, res, next) => {
 function enrollmentSuggestion(requests, courses) {
   const suggestion = {}; //empty suggestion object
   const waitlist = [];
-  const allStudents = [];
+  const allStudents = []; //to use for autofill tags 
   for (let i = 0; i < courses.length; i++) { //iterates through courses
-    let tempCourse = { id: courses[i]._id, students: [], capacity: courses[i].capacity }; //copies course info 
-    let name = courses[i].name
-    suggestion[name] = tempCourse; //suggestion is now an object with course name as key, course info as value 
+    let tempCourse = { id: courses[i]._id, students: [], capacity: courses[i].capacity }; //creates copy of course  
+    suggestion[courses[i].name] = tempCourse; //suggestion is now an object with course name as key, course info as value 
   }
   for (let i = 0; i < requests.length; i++) { //iterates through students
     let request = requests[i];
     let enrolled = false;
-    let student = { name: request._user.name, id: request._user._id };
-    allStudents.push([student.name, student.id]);
-    console.log("STUDENT", student);
-
-    console.log("enrolling", request._user.name)
+    let student = { name: request._user.name, id: request._user._id }; //student object with name and id values 
+    allStudents.push({name: student.name, id: student.id}); //adds student object to array of all students 
     for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
       if (request._preferences[j] != '') {
         let course = request._preferences[j]; //course is the current preference 
@@ -301,11 +297,9 @@ function enrollmentSuggestion(requests, courses) {
       }
     }
     if (enrolled == false) {
-      console.log("add to waitlist")
       waitlist.push(request._user);
     }
   }
-  console.log("ALL STUDENTS", allStudents);
   return [suggestion, waitlist, allStudents];
 
 }
@@ -333,97 +327,99 @@ router.post('/generate-enrollment', (req, res, next) => {
         .then(courses => {
           let suggestion = enrollmentSuggestion(requests, courses);
           console.log("suggestion:", suggestion)
-          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2] })
+          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2]})
         })
         .catch(err => { console.log(err) })
     })
     .catch(err => { console.log(err) })
 })
 
-router.post('/enroll/:id', (req, res, next) => {
-  let courseid = req.params.id;
-  const courseidfrombody = Object.keys(req.body) //das gleiche wir courseid(ein String)
-  const studentArray = Object.values(req.body) //[array mit "name", "id"]
-  const studentIdArray = []  // am Ende ein array mit allen Student Ids
-  for (i = 1; i < studentArray.length; i + 2) {
-    studentIdArray.push(studentArray[i])
-  };
-  console.log(studentIdArray)
+router.post('/enroll', (req, res, next) => {
+  console.log(req.body)
+  console.log(req.body['5beaf62a52ddac4105f323f8']);
+//   let courseid = req.params.id;
+//   const courseidfrombody = Object.keys(req.body) //das gleiche wir courseid(ein String)
+//   const studentArray = Object.values(req.body) //[array mit "name", "id"]
+//   const studentIdArray = []  // am Ende ein array mit allen Student Ids
+//   for (i = 1; i < studentArray.length; i + 2) {
+//     studentIdArray.push(studentArray[i])
+//   };
+//   console.log(studentIdArray)
 
-  Course.findByIdAndUpdate(courseidfrombody, { status: "ACTIVE", _students: studentIdArray })
-    .then(course => {
-      studentIdArray.forEach(studentid => {
-        User.findById(studentid)
-          .then(student => {
-            if (student.status == "ACTIVE") {
-              //Code for what happens to active students
-              //Confirmation email
-              var mailOptions = {
-                to: student.email,
-                from: '"Elviras Nähspass Website"',
-                subject: 'You entered a course!',
-                text: 'You are receiving this because you have signed up for a course!\n\n' +
-                  'You have sucessfully entered the course:' + course.name + '\n\n' +
-                  'The course starts on' + course.startDate + '\n\n' +
-                  "If you have any questions, don't hesitate to contact us!\n"
-              };
-              transporter.sendMail(mailOptions)
+//   Course.findByIdAndUpdate(courseidfrombody, { status: "ACTIVE", _students: studentIdArray })
+//     .then(course => {
+//       studentIdArray.forEach(studentid => {
+//         User.findById(studentid)
+//           .then(student => {
+//             if (student.status == "ACTIVE") {
+//               //Code for what happens to active students
+//               //Confirmation email
+//               var mailOptions = {
+//                 to: student.email,
+//                 from: '"Elviras Nähspass Website"',
+//                 subject: 'You entered a course!',
+//                 text: 'You are receiving this because you have signed up for a course!\n\n' +
+//                   'You have sucessfully entered the course:' + course.name + '\n\n' +
+//                   'The course starts on' + course.startDate + '\n\n' +
+//                   "If you have any questions, don't hesitate to contact us!\n"
+//               };
+//               transporter.sendMail(mailOptions)
 
-            } else if (student.status == "PENDING") {
-              //Code what happens to pending students
-              //Confirmation email
-              var mailOptions = {
-                to: student.email,
-                from: '"Elviras Nähspass Website"',
-                subject: 'You entered a course!',
-                text: 'You are receiving this because you have signed up for a course!\n\n' +
-                  'You have sucessfully entered the course:' + course.name + '\n\n' +
-                  'The course starts on' + course.startDate + '\n\n' +
-                  'If you have any questions, don\'t hesitate to contact us!\n\n' +
-                  'You will soon receive an email, with all your login information for the webiste!\n'
-              };
-              transporter.sendMail(mailOptions)
-              //Login info email
-              var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-              var pwdLen = 10;
-              var randPassword = Array(pwdLen).fill(pwdChars).map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
-              const salt = bcrypt.genSaltSync(bcryptSalt);
-              const hashPass = bcrypt.hashSync(randPassword, salt);
+//             } else if (student.status == "PENDING") {
+//               //Code what happens to pending students
+//               //Confirmation email
+//               var mailOptions = {
+//                 to: student.email,
+//                 from: '"Elviras Nähspass Website"',
+//                 subject: 'You entered a course!',
+//                 text: 'You are receiving this because you have signed up for a course!\n\n' +
+//                   'You have sucessfully entered the course:' + course.name + '\n\n' +
+//                   'The course starts on' + course.startDate + '\n\n' +
+//                   'If you have any questions, don\'t hesitate to contact us!\n\n' +
+//                   'You will soon receive an email, with all your login information for the webiste!\n'
+//               };
+//               transporter.sendMail(mailOptions)
+//               //Login info email
+//               var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+//               var pwdLen = 10;
+//               var randPassword = Array(pwdLen).fill(pwdChars).map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+//               const salt = bcrypt.genSaltSync(bcryptSalt);
+//               const hashPass = bcrypt.hashSync(randPassword, salt);
 
-              User.findByIdAndUpdate(studentid, { status: "ACTIVE", password: hashPass })
-                .then(user => { console.log(user) })
-                .catch(err => { console.log(err) })
+//               User.findByIdAndUpdate(studentid, { status: "ACTIVE", password: hashPass })
+//                 .then(user => { console.log(user) })
+//                 .catch(err => { console.log(err) })
 
-              var mailOptions = {
-                to: student.email,
-                from: '"Elviras Nähspass Website"',
-                subject: 'Your login information!',
-                text: 'You have successfully entered a course, and here comes you login information!\n\n' +
-                  'From now on, you can login in on our website, and view your course information.\n\n' +
-                  'Here you can find all dates, and see on what day you can skip. You are not able to edit anything on the course.\n\n' +
-                  'If you want to a skip one day, please contact us.\n\n' +
-                  'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
-                  'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
-                  'This is your login information:\n\n' +
-                  'Your email:' + student.email + '\n\n' +
-                  'Your temporary password:' + randPassword + '\n\n' +
-                  'You can change your password on your profile page. Please do that as soon as possible!\n'
-              };
-              transporter.sendMail(mailOptions)
-            }
-          })
-          .catch(err => { console.log(err) })
-      })
-    })
-    .then(course => {
-      studentIdArray.forEach(studentid => {
-        Request.findOneAndDelete({ _user: studentid })
-          .then(sth => { console.log(sth) })
-          .catch(err => { console.log(err) })
-      })
-    })
-    .then(sth => { res.send(sth) })
-    .catch(err => { console.log(err) })
+//               var mailOptions = {
+//                 to: student.email,
+//                 from: '"Elviras Nähspass Website"',
+//                 subject: 'Your login information!',
+//                 text: 'You have successfully entered a course, and here comes you login information!\n\n' +
+//                   'From now on, you can login in on our website, and view your course information.\n\n' +
+//                   'Here you can find all dates, and see on what day you can skip. You are not able to edit anything on the course.\n\n' +
+//                   'If you want to a skip one day, please contact us.\n\n' +
+//                   'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
+//                   'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
+//                   'This is your login information:\n\n' +
+//                   'Your email:' + student.email + '\n\n' +
+//                   'Your temporary password:' + randPassword + '\n\n' +
+//                   'You can change your password on your profile page. Please do that as soon as possible!\n'
+//               };
+//               transporter.sendMail(mailOptions)
+//             }
+//           })
+//           .catch(err => { console.log(err) })
+//       })
+//     })
+//     .then(course => {
+//       studentIdArray.forEach(studentid => {
+//         Request.findOneAndDelete({ _user: studentid })
+//           .then(sth => { console.log(sth) })
+//           .catch(err => { console.log(err) })
+//       })
+//     })
+//     .then(sth => { res.send(sth) })
+//     .catch(err => { console.log(err) })
 })
 
 

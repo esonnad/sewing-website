@@ -18,8 +18,11 @@
   $(document).ready(function(){
 
   $( function() {
-    var availableTags = {{allStudents}}
-    $( "#tags" ).autocomplete({
+    var availableTags = [
+    {{#each allStudents}}
+      "{{this.name}}, {{this.id}}",
+    {{/each}} ];
+    $( ".tags" ).autocomplete({
       source: availableTags
     });
   } );

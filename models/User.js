@@ -9,7 +9,6 @@ const userSchema = new Schema({
   password: String,
   resetPasswordToken: String,
   resetPasswordExpires: String,
-  _course: [{ type: Schema.Types.ObjectId, ref: "Course" }],
   address: String,
   phone: String,
 }, {
