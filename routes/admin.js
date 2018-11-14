@@ -506,7 +506,7 @@ router.post('/enroll', (req, res, next) => {
       .then(sth => { res.next() })
       .catch(err => { console.log(err) })
   });
-  res.redirect('/admin/manage')
+  //res.redirect('/admin/manage')
 
 
 
