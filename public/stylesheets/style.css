@@ -82,8 +82,7 @@ body {
   margin-left: auto;
   padding-right: 20px;
   padding-top: 20px;
-  justify-content: center;
-  border: 1px solid black; }
+  justify-content: center; }
 
 a {
   font-family: 'Open Sans', sans-serif;
