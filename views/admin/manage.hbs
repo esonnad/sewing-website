@@ -33,17 +33,29 @@
     {{/each}}
   </tr>
   <tr>
+
     {{#each suggestion}}
+
+    <form action="/admin/enroll/{{this.id}}" method="POST">
     <td>
-      {{#each this.students}}
-        <input type="text" value="{{this.name}}">
+      {{#each this.students}} 
+        <input name="{{../this.id}}" type="text" value="{{this.name}}, {{this.id}}">
+        
         <br>
       {{/each}}
+      <button action="submit">Confirm Enrollment</button>
     </td>
+    </form>
+
     {{/each}}
+
   </tr>
 </table>
 
+<h1>Remaining Students</h1>
+{{#each waitlist}}
+  {{this.name}}
+{{/each}}
 
 <br><br><br><br><br>
 
