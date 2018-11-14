@@ -269,6 +269,7 @@ router.post('/students/edit/:id', (req, res, next) => {
 function enrollmentSuggestion(requests, courses) {
   const suggestion = {}; //empty suggestion object
   const waitlist = [];
+  const allStudents = [];
   for (let i = 0; i < courses.length; i++) { //iterates through courses
     let tempCourse = { id: courses[i]._id, students: [], capacity: courses[i].capacity }; //copies course info 
     let name = courses[i].name
@@ -277,7 +278,8 @@ function enrollmentSuggestion(requests, courses) {
   for (let i = 0; i < requests.length; i++) { //iterates through students
     let request = requests[i];
     let enrolled = false;
-    let student = {name: request._user.name, id: request._user._id}
+    let student = {name: request._user.name, id: request._user._id};
+    allStudents.push([student.name, student.id]);
     console.log("STUDENT", student);
 
     console.log("enrolling", request._user.name)
@@ -287,12 +289,9 @@ function enrollmentSuggestion(requests, courses) {
         let courseCopy = suggestion[course.name]; //copy of the current preference (to not alter real course)
         if (courseCopy.students.length < courseCopy.capacity) {
           courseCopy.students.push(student)
-          console.log("student added", request._user, course.name)
-          console.log("COURSE COPY:", courseCopy, "SUGGESTION", suggestion[j])
           enrolled = true;
           break;
         }
-        else console.log("no space in", course.name)
       }
     }
     if (enrolled == false) {
@@ -300,7 +299,8 @@ function enrollmentSuggestion(requests, courses) {
     waitlist.push(request._user);
     }
   }
-  return [suggestion, waitlist];
+  console.log("ALL STUDENTS", allStudents);
+  return [suggestion, waitlist, allStudents];
 
 }
 
@@ -327,7 +327,7 @@ router.post('/generate-enrollment', (req, res, next) => {
         .then(courses => {
           let suggestion = enrollmentSuggestion(requests, courses);
           console.log("suggestion:", suggestion)
-          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1] })
+          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2]})
         })
         .catch(err => { console.log(err) })
     })

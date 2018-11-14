@@ -39,7 +39,7 @@
     <form action="/admin/enroll/{{this.id}}" method="POST">
     <td>
       {{#each this.students}} 
-        <input name="{{../this.id}}" type="text" value="{{this.name}}, {{this.id}}">
+        <input name="{{../this.id}}" id="tags" type="text" value="{{this.name}}, {{this.id}}">
         
         <br>
       {{/each}}
