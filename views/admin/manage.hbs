@@ -26,7 +26,6 @@
   <button action="submit">Generate Suggested Enrollment</button>
 </form>
 
-<form action="/admin/enroll" method="POST">
 <table style="width:100%">
   <tr>
     {{#each suggestion}}
@@ -34,19 +33,24 @@
     {{/each}}
   </tr>
   <tr>
+
     {{#each suggestion}}
+
+    <form action="/admin/enroll/{{this.id}}" method="POST">
     <td>
       {{#each this.students}} 
-        <input name="{{../this.id}}" type="text" value="{{this.name}}">
+        <input name="{{../this.id}}" type="text" value="{{this.name}}, {{this.id}}">
         
         <br>
       {{/each}}
+      <button action="submit">Confirm Enrollment</button>
     </td>
+    </form>
+
     {{/each}}
+
   </tr>
 </table>
-<button action="submit">Confirm Enrollment</button>
-</form>
 
 <h1>Remaining Students</h1>
 {{#each waitlist}}

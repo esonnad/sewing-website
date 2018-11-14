@@ -277,15 +277,16 @@ function enrollmentSuggestion(requests, courses) {
   for (let i = 0; i < requests.length; i++) { //iterates through students
     let request = requests[i];
     let enrolled = false;
+    let student = {name: request._user.name, id: request._user._id}
+    console.log("STUDENT", student);
+
     console.log("enrolling", request._user.name)
     for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
       if (request._preferences[j] != '') {
         let course = request._preferences[j]; //course is the current preference 
         let courseCopy = suggestion[course.name]; //copy of the current preference (to not alter real course)
-        console.log("checking", course.name)
-        console.log("Course:", course, "courseCopy", courseCopy)
         if (courseCopy.students.length < courseCopy.capacity) {
-          courseCopy.students.push(request._user)
+          courseCopy.students.push(student)
           console.log("student added", request._user, course.name)
           console.log("COURSE COPY:", courseCopy, "SUGGESTION", suggestion[j])
           enrolled = true;
@@ -333,7 +334,7 @@ router.post('/generate-enrollment', (req, res, next) => {
     .catch(err => { console.log(err) })
 })
 
-router.post('/enroll', (req, res, next) => {
+router.post('/enroll/:id', (req, res, next) => {
   console.log(req.body);
 })
 
