@@ -275,20 +275,16 @@ router.post('/students/edit/:id', (req, res, next) => {
 function enrollmentSuggestion(requests, courses) {
   const suggestion = {}; //empty suggestion object
   const waitlist = [];
-  const allStudents = [];
+  const allStudents = []; //to use for autofill tags 
   for (let i = 0; i < courses.length; i++) { //iterates through courses
-    let tempCourse = { id: courses[i]._id, students: [], capacity: courses[i].capacity }; //copies course info 
-    let name = courses[i].name
-    suggestion[name] = tempCourse; //suggestion is now an object with course name as key, course info as value 
+    let tempCourse = { id: courses[i]._id, students: [], capacity: courses[i].capacity }; //creates copy of course  
+    suggestion[courses[i].name] = tempCourse; //suggestion is now an object with course name as key, course info as value 
   }
   for (let i = 0; i < requests.length; i++) { //iterates through students
     let request = requests[i];
     let enrolled = false;
-    let student = { name: request._user.name, id: request._user._id };
-    allStudents.push([student.name, student.id]);
-    console.log("STUDENT", student);
-
-    console.log("enrolling", request._user.name)
+    let student = { name: request._user.name, id: request._user._id }; //student object with name and id values 
+    allStudents.push({ name: student.name, id: student.id }); //adds student object to array of all students 
     for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
       if (request._preferences[j] != '') {
         let course = request._preferences[j]; //course is the current preference 
@@ -301,11 +297,9 @@ function enrollmentSuggestion(requests, courses) {
       }
     }
     if (enrolled == false) {
-      console.log("add to waitlist")
       waitlist.push(request._user);
     }
   }
-  console.log("ALL STUDENTS", allStudents);
   return [suggestion, waitlist, allStudents];
 
 }
@@ -344,13 +338,21 @@ router.post('/enroll', (req, res, next) => {
   const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids
 
   courseidfrombody.forEach(courseid => {
-    const studentArray = req.body.courseid
-    const studentIdArray = []  // am Ende ein array mit allen Student Ids
-    studentArray[0].forEach(str => {
-      var input = str.split(", ")
-      studentIdArray.push(input[1])
-    })
-    console.log(studentIdArray)
+    const studentArray = req.body[courseid]
+    const studentIdArray = [] // am Ende ein array mit allen Student Ids
+    if (typeof studentArray == "string") {
+      var studentArrayarray = []
+      studentArrayarray.push(studentArray)
+      studentArrayarray.forEach(str => {
+        var input = str.split(", ")
+        studentIdArray.push(input[1])
+      })
+    } else {
+      studentArray.forEach(str => {
+        var input = str.split(", ")
+        studentIdArray.push(input[1])
+      })
+    }
 
     Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray })
       .then(course => {
@@ -366,7 +368,7 @@ router.post('/enroll', (req, res, next) => {
                   subject: 'You entered a course!',
                   text: 'You are receiving this because you have signed up for a course!\n\n' +
                     'You have sucessfully entered the course:' + course.name + '\n\n' +
-                    'The course starts on' + course.startDate + '\n\n' +
+                    'The course starts on ' + course.startDate + '\n\n' +
                     "If you have any questions, don't hesitate to contact us!\n"
                 };
                 transporter.sendMail(mailOptions)
@@ -380,7 +382,7 @@ router.post('/enroll', (req, res, next) => {
                   subject: 'You entered a course!',
                   text: 'You are receiving this because you have signed up for a course!\n\n' +
                     'You have sucessfully entered the course:' + course.name + '\n\n' +
-                    'The course starts on' + course.startDate + '\n\n' +
+                    'The course starts on ' + course.startDate + '\n\n' +
                     'If you have any questions, don\'t hesitate to contact us!\n\n' +
                     'You will soon receive an email, with all your login information for the webiste!\n'
                 };

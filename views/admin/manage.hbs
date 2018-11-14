@@ -33,21 +33,23 @@
     {{/each}}
   </tr>
   <tr>
+    <form action="/admin/enroll" method="POST">
 
     {{#each suggestion}}
 
-    <form action="/admin/enroll/{{this.id}}" method="POST">
     <td>
       {{#each this.students}} 
-        <input name="{{../this.id}}" id="tags" type="text" value="{{this.name}}, {{this.id}}">
+        <input name="{{../this.id}}" class="tags" type="text" value="{{this.name}}, {{this.id}}">
         
         <br>
       {{/each}}
-      <button action="submit">Confirm Enrollment</button>
     </td>
-    </form>
 
     {{/each}}
+    <button action="submit">Confirm Enrollment</button>
+    </form>
+
+
 
   </tr>
 </table>
