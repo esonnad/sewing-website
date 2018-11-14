@@ -8,6 +8,8 @@ const multer = require('multer');
 const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer');
 const Request = require('../models/Request')
+const bcrypt = require('bcrypt');
+const bcryptSalt = 10;
 
 let transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -79,6 +81,31 @@ router.get('/myCourse', ensureAuthenticated, checkRole("STUDENT"), (req, res, ne
 
 router.get('/myProfile', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {
   res.render('student/myProfile', { user: req.user })
+})
+
+router.post('/myProfile/changePassword', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {
+  let id = req.user._id;
+  const oldPassw = req.body.oldPassw;
+  if (!bcrypt.compareSync(oldPassw, req.user.password)) {
+    res.render('student/myProfile', { message: "Incorrect Password!", user: req.user })
+    return;
+  }
+
+  const newPassw1 = req.body.newPassw1;
+  const newPassw2 = req.body.newPassw2;
+
+  if (newPassw1 === newPassw2) {
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(newPassw1, salt);
+    User.findByIdAndUpdate(id, {
+      password: hashPass
+    })
+      .then(sth => { res.render('student/myProfile', { message: "Password sucessfully changed!", user: req.user }) })
+      .catch(err => { console.log(err) })
+  }
+  else {
+    res.render('student/myProfile', { message: "The new Password was not the same", user: req.user })
+  }
 })
 
 
