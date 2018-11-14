@@ -101,9 +101,9 @@ router.post('/login/forgotPassword', (req, res, next) => {
       });
     },
     function (token, done) {
-      User.findOne({ email: email }, function (err, user) {
+      User.findOne({ email: email, status: "ACTIVE" }, function (err, user) {
         if (!user) {
-          res.render('forgotPassword', { message: "No account with that email adress exists." })
+          res.render('forgotPassword', { message: "No active account with that email adress exists." })
           return;
         }
 
