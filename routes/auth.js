@@ -69,7 +69,8 @@ router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
     const newUser = new User({
       name: name,
       email: email,
-      password: hashPass
+      password: hashPass,
+      status: "ACTIVE"
     });
 
     newUser.save()

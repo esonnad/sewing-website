@@ -19,7 +19,7 @@
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
     <td>{{this.teacher}}</td>
     <td>{{this._students}}</td>
-    <td>{{this.dates}}</td>
+    <td>{{this.dates.length}}</td>
     <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
   </tr>
   {{/each}}
@@ -38,7 +38,7 @@
   <tr>
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
     <td>{{this.teacher}}</td>
-    <td>{{this.dates}}</td>
+    <td>{{this.dates.length}}</td>
     <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
   </tr>
   {{/each}}
@@ -60,7 +60,7 @@
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
     <td>{{this.teacher}}</td>
     <td>{{this._students}}</td>
-    <td>{{this.dates}}</td>
+    <td>{{this.dates.length}}</td>
     <td>{{this.description}}</td>
     <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
   </tr>
