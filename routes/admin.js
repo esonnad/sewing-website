@@ -335,7 +335,6 @@ router.post('/generate-enrollment', (req, res, next) => {
 })
 
 router.post('/enroll', (req, res, next) => {
-<<<<<<< HEAD
   console.log("req body", req.body)
   console.log("keys", Object.keys(req.body))
   Object.keys(req.body).forEach(function(key) {
@@ -427,7 +426,6 @@ router.post('/enroll', (req, res, next) => {
 //     .catch(err => { console.log(err) })
 })
 
-=======
   const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids
 
   courseidfrombody.forEach(courseid => {
@@ -446,7 +444,6 @@ router.post('/enroll', (req, res, next) => {
         studentIdArray.push(input[1])
       })
     }
->>>>>>> b6bf6b468a2c4ac3aacf5c00cc79a54e0a93c97a
 
     Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray })
       .then(course => {
@@ -524,7 +521,7 @@ router.post('/enroll', (req, res, next) => {
       .catch(err => { console.log(err) })
   });
   res.redirect('/admin/manage')
-})
+
 
 
 module.exports = router;
