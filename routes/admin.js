@@ -335,7 +335,11 @@ router.post('/generate-enrollment', (req, res, next) => {
 })
 
 router.post('/enroll', (req, res, next) => {
-  console.log(req.body)
+  console.log("req body", req.body)
+  console.log("keys", Object.keys(req.body))
+  Object.keys(req.body).forEach(function(key) {
+    console.log("values", req.body[key]);
+  });
   console.log(req.body['5beaf62a52ddac4105f323f8']);
 //   let courseid = req.params.id;
 //   const courseidfrombody = Object.keys(req.body) //das gleiche wir courseid(ein String)
