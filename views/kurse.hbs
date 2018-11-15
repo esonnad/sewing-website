@@ -1,12 +1,56 @@
 <div class="page-title">
   <h1 class="page-title">Kurse</h1>
 </div>
-<p>Information über Kurse</p>
-<p><a href="/anmeldung/kurse">Buchen</a><br><br>
-  Upcoming courses:<br>
-  <ul>
-    {{#each courses}}
-    <li>{{this.dates.length}}x {{this.name}}, Startdate:{{this.startDate}}. Teacher: {{this.teacher}}</li>
-    {{/each}}
-  </ul>
+<p>
+  <div class="card" style="width: 30rem;">
+    <div class="card-body">
+      <a href="/anmeldung/kurse">Buchen</a>
+    </div>
+  </div>
+  <section class="card-container">
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <p>
+          <img src="https://static.wixstatic.com/media/4da4ea_09cd270372857b67f1f664e491704ad5.gif" alt="Nähkurs" class="card-img-top">
+          <h2>Nähkurse für Anfänger und Fortgeschrittene</h2>
+          Haben Sie schon immer davon geträumt, mal einen Rock, eine Hose oder eine Jacke nähen zu können und stolz zu
+          sagen: <b>„Hab ich selbst genäht!“</b> Bei uns haben Sie die Möglichkeit, Ihren Traum wahr werden zu lassen.
+          Vorkenntnisse sind nicht erforderlich. Eine Nähmaschine sollten Sie bitte mitbringen – kann aber auch bei uns
+          geliehen werden … Ihre Nähwünsche können bei der Anmeldung besprochen werden.
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="width: 80rem;">
+      <div class="card-body">
+
+        <h2>Aktuelle Kurse:</h2><br>
+        <table class="table">
+          <tr>
+            <th>Terminanzahl</th>
+            <th>Kurs</th>
+            <th>Startdatum</th>
+            <th>Lehrer</th>
+          </tr>
+          {{#each courses}}
+          <tr>
+            <td>{{this.dates.length}}x</td>
+            <td>{{this.name}}</td>
+            <td>{{this.startDate}}</td>
+            <td>{{this.teacher}}</td>
+          </tr>
+          {{/each}}
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="width: 60rem;">
+      <div class="card-body">
+        <p>Jeder Kurs umfasst 5 oder mehr Einheiten gemäß Anmeldungsseite.
+          (Bei Verhinderung ist, bei rechtzeitiger Online-Abmeldung , ein Nachholen in den anderen Kursen, nach
+          Platzverfügbarkeit, möglich) Die Kursgebühr von je EUR 10,--/Kurstag ist bei Anmeldung, vor Kursbeginn zu
+          bezahlen. Aktuelle Starttermine für die nächsten Kurse entnehmen Sie bitte dem Terminkalender.</p>
+      </div>
+    </div>
+  </section>
 </p>
