@@ -2,12 +2,12 @@
   <h1 class="page-title">Manage next cohort page</h1>
 </div>
 <br>
-<div id="request-title">
+<div class="manage-container">
 <h1>Requests</h1>
 </div>
 
-<div id="request-card-container">
-<div class="card" style="width: 80rem;">
+<div class="manage-container">
+  <div class="card" style="width: 80rem;">
 
 <table style="width:100%" class="table">
   <tr>
@@ -30,16 +30,19 @@
   {{/each}}
 </table>
 <br><br><br>
-
+  </div>
 </div>
-</div>
-<h1>Enrollment</h1>
-
 
 <form action="/admin/generate-enrollment" method="POST">
-  <button action="submit">Generate Suggested Enrollment</button>
+<div class="manage-container">
+  <button class="btnAll btn2" action="submit">Generate Suggested Enrollment</button>
+</div>
 </form>
 
+
+
+<div class="manage-container">
+<div class="card" style="width: 80rem">
 <table style="width:100%" class="table">
   <tr>
     {{#each suggestion}}
@@ -60,18 +63,31 @@
       </td>
 
       {{/each}}
-      <button action="submit">Confirm Enrollment</button>
+      <br>
+      <button class="btnAll btn2" action="submit">Confirm Enrollment</button>
+      <br>
+
+      
     </form>
 
-
-
   </tr>
-</table>
 
-<h1>Remaining Students</h1>
-{{#each waitlist}}
-{{this.name}}
-{{/each}}
+  
+</table>
+</div>
+</div>
+
+<div class="manage-container">
+<div class="card" style="width: 80rem;">
+<h3>Remaining Students:</h3>
+      {{#each waitlist}}
+        {{this.name}}
+        <br>
+      {{/each}}
+</div>
+</div>
+
+
 
 
 
