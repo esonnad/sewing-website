@@ -1,0 +1,35 @@
+<div class="page-title">
+  <h1 class="page-title">Admin - Edit the skipping</h1>
+</div>
+<p>
+  <section class="card-container">
+
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <form action="/admin/courses/details/{{course._id}}/editSkip" method="post">
+          <table>
+            <tr>
+              {{#each course.dates}}
+              <th>{{this.date}}</th>
+              {{/each}}
+            </tr>
+            <tr>
+              {{#each course.dates}}
+              <td><select name="selectSkip" id="selectSkip">
+                  <option value="{{this.skip}}" selected>{{this.skip}}</option>
+                  <option value="No One">No One</option>
+                  {{#each ../course._students}}
+                  <option value="{{this.name}}">{{this.name}}</option>
+                  {{/each}}
+                </select></td>
+              {{/each}}
+            </tr>
+          </table>
+
+          <button type="submit">Update</button>
+        </form>
+      </div>
+    </div>
+
+  </section>
+</p>

@@ -20,7 +20,7 @@
     <td>{{this.teacher}}</td>
     <td>{{this._students}}</td>
     <td>{{this.dates.length}}</td>
-    <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
+    <td><a href="/admin/courses/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a></td>
   </tr>
   {{/each}}
 </table>
@@ -39,7 +39,7 @@
     <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
     <td>{{this.teacher}}</td>
     <td>{{this.dates.length}}</td>
-    <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
+    <td><a href="/admin/courses/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a></td>
   </tr>
   {{/each}}
 </table>
@@ -62,7 +62,7 @@
     <td>{{this._students}}</td>
     <td>{{this.dates.length}}</td>
     <td>{{this.description}}</td>
-    <td><a href="/admin/courses/delete/{{this._id}}">Delete</a></td>
+    <td><a href="/admin/courses/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this workshop?');">Delete</a></td>
   </tr>
   {{/each}}
 </table>

@@ -42,6 +42,7 @@ router.get('/', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/adminPage')
 })
 
+//Posts
 router.get('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/postAdmin')
 })
@@ -77,6 +78,7 @@ router.get('/confirmPost/:id', (req, res, next) => {
     .catch(err => { console.log(err), res.render("admin/confirmed-failed") })
 })
 
+//Equipment pages
 router.get('/equipment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Equipment.find()
     .then(eq => {
@@ -115,8 +117,10 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
     .then(sth => {
       res.redirect('/admin/equipment')
     })
+    .catch(err => { console.log(err) })
 })
 
+//Courses pages
 router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Promise.all([Course.find({ type: "WORKSHOP" }), Course.find({ type: "COURSE", status: "ACTIVE" }), Course.find({ type: "COURSE", status: "FUTURE" })])
     .then(([workshops, activeCourses, futureCourses]) => {
@@ -129,10 +133,10 @@ router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
     .catch(err => { console.log(err) })
 })
 
-router.get('/courses/add', (req, res, next) => {
+router.get('/courses/add', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/add-course')
 })
-router.post('/courses/add', (req, res, next) => {
+router.post('/courses/add', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   const name = req.body.name;
   const teacher = req.body.teacher;
   const capacity = req.body.capacity;
@@ -156,7 +160,7 @@ router.post('/courses/add', (req, res, next) => {
     .catch(err => { console.log(err) })
 })
 
-router.get('/courses/details/:id', (req, res, next) => {
+router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   Course.findById(id)
     .populate('_students')
@@ -176,25 +180,25 @@ router.get('/courses/details/:id/edit', ensureAuthenticated, checkRole("ADMIN"),
     })
     .catch(err => { console.log(err) })
 })
-router.post('/courses/details/:id/add-student', (req, res, next) => {
+router.post('/courses/details/:id/add-student', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   const student = req.body.student;
   Course.findByIdAndUpdate(id, { $push: { _students: student } })
     .then(sth => { res.redirect(`/admin/courses/details/${id}/edit`) })
     .catch(err => { console.log(err) })
 })
-router.get('/courses/details/:courseid/remove-student/:studentid', (req, res, next) => {
+router.get('/courses/details/:courseid/remove-student/:studentid', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let studentid = req.params.studentid;
   let courseid = req.params.courseid;
   Course.findByIdAndUpdate(courseid, { $pull: { _students: studentid } })
     .then(sth => { res.redirect(`/admin/courses/details/${courseid}/edit`) })
     .catch(err => { console.log(err) })
 })
-router.post('/courses/details/:id/add-date', (req, res, next) => {
+router.post('/courses/details/:id/add-date', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   const date = req.body.date;
   if (date !== "") {
-    Course.findByIdAndUpdate(id, { $push: { dates: { date: date } } })
+    Course.findByIdAndUpdate(id, { $push: { dates: { date: date, skip: "No one" } } })
       .then(sth => { res.redirect(`/admin/courses/details/${id}/edit`) })
       .catch(err => { console.log(err) })
   }
@@ -202,7 +206,7 @@ router.post('/courses/details/:id/add-date', (req, res, next) => {
     res.redirect(`/admin/courses/details/${id}`)
   }
 })
-router.get('/courses/details/:courseid/remove-date/:date', (req, res, next) => {
+router.get('/courses/details/:courseid/remove-date/:date', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let date = req.params.date;
   let courseid = req.params.courseid;
   Course.findByIdAndUpdate(courseid, { $pull: { dates: { date: date } } })
@@ -227,6 +231,35 @@ router.post('/courses/details/:id/edit', ensureAuthenticated, checkRole("ADMIN")
     .then(course => { res.redirect(`/admin/courses/details/${id}`) })
     .catch(err => { console.log(err) })
 })
+router.get('/courses/details/:id/editSkip', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+  Course.findById(id)
+    .populate('_students')
+    .then(course => {
+      res.render('admin/course-skip', { course: course })
+    })
+    .catch(err => { console.log(err) })
+})
+router.post('/courses/details/:id/editSkip', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+  console.log(req.body)
+
+  Course.findById(id)
+    .then(course => {
+      const dates = course.dates
+      console.log(dates)
+      const newArray = []
+      for (i = 0; i < dates.length; i++) {
+        var thisdate = dates[i].date
+        var thisskip = req.body.selectSkip[i]
+        newArray.push({ date: thisdate, skip: thisskip })
+      }
+      Course.findByIdAndUpdate(id, { dates: newArray })
+        .then(sth => { res.redirect(`/admin/courses/details/${id}`) })
+        .catch(err => { console.log(err) })
+    })
+    .catch(err => { console.log(err) })
+})
 
 router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
@@ -237,6 +270,7 @@ router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req,
     })
 })
 
+//Students pages
 router.get('/students', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Promise.all([User.find({ role: "STUDENT", status: "PENDING" }), User.find({ role: "STUDENT", status: "ACTIVE" })])
     .then(([pendingStudents, activeStudents]) => {
@@ -252,9 +286,10 @@ router.get('/students/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req
     .then(sth => {
       res.redirect('/admin/students')
     })
+    .catch(er => { console.log(er) })
 })
 
-router.get('/students/edit/:id', (req, res, next) => {
+router.get('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
 
   User.findById(id)
@@ -262,7 +297,7 @@ router.get('/students/edit/:id', (req, res, next) => {
     .catch(err => { console.log(err) })
 })
 
-router.post('/students/edit/:id', (req, res, next) => {
+router.post('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   const email = req.body.email;
 
@@ -271,6 +306,12 @@ router.post('/students/edit/:id', (req, res, next) => {
     .catch(err => { console.log(err) })
 })
 
+
+
+
+
+
+//Enrollment functions
 //make sure requests are sorted by timestamp
 function enrollmentSuggestion(requests, courses) {
   const suggestion = {}; //empty suggestion object
@@ -318,7 +359,7 @@ router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) 
     .catch(err => { console.log(err) })
 })
 
-router.post('/generate-enrollment', (req, res, next) => {
+router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Request.find()
     .populate('_user', 'name')
     .populate('_preferences', 'name')
@@ -334,7 +375,7 @@ router.post('/generate-enrollment', (req, res, next) => {
     .catch(err => { console.log(err) })
 })
 
-router.post('/enroll', (req, res, next) => {
+router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids
 
   courseidfrombody.forEach(courseid => {
@@ -430,83 +471,9 @@ router.post('/enroll', (req, res, next) => {
       .catch(err => { console.log(err) })
   });
   res.redirect('/admin/manage')
+});
 
-    Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray })
-      .then(course => {
-        studentIdArray.forEach(studentid => {
-          User.findById(studentid)
-            .then(student => {
-              if (student.status == "ACTIVE") {
-                //Code for what happens to active students
-                //Confirmation email
-                var mailOptions = {
-                  to: student.email,
-                  from: '"Elviras Nähspass Website"',
-                  subject: 'You entered a course!',
-                  text: 'You are receiving this because you have signed up for a course!\n\n' +
-                    'You have sucessfully entered the course:' + course.name + '\n\n' +
-                    'The course starts on ' + course.startDate + '\n\n' +
-                    "If you have any questions, don't hesitate to contact us!\n"
-                };
-                transporter.sendMail(mailOptions)
 
-              } else if (student.status == "PENDING") {
-                //Code what happens to pending students
-                //Confirmation email
-                var mailOptions = {
-                  to: student.email,
-                  from: '"Elviras Nähspass Website"',
-                  subject: 'You entered a course!',
-                  text: 'You are receiving this because you have signed up for a course!\n\n' +
-                    'You have sucessfully entered the course:' + course.name + '\n\n' +
-                    'The course starts on ' + course.startDate + '\n\n' +
-                    'If you have any questions, don\'t hesitate to contact us!\n\n' +
-                    'You will soon receive an email, with all your login information for the webiste!\n'
-                };
-                transporter.sendMail(mailOptions)
-                //Login info email
-                var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-                var pwdLen = 10;
-                var randPassword = Array(pwdLen).fill(pwdChars).map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
-                const salt = bcrypt.genSaltSync(bcryptSalt);
-                const hashPass = bcrypt.hashSync(randPassword, salt);
-
-                User.findByIdAndUpdate(studentid, { status: "ACTIVE", password: hashPass })
-                  .then(user => { console.log(user) })
-                  .catch(err => { console.log(err) })
-
-                var mailOptions = {
-                  to: student.email,
-                  from: '"Elviras Nähspass Website"',
-                  subject: 'Your login information!',
-                  text: 'You have successfully entered a course, and here comes you login information!\n\n' +
-                    'From now on, you can login in on our website, and view your course information.\n\n' +
-                    'Here you can find all dates, and see on what day you can skip. You are not able to edit anything on the course.\n\n' +
-                    'If you want to a skip one day, please contact us.\n\n' +
-                    'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
-                    'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
-                    'This is your login information:\n\n' +
-                    'Your email:' + student.email + '\n\n' +
-                    'Your temporary password:' + randPassword + '\n\n' +
-                    'You can change your password on your profile page. Please do that as soon as possible!\n'
-                };
-                transporter.sendMail(mailOptions)
-              }
-            })
-            .catch(err => { console.log(err) })
-        })
-      })
-      .then(course => {
-        studentIdArray.forEach(studentid => {
-          Request.findOneAndDelete({ _user: studentid })
-            .then(sth => { console.log(sth) })
-            .catch(err => { console.log(err) })
-        })
-      })
-      .then(sth => { res.next() })
-      .catch(err => { console.log(err) })
-  });
-  //res.redirect('/admin/manage')
 
 
 
