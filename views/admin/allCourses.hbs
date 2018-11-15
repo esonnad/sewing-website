@@ -75,7 +75,7 @@
       <tr>
         <td><a href="/admin/courses/details/{{this._id}}">{{this.name}}</a></td>
         <td>{{this.teacher}}</td>
-        <td>{{this._students}}</td>
+        <td>{{#each this._students}}{{this.name}}{{/each}}</td>
         <td>{{this.dates.length}}</td>
         <td>{{this.description}}</td>
         <td><a href="/admin/courses/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this workshop?');">Delete</a></td>
