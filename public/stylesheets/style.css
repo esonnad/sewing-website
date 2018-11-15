@@ -142,10 +142,14 @@ a {
 .btnAll a:hover {
   text-decoration: none; }
 
-#button-container {
+.button-container {
   display: flex;
   justify-content: center;
   margin: 20px; }
+
+#class-page-button {
+  width: 150px;
+  padding: 5px; }
 
 @media (min-width: 650px) {
   #header {
