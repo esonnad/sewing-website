@@ -153,6 +153,9 @@ a {
 .btnAll a:hover {
   text-decoration: none; }
 
+#delete-btn {
+  color: #351F69; }
+
 .button-container {
   display: flex;
   justify-content: center;
@@ -193,7 +196,7 @@ option {
   display: flex;
   justify-content: center; }
 
-#request-card-container {
+.manage-container {
   display: flex;
   justify-content: center; }
 
