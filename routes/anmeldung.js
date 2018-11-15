@@ -47,6 +47,8 @@ router.post('/kurse', (req, res, next) => {
   const message = req.body.message;
   const preferences = [];
 
+  console.log("REQUEST FORM", req.body)
+
   if (req.body.choice1 != '') {
     preferences.push(req.body.choice1);
   }
@@ -56,6 +58,8 @@ router.post('/kurse', (req, res, next) => {
   if (req.body.choice3 != '') {
     preferences.push(req.body.choice3);
   }
+
+  console.log("PREFERENCES:", preferences)
 
   if (name === "" || phone === "" || email === "") {
     res.render("anmeldung-kurse", { message: "Indicate name, email and phone" });
@@ -73,6 +77,7 @@ router.post('/kurse', (req, res, next) => {
       User.find({ email: email })
         .then(user => {
           if (user[0]) {
+            console.log("PREFERENCES2", preferences)
             const newRequest = new Request({
               _user: user[0]._id,
               preferences: preferences,

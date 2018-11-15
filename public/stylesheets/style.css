@@ -151,6 +151,9 @@ a {
   width: 150px;
   padding: 5px; }
 
+#about-text {
+  text-align: left; }
+
 @media (min-width: 650px) {
   #header {
     display: flex;
