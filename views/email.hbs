@@ -1,5 +1,22 @@
-<div class="page-title">
-  <h1 class="page-title">Willkommen</h1>
-</div>
-<h1>Test email</h1>
-<p>We sent an test email</p>
+<h1>You confirmed a course schedule:</h1>
+<p>We sent an test email</p><br>
+<hr><br>
+{{#allCourses}}
+<p>
+  <h3>{{this.name}}</h3>
+  <table>
+    <tr>
+      <th>Schüler</th>
+      {{#course.dates}}
+      <th>{{this.date}}</th>
+      {{/course.dates}}
+    </tr>
+    {{#this._students}}
+    <tr>
+      <th>{{this.name}}</th>
+    </tr>
+    {{/this._students}}
+  </table>
+</p><br>
+<hr><br>
+{{/allCourses}}
