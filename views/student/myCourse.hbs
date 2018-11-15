@@ -1,18 +1,20 @@
 <div class="page-title">
-  <h1 class="page-title">My courses and workshops</h1>
+  <h1 class="page-title">Meine Kurse und Workshops</h1>
 </div>
 <p>
   {{#each course}}
   <div class="card" style="width: 100rem;">
-    <h2>{{this.name}}</h2>
     <div class="card-body">
+      <h2>{{this.name}}</h2>
       <table class="table">
         <tr>
+          <th>Daten:</th>
           {{#each this.dates}}
           <th>{{this.date}}</th>
           {{/each}}
         </tr>
         <tr>
+          <th>Aussetzende Schüler:</th>
           {{#each this.dates}}
           <td>{{this.skip}}</td>
           {{/each}}
@@ -23,10 +25,11 @@
   {{/each}}
   {{#each workshop}}
   <div class="card" style="width: 100rem;">
-    <h2>{{this.name}}</h2>
     <div class="card-body">
+      <h2>{{this.name}}</h2>
       <table class="table">
         <tr>
+          <th>Daten:</th>
           {{#each this.dates}}
           <th>{{this.date}}</th>
           {{/each}}
