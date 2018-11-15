@@ -5,6 +5,7 @@
 <table style="width:100%">
   <tr>
     <th>Student Name</th>
+    <th>Delete Request <br>(will refresh page)</th>
     <th>Choice 1</th>
     <th>Choice 2</th>
     <th>Choice 3</th>
@@ -12,6 +13,9 @@
 {{#each requests}}
   <tr>
   <td>{{this._user.name}}</td>
+  <form action="/admin/request/delete/{{this._id}}" method="POST">
+  <td><button>Delete</button></td>
+  </form>
   {{#each this._preferences}}
     <td>{{this.name}}</td>
   {{/each}}
