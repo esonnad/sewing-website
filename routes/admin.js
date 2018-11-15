@@ -12,6 +12,8 @@ const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 const Hogan = require('hogan.js');
 const fs = require('fs');
+var template = fs.readFileSync('./views/email.hbs', 'utf-8')
+var compiledTemplate = Hogan.compile(template);
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) {
@@ -39,11 +41,6 @@ let transporter = nodemailer.createTransport({
     pass: process.env.GMAIL_PASSWORD
   }
 });
-
-var template = fs.readFileSync('./views/email.hbs', 'utf-8')
-var compiledTemplate = Hogan.compile(template);
-
-
 
 router.get('/', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/adminPage')
@@ -500,8 +497,27 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       .then(sth => { res.next() })
       .catch(err => { console.log(err) })
   });
-  //send email
-  res.redirect('/admin/manage')
+  setTimeout(function () {
+    var allCourses = [] //array with all course objects and each with student objects
+    courseidsfrombody.forEach(id => {
+      Course.findById(id)
+        .populate('_students')
+        .then(course => { allCourses.push(course) })
+        .catch(err => { console.log(err) })
+    })
+    var mailOptions = {
+      to: 'fee2599@gmail.com',
+      from: '"Elviras Nähspass Website"',
+      subject: 'A html email',
+      html: compiledTemplate.render({ allCourses: allCourses })
+    };
+    transporter.sendMail(mailOptions)
+      .then(sth => {
+        res.redirect('/admin/manage')
+      })
+      .catch(err => { console.log(err) })
+  }, 3000);
+
 });
 
 
