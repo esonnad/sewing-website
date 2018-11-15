@@ -1,8 +1,10 @@
-<h1>Manage next cohort page</h1>
+<div class="page-title">
+  <h1 class="page-title">Manage next cohort page</h1>
+</div>
 
 <h1>Requests</h1>
 
-<table style="width:100%">
+<table style="width:100%" class="table">
   <tr>
     <th>Student Name</th>
     <th>Delete Request <br>(will refresh page)</th>
@@ -10,17 +12,17 @@
     <th>Choice 2</th>
     <th>Choice 3</th>
   </tr>
-{{#each requests}}
+  {{#each requests}}
   <tr>
-  <td>{{this._user.name}}</td>
-  <form action="/admin/request/delete/{{this._id}}" method="POST">
-  <td><button>Delete</button></td>
-  </form>
-  {{#each this._preferences}}
+    <td>{{this._user.name}}</td>
+    <form action="/admin/request/delete/{{this._id}}" method="POST">
+      <td><button>Delete</button></td>
+    </form>
+    {{#each this._preferences}}
     <td>{{this.name}}</td>
-  {{/each}}
+    {{/each}}
   </tr>
-{{/each}}
+  {{/each}}
 </table>
 <br><br><br>
 <h1>Enrollment</h1>
@@ -30,7 +32,7 @@
   <button action="submit">Generate Suggested Enrollment</button>
 </form>
 
-<table style="width:100%">
+<table style="width:100%" class="table">
   <tr>
     {{#each suggestion}}
     <th>{{@key}}</th>
@@ -39,18 +41,18 @@
   <tr>
     <form action="/admin/enroll" method="POST">
 
-    {{#each suggestion}}
+      {{#each suggestion}}
 
-    <td>
-      {{#each this.students}} 
+      <td>
+        {{#each this.students}}
         <input name="{{../this.id}}" class="tags" type="text" value="{{this.name}}, {{this.id}}">
-        
-        <br>
-      {{/each}}
-    </td>
 
-    {{/each}}
-    <button action="submit">Confirm Enrollment</button>
+        <br>
+        {{/each}}
+      </td>
+
+      {{/each}}
+      <button action="submit">Confirm Enrollment</button>
     </form>
 
 
@@ -60,13 +62,7 @@
 
 <h1>Remaining Students</h1>
 {{#each waitlist}}
-  {{this.name}}
+{{this.name}}
 {{/each}}
 
 <br><br><br><br><br>
-
-
-
-
-
-
