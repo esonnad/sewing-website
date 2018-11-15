@@ -1,15 +1,25 @@
 <div class="page-title">
-  <h1 class="page-title">Post as a student</h1>
+  <h1 class="page-title">Posten</h1>
 </div>
-<form action="/student/postStudent" method="post" enctype="multipart/form-data">
-  <label for="photo">Your photo:</label>
-  <input type="file" name="photo" id="photo">
-  <br><br>
-  <label for="title">Title:</label>
-  <input type="text" name="title" id="title">
-  <br><br>
-  <label for="text">Text:</label>
-  <input type="text" name="text" id="text">
-  <br><br>
-  <button type="submit">Create Post</button>
-</form>
+
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 40rem;">
+      <h1>Erstelle einen neuen Post</h1>
+      <div class="card-body">
+        <form action="/student/postStudent" method="post" enctype="multipart/form-data">
+          <label for="photo">Foto:</label>
+          <input type="file" name="photo" id="photo">
+          <br><br>
+          <label for="title">Titel:</label>
+          <input type="text" name="title" id="title">
+          <br><br>
+          <label for="text">Text:</label>
+          <input type="text" name="text" id="text">
+          <br><br>
+          <button type="submit">Post erstellen</button>
+        </form>
+      </div>
+    </div>
+  </p>
+</section>

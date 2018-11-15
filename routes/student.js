@@ -38,6 +38,9 @@ function checkRole(role) {
   }
 }
 
+router.get('/', (req, res, next) => {
+  res.render('student/studentPage')
+})
 router.get('/postStudent', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {
   res.render('student/postStudent')
 })
@@ -45,20 +48,20 @@ router.get('/postStudent', ensureAuthenticated, checkRole("STUDENT"), (req, res,
 router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadCloud.single('photo'), (req, res, next) => {
   const header = req.body.title;
   const content = req.body.text;
-  const creatorId = req.user._id;
-  const imgurl = req.file.url;
-  const imgName = req.file.originalname;
   const creatorName = req.user.name;
-
-  const newPost = new Post({
-    header: header,
-    content: content,
-    imgPath: imgurl,
-    imgName: imgName,
-    _creator: creatorId,
-    status: "PENDING"
-  })
-  newPost.save()
+  const creatorId = req.user._id;
+  if(req.file) {
+    const imgurl = req.file.url;
+    const imgName = req.file.originalname;
+    const newPost = new Post({
+      header: header,
+      content: content,
+      imgPath: imgurl,
+      imgName: imgName,
+      _creator: creatorId,
+      status: "PENDING"
+    })
+    newPost.save()
     .then(post => {
       transporter.sendMail({
         from: '"Elviras Naehspass Website"',
@@ -67,12 +70,35 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
         text: content,
         html: `<h1>The requested post:</h1><hr><img src="${imgurl}" alt="${imgName}" height="300px"><p>${imgName}</p><h3>${header}</h3><p>${content}</p><p><i>by: ${creatorName}</i></p><br><hr><br><b><a href="http://localhost:3000/admin/confirmPost/${post._id}">Click here to accept and add the post</a></b>`
       })
-        .then(info => res.redirect('/'))
+        .then(info => res.render('student/successPost'))
         .catch(error => console.log(error));
     })
     .catch(err => {
       console.log(err)
     })
+  } else {
+    const newPost = new Post({
+      header: header,
+      content: content,
+      _creator: creatorId,
+      status: "PENDING"
+    })
+    newPost.save()
+    .then(post => {
+      transporter.sendMail({
+        from: '"Elviras Naehspass Website"',
+        to: "elvirasnaehspass@gmail.com",
+        subject: "A new post request on the website",
+        text: content,
+        html: `<h1>The requested post:</h1><hr><h3>${header}</h3><p>${content}</p><p><i>by: ${creatorName}</i></p><br><hr><br><b><a href="http://localhost:3000/admin/confirmPost/${post._id}">Click here to accept and add the post</a></b>`
+      })
+        .then(info => res.render('student/successPost'))
+        .catch(error => console.log(error));
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 })
 
 router.get('/myCourse', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {

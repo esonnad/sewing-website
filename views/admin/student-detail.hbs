@@ -8,7 +8,7 @@
         <h1>Bearbeite die Email von {{student.name}}</h1>
         <form action="/admin/students/edit/{{student._id}}" method="post">
           <label for="email">Email</label>
-          <input type="text" name="email" id="email" value="{{student.email}}">
+          <input type="text" name="email" id="email" value="{{student.email}}" style="width: 250px;">
           <button type="submit">Aktualisiere Email</button>
         </form>
       </div>

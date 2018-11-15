@@ -2,26 +2,34 @@
   <h1 class="page-title">Login</h1>
 </div>
 
-<form action="/auth/login" method="POST" id="form-container">
-  <label for="email">Email</label>
-  <input id="email" type="text" name="email" placeholder="JonSnow">
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 45rem;">
+      <div class="card-body">
+        <form action="/auth/login" method="POST" id="form-container">
+          <label for="email">Email</label>
+          <input id="email" type="text" name="email" placeholder="{{input.[1]}}" style="width: 250px;">
 
-  <br><br>
+          <br><br>
 
-  <label for="password">Password</label>
-  <input id="password" type="password" name="password" placeholder="Your password">
-  <br>
-  {{#if message }}
-  <div class="error-message">{{ message }}</div>
-  {{/if}}
+          <label for="password">Passwort</label>
+          <input id="password" type="password" name="password" placeholder="{{input.[0]}}'s Passwort" style="width: 250px;">
+          <br>
+          {{#if message }}
+          <div class="error-message">{{ message }}</div>
+          {{/if}}
 
-  <br><br>
+          <br><br>
 
-  <button>Login</button>
-  <br>
-  <p>Forgot your password? Click <a href="/login/forgotPassword">here</a></p>
-  {{!-- <p class="account-message">
-    Don't have an account yet?
-    <a href="/auth/signup">Signup</a>
-  </p> --}}
-</form>
+          <button>Einloggen</button>
+          <br>
+          <p>Passwort vergessen? <a href="/login/forgotPassword">Klick hier</a></p>
+          {{!-- <p class="account-message">
+            Don't have an account yet?
+            <a href="/auth/signup">Signup</a>
+          </p> --}}
+        </form>
+      </div>
+    </div>
+  </p>
+</section>

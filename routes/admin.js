@@ -14,7 +14,6 @@ const Hogan = require('hogan.js');
 const fs = require('fs');
 var template = fs.readFileSync('./views/email.hbs', 'utf-8')
 var compiledTemplate = Hogan.compile(template);
-
 function ensureAuthenticated(req, res, next) {
   if (req.user) {
     return next();
@@ -55,7 +54,7 @@ router.post('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.s
   const content = req.body.text;
   const header = req.body.title;
   const creatorId = req.user._id;
-
+  if(req.file) {
   const newPost = new Post({
     header: header,
     content: content,
@@ -71,6 +70,21 @@ router.post('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.s
     .catch(err => {
       console.log(err)
     })
+  } else {
+    const newPost = new Post({
+      header: header,
+      content: content,
+      _creator: creatorId,
+      status: "ACTIVE"
+    })
+    newPost.save()
+      .then(() => {
+        res.redirect('/')
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 })
 
 router.get('/confirmPost/:id', (req, res, next) => {
