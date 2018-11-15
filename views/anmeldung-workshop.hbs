@@ -2,9 +2,11 @@
   <h1 class="page-title">Anmeldung - Workshop</h1>
 </div>
 <p>
+  <section class="card-container">
   <div class="card" style="width: 60rem;">
     <div class="card-body">
-      <h1>Anmeldung für einen Workshop</h1>
+      <h1 class="card-title">Anmeldung für einen Workshop</h1>
+      <br>
       <form action="/anmeldung/workshops" method="post">
 
         <label for="name">Name <font color="red" size="5px">*</font></label>
@@ -42,7 +44,8 @@
         <div class="error-message">{{ message }}</div>
         {{/if}}
 
-        <button type="submit">Anmelden</button>
+        <button class="btnAll btn1 anmelden" type="submit">Anmelden</button>
+        <br>
       </form>
     </div>
   </div>
@@ -52,4 +55,5 @@
         alt="Nähkurs" class="card-img-top">
     </div>
   </div>
+  <section>
 </p>

@@ -169,6 +169,20 @@ a {
   color: #A5ABBC;
 }
 
+.btn2 {
+  border-radius: 5px;
+  background-color: #F9F3FD;
+  border: 1px solid #351F69;
+}
+
+.btn2 a {
+  color: #351F69;
+}
+
+.btn2 a:hover {
+  color: #A5ABBC;
+}
+
 .btnAll {
   box-shadow: 10px 9px 16px -5px rgba(0,0,0,0.63);
 }
@@ -190,6 +204,36 @@ a {
 
 #about-text {
   text-align: left;
+}
+
+.anmelden {
+  color: white;
+  display: flex;
+  justify-self: center;
+}
+
+.anmelden:hover {
+  color: #A5ABBC;
+}
+
+input {
+  border-radius: 5px;
+  color: #351F69;
+  font-family: "Open Sans", san-serif;
+}
+
+label {
+  color: #351F69;
+  font-family: "Open Sans", san-serif;
+}
+
+select {
+  color: #351F69;
+  font-family: "Open Sans", san-serif;
+}
+
+option {
+  color: red;
 }
 
 @media (min-width: 650px) {

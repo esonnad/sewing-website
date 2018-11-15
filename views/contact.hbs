@@ -18,6 +18,7 @@
 
       <div class="card-body">
         <h1>Kontaktformular:</h1>
+        <br>
         {{#if message }}
         <div class="error-message">{{ message }}</div>
         {{/if}}
@@ -26,7 +27,8 @@
           <input type="text" name="email" id="email" placeholder="Email*" size="30"><br>
           <input type="text" name="subject" id="subject" placeholder="Betreff" size="30"><br>
           <input type="text" name="message" id="message" placeholder="Nachricht" size="30"><br>
-          <button type="submit">Senden</button>
+          <br>
+          <button class="btnAll btn1 anmelden" type="submit">Senden</button>
         </form>
       </div>
     </div>
