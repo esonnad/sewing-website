@@ -3,19 +3,19 @@
 </div>
 
 <form action="/auth/signup" method="POST" id="form-container">
-  <label for="name">Name</label>
-  <input id="name" type="text" name="name" placeholder="JonSnow">
+  <label for="name">Name <font color="red" size="5px">*</font></label>
+  <input id="name" type="text" name="name" placeholder="{{input.[0]}}">
 
   <br><br>
-  <label for="email">Email</label>
-  <input type="text" name="email" id="email" placeholder="test@gmail.com">
+  <label for="email">Email <font color="red" size="5px">*</font></label>
+  <input type="text" name="email" id="email" placeholder="{{input.[1]}}" style="width: 250px;">
   <br><br>
 
   <label for="adress">Adress</label>
-  <input type="text" name="adress" id="adress">
+  <input type="text" name="adress" id="adress" placeholder="{{input.[3]}}" style="width: 200px;">
   <br><br>
   <label for="phone">Phone</label>
-  <input type="text" name="phone" id="phone">
+  <input type="text" name="phone" id="phone" placeholder="{{input.[2]}}">
   <br>
   {{#if message }}
   <div class="error-message">{{ message }}</div>
@@ -24,9 +24,4 @@
   <br><br>
 
   <button>Create account</button>
-
-  {{!-- <p class="account-message">
-    Do you already have an account?
-    <a href="/auth/login">Login</a>
-  </p> --}}
 </form>

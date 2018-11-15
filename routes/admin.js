@@ -366,20 +366,20 @@ router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) 
 router.post('/request/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   Request.findByIdAndDelete(id)
-  .then(
-    Request.find()
-    .populate('_user', 'name')
-    .populate('_preferences', 'name')
-    .then(requests => {
-      Course.find({ status: "FUTURE" })
-        .then(courses => {
-          res.render('admin/manage', { requests: requests, courses: courses })
+    .then(
+      Request.find()
+        .populate('_user', 'name')
+        .populate('_preferences', 'name')
+        .then(requests => {
+          Course.find({ status: "FUTURE" })
+            .then(courses => {
+              res.render('admin/manage', { requests: requests, courses: courses })
+            })
+            .catch(err => { console.log(err) })
         })
         .catch(err => { console.log(err) })
-    })
+    )
     .catch(err => { console.log(err) })
-  )
-  .catch(err => { console.log(err) })
 })
 router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Request.find()
