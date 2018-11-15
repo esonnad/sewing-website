@@ -47,7 +47,7 @@ body {
 #icon2 {
   display: none; }
 
-#title {
+#header-title {
   text-align: center; }
 
 .login-logout {
@@ -80,7 +80,7 @@ body {
   height: 15px;
   background-color: white; }
 
-#title {
+#header-title {
   font-size: 3.5rem; }
 
 a {

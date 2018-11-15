@@ -1,9 +1,17 @@
 <div class="page-title">
-  <h1 class="page-title">Admin - edit a student</h1>
+  <h1 class="page-title">Admin - bearbeite einen Schüler</h1>
 </div>
-<h1>Edit the email from {{student.name}}</h1>
-<form action="/admin/students/edit/{{student._id}}" method="post">
-  <label for="email">Email</label>
-  <input type="text" name="email" id="email" value="{{student.email}}">
-  <button type="submit">Update Email</button>
-</form>
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 45rem;">
+      <div class="card-body">
+        <h1>Bearbeite die Email von {{student.name}}</h1>
+        <form action="/admin/students/edit/{{student._id}}" method="post">
+          <label for="email">Email</label>
+          <input type="text" name="email" id="email" value="{{student.email}}">
+          <button type="submit">Aktualisiere Email</button>
+        </form>
+      </div>
+    </div>
+  </p>
+</section>

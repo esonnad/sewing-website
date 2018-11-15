@@ -1,5 +1,5 @@
 <div class="page-title">
-  <h1 class="page-title">Admin - Edit the skipping</h1>
+  <h1 class="page-title">Admin - Bearbeite das Aussetzen</h1>
 </div>
 <p>
   <section class="card-container">
@@ -9,17 +9,17 @@
         <form action="/admin/courses/details/{{course._id}}/editSkip" method="post">
           <table class="table">
             <tr>
-              <th>Date</th>
+              <th>Datum</th>
               {{#each course.dates}}
               <th>{{this.date}}</th>
               {{/each}}
             </tr>
             <tr>
-              <th>Skipping student</th>
+              <th>Aussetzender Schüler</th>
               {{#each course.dates}}
               <td><select name="selectSkip" id="selectSkip">
                   <option value="{{this.skip}}" selected>{{this.skip}}</option>
-                  <option value="No One">No One</option>
+                  <option value="Niemand">Niemand</option>
                   {{#each ../course._students}}
                   <option value="{{this.name}}">{{this.name}}</option>
                   {{/each}}
@@ -28,7 +28,7 @@
             </tr>
           </table>
 
-          <button type="submit">Update</button>
+          <button type="submit">Aktualisieren</button>
         </form>
       </div>
     </div>

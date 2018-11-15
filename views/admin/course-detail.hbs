@@ -1,5 +1,5 @@
 <div class="page-title">
-  <h1 class="page-title">Admin - Course Detail</h1>
+  <h1 class="page-title">Admin - Kurs Details</h1>
 </div>
 <p>
   <section class="card-container">
@@ -9,29 +9,29 @@
         <h5 class="card-title">{{course.name}}</h5>
         <p class="card-text">
           <ul>
-            <li>Teacher: {{course.teacher}}</li>
-            <li>Capacity: {{course.capacity}}</li>
-            <li>Description: {{course.description}}</li>
-            <li>Start Date: {{course.startDate}}</li>
+            <li>Lehrer: {{course.teacher}}</li>
+            <li>Schüleranzahl: {{course.capacity}}</li>
+            <li>Beschreibung: {{course.description}}</li>
+            <li>Startdatum: {{course.startDate}}</li>
             <li>Status: {{course.status}}</li>
-            <li>Type: {{course.type}}</li>
+            <li>Typ: {{course.type}}</li>
           </ul>
           <br>
-          <h5>Students:</h5>
+          <h5>Schüler:</h5>
           <ul>
             {{#each course._students}}
             <li>{{this.name}}</li>
             {{/each}}
           </ul>
           <br>
-          <h5>Dates:</h5>
+          <h5>Daten:</h5>
         </p>
         <ul>
           {{#each course.dates}}
           <li>{{this.date}}</li>
           {{/each}}
         </ul>
-        <a href="/admin/courses/details/{{course._id}}/edit" class="btn btn-primary">Edit</a>
+        <a href="/admin/courses/details/{{course._id}}/edit" class="btn btn-primary">Bearbeiten</a>
       </div>
     </div>
     {{#if type}}
@@ -39,19 +39,19 @@
       <div class="card-body">
         <table class="table">
           <tr>
-            <th scope="col">Dates</th>
+            <th scope="col">Daten</th>
             {{#each course.dates}}
             <th scope="col">{{this.date}}</th>
             {{/each}}
           </tr>
           <tr>
-            <th scope="row">Skipping student</th>
+            <th scope="row">Aussetzende Schüler</th>
             {{#each course.dates}}
             <td>{{this.skip}}</td>
             {{/each}}
           </tr>
         </table>
-        <a href="/admin/courses/details/{{course._id}}/editSkip" class="btn btn-primary">Edit</a>
+        <a href="/admin/courses/details/{{course._id}}/editSkip" class="btn btn-primary">Bearbeiten</a>
       </div>
     </div>
     {{/if}}

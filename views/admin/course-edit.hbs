@@ -1,54 +1,67 @@
 <div class="page-title">
-  <h1 class="page-title">Admin - Edit Course</h1>
+  <h1 class="page-title">Admin - Kurs bearbeiten</h1>
 </div>
-<form action="/admin/courses/details/{{course._id}}/edit" method="post">
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name" value="{{course.name}}">
-  <br><br>
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 45rem;">
+      <div class="card-body">
+        <form action="/admin/courses/details/{{course._id}}/edit" method="post">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value="{{course.name}}">
+          <br><br>
 
-  <label for="teacher">Teacher</label>
-  <input type="text" name="teacher" id="teacher" value="{{course.teacher}}">
-  <br><br>
+          <label for="teacher">Lehrer</label>
+          <input type="text" name="teacher" id="teacher" value="{{course.teacher}}">
+          <br><br>
 
-  <label for="capacity">Capacity</label>
-  <input type="text" name="capacity" id="capacity" value="{{course.capacity}}">
-  <br><br>
+          <label for="capacity">Schüleranzahl</label>
+          <input type="text" name="capacity" id="capacity" value="{{course.capacity}}">
+          <br><br>
 
-  <label for="startDate">Start Date:</label>
-  <input type="text" name="startDate" id="startDate" value="{{course.startDate}}">
-  <br><br>
+          <label for="startDate">Startdatum</label>
+          <input type="text" name="startDate" id="startDate" value="{{course.startDate}}">
+          <br><br>
 
-  <label for="description">Description</label>
-  <input type="text" name="description" id="description" value="{{course.description}}">
-  <br><br>
+          <label for="description">Beschreibung</label>
+          <input type="text" name="description" id="description" value="{{course.description}}">
+          <br><br>
 
-  <button type="submit">Update</button>
-</form>
-<br><br>
+          <button type="submit">Aktualisieren</button>
+        </form>
+      </div>
+    </div>
+  </p>
 
-<form action="/admin/courses/details/{{course._id}}/add-student" method="post">
-  <select name="student" id="studentOption">
-    {{#each student}}
-    <option value="{{this._id}}">{{this.name}}</option>
-    {{/each}}
-  </select>
-  <button type="submit">Add student</button>
-  <ul>
-    {{#each course._students}}
-    <li>{{this.name}}, (<a href="/admin/courses/details/{{../course._id}}/remove-student/{{this._id}}">Delete</a>)</li>
-    {{/each}}
-  </ul>
-</form>
-<form action="/admin/courses/details/{{course._id}}/add-date" method="post">
-  <label for="date">Date:</label>
-  <input type="date" name="date" id="date">
-  <button type="submit">Add Date</button>
-  <ul>
-    {{#each course.dates}}
-    <li>{{this.date}}, (<a href="/admin/courses/details/{{../course._id}}/remove-date/{{this.date}}">Delete</a>)</li>
-    {{/each}}
-  </ul>
-</form>
+  <p>
+    <div class="card" style="width: 45rem;">
+      <div class="card-body">
+        <form action="/admin/courses/details/{{course._id}}/add-student" method="post">
+          <select name="student" id="studentOption">
+            {{#each student}}
+            <option value="{{this._id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          <button type="submit">Schüler hinzufügen</button>
+          <ul>
+            {{#each course._students}}
+            <li>{{this.name}}, (<a href="/admin/courses/details/{{../course._id}}/remove-student/{{this._id}}">Löschen</a>)</li>
+            {{/each}}
+          </ul>
+        </form>
+        <form action="/admin/courses/details/{{course._id}}/add-date" method="post">
+          <label for="date">Datum:</label>
+          <input type="date" name="date" id="date">
+          <button type="submit">Datum hinzufügen</button>
+          <ul>
+            {{#each course.dates}}
+            <li>{{this.date}}, (<a href="/admin/courses/details/{{../course._id}}/remove-date/{{this.date}}">Löschen</a>)</li>
+            {{/each}}
+          </ul>
+        </form>
+      </div>
+    </div>
+  </p>
+</section>
 <br><br><br>
 
 {{!--
