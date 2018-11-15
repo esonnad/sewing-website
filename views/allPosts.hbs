@@ -1,9 +1,10 @@
 <div class="page-title">
-  <h1 class="page-title">All Posts</h1>
+  <h1 class="page-title">Willkommen</h1>
 </div>
+<section class="card-container">
 <p>
   {{#each posts}}
-  <div class="card" style="width: 18rem;">
+  <div class="card" style="width: 30rem;">
     {{#if this.imgPath}}
     <img class="card-img-top" src="{{ this.imgPath }}" alt="Card image cap">
     {{/if}}
@@ -15,3 +16,4 @@
   </div>
   {{/each}}
 </p>
+</section>

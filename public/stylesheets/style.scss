@@ -43,9 +43,17 @@ body {
   padding: 10px;
 }
 
+.body-container {
+  margin-bottom: 50px;
+}
+
 #icon {
   width: 50px;
   height: 50px;
+}
+
+#icon2 {
+  display: none;
 }
 
 #title {
@@ -95,14 +103,6 @@ body {
   font-size: 3.5rem;
 }
 
-#login-container, #logout-container {
-  display: flex;
-  margin-left: auto;
-  padding-right: 20px;
-  padding-top: 20px;
-  justify-content: center;
-}
-
 
 a {
   font-family: 'Open Sans', sans-serif;
@@ -133,8 +133,12 @@ a {
   border-radius: 10px;
   background-color: rgba($color: #ffffff, $alpha: 0.9);
   box-shadow: 10px 9px 16px -5px rgba(0,0,0,0.63);
+}
 
-
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-img-top {
@@ -144,10 +148,39 @@ a {
 
 .card-title {
   font-family: "Open Sans", sans-serif;
+  justify-self: center;
 }
 
 .card-text {
   font-family: "Open Sans", sans-serif;
+  text-align: center;
+}
+
+.btn1 {
+  border-radius: 5px;
+  background-color: #351F69;
+}
+
+.btn1 a {
+  color: white;
+}
+
+.btn1 a:hover {
+  color: #A5ABBC;
+}
+
+.btnAll {
+  box-shadow: 10px 9px 16px -5px rgba(0,0,0,0.63);
+}
+
+.btnAll a:hover {
+  text-decoration: none;
+}
+
+#button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
 }
 
 @media (min-width: 650px) {
@@ -156,15 +189,35 @@ a {
     flex-direction: column;
   }
 
+  #icon {
+    display: none;
+  }
+
+  #icon2 {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+
+  #title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
   .nav-item {
     margin: 5px;
   }
 
   .login-logout {
     display: flex;
-    margin-right: auto;
     font-size: 2rem;
     border-radius: 5px;
+    margin-left: auto;
+    margin-right: 20px;
+    margin-top: 20px;
   }
 
   #login-nav, #logout-nav {
@@ -199,7 +252,7 @@ a {
   }
 
   body {
-    background-size: 200px;
+    background-size: 225px;
     background-position: right bottom;
   }
 
