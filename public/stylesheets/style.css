@@ -47,7 +47,7 @@ body {
 #icon2 {
   display: none; }
 
-#title {
+#header-title {
   text-align: center; }
 
 .login-logout {
@@ -80,7 +80,7 @@ body {
   height: 15px;
   background-color: white; }
 
-#title {
+#header-title {
   font-size: 3.5rem; }
 
 a {
@@ -189,10 +189,20 @@ select {
 option {
   color: red; }
 
+#request-title {
+  display: flex;
+  justify-content: center; }
+
+#request-card-container {
+  display: flex;
+  justify-content: center; }
+
 @media (min-width: 650px) {
   #header {
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; }
   #icon {
     display: none; }
   #icon2 {
