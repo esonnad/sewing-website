@@ -10,6 +10,8 @@ const nodemailer = require('nodemailer');
 const Request = require('../models/Request')
 const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
+const Hogan = require('hogan.js');
+const fs = require('fs');
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) {
@@ -37,6 +39,11 @@ let transporter = nodemailer.createTransport({
     pass: process.env.GMAIL_PASSWORD
   }
 });
+
+var template = fs.readFileSync('./views/email.hbs', 'utf-8')
+var compiledTemplate = Hogan.compile(template);
+
+
 
 router.get('/', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/adminPage')
@@ -493,6 +500,7 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       .then(sth => { res.next() })
       .catch(err => { console.log(err) })
   });
+  //send email
   res.redirect('/admin/manage')
 });
 

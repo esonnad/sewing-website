@@ -81,6 +81,24 @@ router.get('/galerie', (req, res, next) => {
 router.get('/contact', (req, res, next) => {
   res.render('contact')
 })
+router.post('/contact', (req, res, next) => {
+  if (req.body.name === "" || req.body.email === "") {
+    res.render('contact', { message: "Name und Email müssen angegeben sein!" });
+    return;
+  }
+  var mailOptions = {
+    to: 'info@elviras-naehspass.de',
+    from: '"Elviras Nähspass Website"',
+    subject: 'Betreff: ' + req.body.subject,
+    text: 'Jemand auf der neuen Webiste hat ein Kontaktformular geschickt!\n\n' +
+      'Das Kontakformular wurde von ' + req.body.name + ' gesendet.\n\n' +
+      'Email: ' + req.body.email + '\n\n' +
+      'Die Nachricht: ' + req.body.message + '\n'
+  };
+  transporter.sendMail(mailOptions)
+    .then(sth => res.render('contact', { message: "Das Kontakformular wurde gesendet!" }))
+    .catch(err => { console.log(err) })
+})
 
 router.get('/noAccess', (req, res, next) => {
   res.render('noAccess')
