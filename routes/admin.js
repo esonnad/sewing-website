@@ -165,7 +165,11 @@ router.get('/courses/details/:id', ensureAuthenticated, checkRole("ADMIN"), (req
   Course.findById(id)
     .populate('_students')
     .then(course => {
-      res.render('admin/course-detail', { course: course })
+      if (course.type === "COURSE") {
+        res.render('admin/course-detail', { course: course, type: course })
+      } else {
+        res.render('admin/course-detail', { course: course })
+      }
     })
     .catch(err => { console.log(err) })
 })

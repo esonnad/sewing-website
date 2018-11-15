@@ -48,7 +48,7 @@ router.post('/kurse', (req, res, next) => {
   const preferences = [req.body.choice1, req.body.choice2, req.body.choice3]
 
   if (name === "" || phone === "" || email === "") {
-    res.render("anmeldung-kurse", { message: "Indicate username, email and phone" });
+    res.render("anmeldung-kurse", { message: "Indicate name, email and phone" });
     return;
   }
 
@@ -123,7 +123,7 @@ router.post('/workshops', (req, res, next) => {
   const workshop = req.body.workshop;
 
   if (name === "" || phone === "" || email === "") {
-    res.render("anmeldung-workshops", { message: "Indicate username, email and phone" });
+    res.render("anmeldung-workshops", { message: "Indicate name, email and phone" });
     return;
   }
 
@@ -132,30 +132,10 @@ router.post('/workshops', (req, res, next) => {
     to: "elvirasnaehspass@gmail.com",
     subject: "A new workshop request on the website",
     text: message,
-    html: `<h1>The requested workshop:</h1><hr><p>${name} requested to join ${workshop}</p><p>He/She put this extra message:${message}</p><br><hr><br>`
+    html: `<h1>The requested workshop:</h1><hr><p>${name} requested to join ${workshop}</p><p>The information ${name} put is: <br>Name: ${name}, Email: ${email}, Phone: ${phone}, Adress: ${adress}</p><p>${name} put this extra message:${message}</p><br><hr><br>`
   })
     .then(sth => {
-      User.find({ email: email })
-        .then(user => {
-          if (user !== "") {
-            res.render('registration-success')
-          }
-          else {
-
-            const newUser = new User({
-              name: name,
-              email: email,
-              role: "STUDENT",
-              status: "PENDING",
-              address: adress,
-              phone: phone,
-            })
-            newUser.save()
-              .then(sth => { res.render('registration-success') })
-              .catch(err => { res.render('registration-failed') })
-          }
-        })
-        .catch(err => { res.render('registration-failed') })
+      res.render('registration-success')
     })
     .catch(error => console.log(error));
 })

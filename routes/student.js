@@ -76,9 +76,9 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
 })
 
 router.get('/myCourse', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {
-  Course.find({ _students: { $in: req.user._id } })
-    .then(course => {
-      res.render('student/myCourse', { course: course })
+  Promise.all([Course.find({ _students: { $in: req.user._id }, type: "COURSE" }), Course.find({ _students: { $in: req.user._id }, type: "WORKSHOP" })])
+    .then(([courses, workshops]) => {
+      res.render('student/myCourse', { course: courses, workshop: workshops })
     })
     .catch(err => { console.log(err) })
 })
