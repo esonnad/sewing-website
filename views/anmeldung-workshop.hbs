@@ -1,43 +1,55 @@
 <div class="page-title">
   <h1 class="page-title">Anmeldung - Workshop</h1>
 </div>
-<h1>Anmeldung Workshops</h1>
-<form action="/anmeldung/workshops" method="post">
+<p>
+  <div class="card" style="width: 60rem;">
+    <div class="card-body">
+      <h1>Anmeldung für einen Workshop</h1>
+      <form action="/anmeldung/workshops" method="post">
 
-  <label for="name">Name <font color="red" size="5px">*</font></label>
-  <input type="text" name="name" id="name" {{#if user}} value="{{user.name}}" {{/if}}>
+        <label for="name">Name <font color="red" size="5px">*</font></label>
+        <input type="text" name="name" id="name" {{#if user}} value="{{user.name}}" {{/if}}>
 
-  <br><br>
+        <br><br>
 
-  <label for="email">Email <font color="red" size="5px">*</font></label>
-  <input type="text" name="email" id="email" {{#if user}} value="{{user.email}}" {{/if}}>
+        <label for="email">E-mail <font color="red" size="5px">*</font></label>
+        <input type="text" name="email" id="email" {{#if user}} value="{{user.email}}" {{/if}}>
 
-  <br><br>
+        <br><br>
 
-  <label for="phone">Phone <font color="red" size="5px">*</font></label>
-  <input type="text" name="phone" id="phone" {{#if user}} value="{{user.phone}}" {{/if}}>
+        <label for="phone">Telefonnummer <font color="red" size="5px">*</font></label>
+        <input type="text" name="phone" id="phone" {{#if user}} value="{{user.phone}}" {{/if}}>
 
-  <br><br>
+        <br><br>
 
-  <label for="adress">Adress</label>
-  <input type="text" name="adress" id="adress" {{#if user}} value="{{user.address}}" {{/if}}>
+        <label for="adress">Adresse</label>
+        <input type="text" name="adress" id="adress" {{#if user}} value="{{user.address}}" {{/if}}>
 
-  <br><br>
-  <label for="workshop">Workshop Choice <font color="red" size="5px">*</font></label>
-  <select name="workshop" id="workshop">
-    {{#each workshops}}
-    <option value="{{this._id}}">{{this.name}}</option>
-    {{/each}}
-  </select>
-  <br><br>
+        <br><br>
+        <label for="workshop">Gewünschter Workshop <font color="red" size="5px">*</font></label>
+        <select name="workshop" id="workshop">
+          {{#each workshops}}
+          <option value="{{this._id}}">{{this.name}}</option>
+          {{/each}}
+        </select>
+        <br><br>
 
-  <label for="message">An extra Message</label>
-  <input type="text" name="message" id="message">
+        <label for="message">Weitere Mitteilung</label>
+        <input type="text" name="message" id="message">
 
-  <br><br>
-  {{#if message }}
-  <div class="error-message">{{ message }}</div>
-  {{/if}}
+        <br><br>
+        {{#if message }}
+        <div class="error-message">{{ message }}</div>
+        {{/if}}
 
-  <button type="submit">Anmelden</button>
-</form>
+        <button type="submit">Anmelden</button>
+      </form>
+    </div>
+  </div>
+  <div class="card" style="width: 20rem;">
+    <div class="card-body">
+      <img src="https://static.wixstatic.com/media/4da4ea_1c862f13c53e049ac73a024c6ee7dd6a.jpg/v1/fill/w_167,h_141,al_c,q_80,usm_0.66_1.00_0.01/4da4ea_1c862f13c53e049ac73a024c6ee7dd6a.webp"
+        alt="Nähkurs" class="card-img-top">
+    </div>
+  </div>
+</p>
