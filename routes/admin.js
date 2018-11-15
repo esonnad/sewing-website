@@ -42,6 +42,7 @@ router.get('/', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/adminPage')
 })
 
+//Posts
 router.get('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/postAdmin')
 })
@@ -77,6 +78,7 @@ router.get('/confirmPost/:id', (req, res, next) => {
     .catch(err => { console.log(err), res.render("admin/confirmed-failed") })
 })
 
+//Equipment pages
 router.get('/equipment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Equipment.find()
     .then(eq => {
@@ -115,8 +117,10 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
     .then(sth => {
       res.redirect('/admin/equipment')
     })
+    .catch(err => { console.log(err) })
 })
 
+//Courses pages
 router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Promise.all([Course.find({ type: "WORKSHOP" }), Course.find({ type: "COURSE", status: "ACTIVE" }), Course.find({ type: "COURSE", status: "FUTURE" })])
     .then(([workshops, activeCourses, futureCourses]) => {
@@ -194,7 +198,7 @@ router.post('/courses/details/:id/add-date', ensureAuthenticated, checkRole("ADM
   let id = req.params.id;
   const date = req.body.date;
   if (date !== "") {
-    Course.findByIdAndUpdate(id, { $push: { dates: { date: date } } })
+    Course.findByIdAndUpdate(id, { $push: { dates: { date: date, skip: "No one" } } })
       .then(sth => { res.redirect(`/admin/courses/details/${id}/edit`) })
       .catch(err => { console.log(err) })
   }
@@ -266,6 +270,7 @@ router.get('/courses/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req,
     })
 })
 
+//Students pages
 router.get('/students', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Promise.all([User.find({ role: "STUDENT", status: "PENDING" }), User.find({ role: "STUDENT", status: "ACTIVE" })])
     .then(([pendingStudents, activeStudents]) => {
@@ -281,6 +286,7 @@ router.get('/students/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req
     .then(sth => {
       res.redirect('/admin/students')
     })
+    .catch(er => { console.log(er) })
 })
 
 router.get('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
@@ -300,6 +306,12 @@ router.post('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req,
     .catch(err => { console.log(err) })
 })
 
+
+
+
+
+
+//Enrollment functions
 //make sure requests are sorted by timestamp
 function enrollmentSuggestion(requests, courses) {
   const suggestion = {}; //empty suggestion object
@@ -460,6 +472,8 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
   });
   res.redirect('/admin/manage')
 });
+
+
 
 
 

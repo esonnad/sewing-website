@@ -16,6 +16,7 @@
             <tr>
               {{#each course.dates}}
               <td><select name="selectSkip" id="selectSkip">
+                  <option value="{{this.skip}}" selected>{{this.skip}}</option>
                   <option value="No One">No One</option>
                   {{#each ../course._students}}
                   <option value="{{this.name}}">{{this.name}}</option>

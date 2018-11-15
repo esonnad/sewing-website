@@ -24,11 +24,19 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/kurse', (req, res, next) => {
-  Course.find({ status: "FUTURE", type: "COURSE" })
-    .then(courses => {
-      res.render('anmeldung-kurse', { courses: courses })
-    })
-    .catch(err => { console.log(err) })
+  if (req.user) {
+    Promise.all([Course.find({ status: "FUTURE", type: "COURSE" }), User.findById(req.user._id)])
+      .then(([courses, user]) => {
+        res.render('anmeldung-kurse', { courses: courses, user: user })
+      })
+      .catch(err => { console.log(err) })
+  } else {
+    Course.find({ status: "FUTURE", type: "COURSE" })
+      .then(courses => {
+        res.render('anmeldung-kurse', { courses: courses })
+      })
+      .catch(err => { console.log(err) })
+  }
 })
 
 router.post('/kurse', (req, res, next) => {
@@ -40,7 +48,7 @@ router.post('/kurse', (req, res, next) => {
   const preferences = [req.body.choice1, req.body.choice2, req.body.choice3]
 
   if (name === "" || phone === "" || email === "") {
-    res.render("anmeldung-kurse", { message: "Indicate username, email, phone" });
+    res.render("anmeldung-kurse", { message: "Indicate username, email and phone" });
     return;
   }
 
@@ -69,7 +77,7 @@ router.post('/kurse', (req, res, next) => {
               email: email,
               role: "STUDENT",
               status: "PENDING",
-              adress: adress,
+              address: adress,
               phone: phone,
             })
             newUser.save()
@@ -91,11 +99,19 @@ router.post('/kurse', (req, res, next) => {
 })
 
 router.get('/workshops', (req, res, next) => {
-  Course.find({ type: "WORKSHOP" })
-    .then(workshops => {
-      res.render('anmeldung-workshop', { workshops: workshops })
-    })
-    .catch(err => { console.log(err) })
+  if (req.user) {
+    Promise.all([Course.find({ type: "WORKSHOP" }), User.findById(req.user._id)])
+      .then(([workshops, user]) => {
+        res.render('anmeldung-workshop', { workshops: workshops, user: user })
+      })
+      .catch(err => { console.log(err) })
+  } else {
+    Course.find({ type: "WORKSHOP" })
+      .then(workshops => {
+        res.render('anmeldung-workshop', { workshops: workshops })
+      })
+      .catch(err => { console.log(err) })
+  }
 })
 
 router.post('/workshops', (req, res, next) => {
@@ -107,7 +123,7 @@ router.post('/workshops', (req, res, next) => {
   const workshop = req.body.workshop;
 
   if (name === "" || phone === "" || email === "") {
-    res.render("anmeldung-workshops", { message: "Indicate username, email, phone" });
+    res.render("anmeldung-workshops", { message: "Indicate username, email and phone" });
     return;
   }
 
@@ -131,7 +147,7 @@ router.post('/workshops', (req, res, next) => {
               email: email,
               role: "STUDENT",
               status: "PENDING",
-              adress: adress,
+              address: adress,
               phone: phone,
             })
             newUser.save()

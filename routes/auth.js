@@ -50,10 +50,12 @@ router.get("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) 
 
 router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   const name = req.body.name;
-  const password = req.body.password;
   const email = req.body.email;
-  if (name === "" || password === "" || email === "") {
-    res.render("auth/signup", { message: "Indicate username, password and email" });
+  const adress = req.body.adress;
+  const phone = req.body.phone;
+
+  if (name === "" || email === "") {
+    res.render("auth/signup", { message: "Indicate username and email" });
     return;
   }
 
@@ -62,16 +64,37 @@ router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       res.render("auth/signup", { message: "This email is already in use" });
       return;
     }
-
+    var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var pwdLen = 10;
+    var randPassword = Array(pwdLen).fill(pwdChars).map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
     const salt = bcrypt.genSaltSync(bcryptSalt);
-    const hashPass = bcrypt.hashSync(password, salt);
+    const hashPass = bcrypt.hashSync(randPassword, salt);
 
     const newUser = new User({
       name: name,
       email: email,
+      role: "STUDENT",
+      status: "ACTIVE",
       password: hashPass,
-      status: "ACTIVE"
+      adress: adress,
+      phone: phone,
     });
+
+    var mailOptions = {
+      to: email,
+      from: '"Elviras Nähspass Website"',
+      subject: 'Your login information!',
+      text: 'One of the Admins has made an account for you.\n\n' +
+        'From now on, you can login in on our website, and view your course information.\n\n' +
+        'Here you can find all dates and information you need to know. You are not able to edit anything on the course.\n\n' +
+        'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
+        'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
+        'This is your login information:\n\n' +
+        'Your email:' + email + '\n\n' +
+        'Your temporary password:' + randPassword + '\n\n' +
+        'You can change your password on your profile page. Please do that as soon as possible!\n'
+    };
+    transporter.sendMail(mailOptions)
 
     newUser.save()
       .then(() => {
