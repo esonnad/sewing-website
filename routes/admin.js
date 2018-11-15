@@ -122,8 +122,9 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
 
 //Courses pages
 router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  Promise.all([Course.find({ type: "WORKSHOP" }), Course.find({ type: "COURSE", status: "ACTIVE" }), Course.find({ type: "COURSE", status: "FUTURE" })])
+  Promise.all([Course.find({ type: "WORKSHOP" }).populate("_students"), Course.find({ type: "COURSE", status: "ACTIVE" }).populate("_students"), Course.find({ type: "COURSE", status: "FUTURE" }).populate("_students")])
     .then(([workshops, activeCourses, futureCourses]) => {
+      console.log(activeCourses[0]._students)
       res.render('admin/allCourses', {
         workshops: workshops,
         futureCourses: futureCourses,
