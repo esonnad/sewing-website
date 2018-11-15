@@ -1,44 +1,46 @@
 <div class="page-title">
-  <h1 class="page-title">Admin - Add a course</h1>
+  <h1 class="page-title">Admin - Erstelle einen Kurs</h1>
 </div>
-<form action="/admin/courses/add" method="post">
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        <form action="/admin/courses/add" method="post">
 
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name">
-  <br><br>
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name">
+          <br><br>
 
-  <label for="teacher">Teacher</label>
-  <input type="text" name="teacher" id="teacher">
-  <br><br>
+          <label for="teacher">Lehrer</label>
+          <input type="text" name="teacher" id="teacher">
+          <br><br>
 
-  <label for="capacity">Capacity</label>
-  <input type="text" name="capacity" id="capacity">
-  <br><br>
+          <label for="capacity">Schüleranzahl</label>
+          <input type="text" name="capacity" id="capacity">
+          <br><br>
 
-  <label for="type">Type</label>
-  <select name="type" id="type">
-    <option value="COURSE">Kurs</option>
-    <option value="WORKSHOP">Workshop</option>
-  </select>
-  <br><br>
+          <label for="type">Art</label>
+          <select name="type" id="type">
+            <option value="COURSE">Kurs</option>
+            <option value="WORKSHOP">Workshop</option>
+          </select>
+          <br><br>
 
-  <label for="startDate">Start Date:</label>
-  <input type="text" name="startDate" id="startDate">
-  <br><br>
+          <label for="startDate">Startdatum:</label>
+          <input type="text" name="startDate" id="startDate">
+          <br><br>
 
-  <p>Add all of the dates by editing the course!</p>
-  {{!-- <label for="dates">Dates</label>
-  <ul id="class-dates"></ul>
-  <button id="addDate" type="button">Add date</button> --}}
+          <p>Füge bitte alle Daten hinzu, indem du den Kurs später bearbeitest!<br>Add all of the dates by editing the
+            course!</p>
 
-  <br><br>
-  <label for="description">Description</label>
-  <input type="text" name="description" id="description">
-  <br><br>
+          <br><br>
+          <label for="description">Beschreibung(bei Workshops):</label>
+          <input type="text" name="description" id="description">
+          <br><br>
 
-  <button type="submit">Create</button>
-</form>
-
-
-{{!--
-<script src="../../javascripts/course-add.js"></script> --}}
+          <button type="submit">Erstellen</button>
+        </form>
+      </div>
+    </div>
+  </p>
+</section>

@@ -1,18 +1,31 @@
 <div class="page-title">
   <h1 class="page-title">Das Atelier</h1>
 </div>
-<h2>Equipment:</h2>
-
-<p>
-  {{#each equipment}}
-  <div class="card" style="width: 30rem;">
-    {{#if this.imgPath}}
-    <img src="{{ this.imgPath }}" alt="{{ this.imgName }}" class="card-img-top" />
-    {{/if}}
+<section class="card-container">
+  {{!-- <p>
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        Some information has to go here
+      </div>
+    </div>
+  </p> --}}
+  <div class="card" style="width: 40rem;">
     <div class="card-body">
-      <h5 class="card-title">{{this.header}}</h5>
-      <p class="card-text">{{this.content}}</p>
+      <h2>Ausstattung:</h2>
     </div>
   </div>
-  {{/each}}
-</p>
+
+  <p>
+    {{#each equipment}}
+    <div class="card" style="width: 30rem;">
+      {{#if this.imgPath}}
+      <img src="{{ this.imgPath }}" alt="{{ this.imgName }}" class="card-img-top" />
+      {{/if}}
+      <div class="card-body">
+        <h5 class="card-title">{{this.header}}</h5>
+        <p class="card-text">{{this.content}}</p>
+      </div>
+    </div>
+    {{/each}}
+  </p>
+</section>
