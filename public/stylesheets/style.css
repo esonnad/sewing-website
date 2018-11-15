@@ -190,7 +190,11 @@ a {
   .card-title {
     font-size: 2.5rem; }
   .card-text {
-    font-size: 1.7rem; }
+    font-size: 1.5rem;
+    margin: 5px;
+    padding-bottom: 10px;
+    line-height: 2rem;
+    text-align: justify; }
   body {
     background-size: 225px;
     background-position: right bottom; } }
