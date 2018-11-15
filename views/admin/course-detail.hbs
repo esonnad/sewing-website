@@ -4,7 +4,7 @@
 <p>
   <section class="card-container">
 
-    <div class="card" style="width: 30rem;">
+    <div class="card" style="width: 40rem;">
       <div class="card-body">
         <h5 class="card-title">{{course.name}}</h5>
         <p class="card-text">
@@ -35,15 +35,17 @@
       </div>
     </div>
     {{#if type}}
-    <div class="card" style="width: 30rem;">
+    <div class="card" style="width: 150rem;">
       <div class="card-body">
-        <table>
+        <table class="table">
           <tr>
+            <th scope="col">Dates</th>
             {{#each course.dates}}
-            <th>{{this.date}}</th>
+            <th scope="col">{{this.date}}</th>
             {{/each}}
           </tr>
           <tr>
+            <th scope="row">Skipping student</th>
             {{#each course.dates}}
             <td>{{this.skip}}</td>
             {{/each}}
