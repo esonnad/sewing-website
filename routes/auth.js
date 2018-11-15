@@ -14,6 +14,14 @@ const Request = require('../models/Request')
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
+let transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: process.env.GMAIL_EMAIL,
+    pass: process.env.GMAIL_PASSWORD
+  }
+});
+
 function ensureAuthenticated(req, res, next) {
   if (req.user) {
     return next();
@@ -33,6 +41,15 @@ function checkRole(role) {
   }
 }
 
+function randPlaceholder() {
+  var possNames = ["Donald Duck", "Daisy Duck", "Mickey Mouse", "Minnie Mouse", "Goofy", "Pluto"]
+  var possEmails = ["donald.duck@entenhausen.com", "daisy.duck@entenhausen.com", "mickey.mouse@entenhausen.com", "minnie.mouse@entenhausen.com", "goofy@entenhausen.com", "pluto@entenhausen.com"]
+  var possPhone = ["96727/*donald*", "96727/*daisy*", "96727/*mickey*", "96727/*minnie*", "96727/*goofy*", "96727/*pluto*"]
+  var possAdress = ["Ulmengasse 321, Entenhausen", "Zypressenweg 5, Entenhausen", "Zwiebelweg 12, Entenhausen", "Geranienweg 15, Entenhausen", "Lindenstraße 8, Entenhausen", "Zwiebelweg 12, Entenhausen"]
+  var index = Math.floor(Math.random() * possNames.length)
+  return [possNames[index], possEmails[index], possPhone[index], possAdress[index]]
+}
+
 router.get("/login", (req, res, next) => {
   res.render("auth/login", { "message": req.flash("error") });
 });
@@ -45,7 +62,8 @@ router.post("/login", passport.authenticate("local", {
 }));
 
 router.get("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  res.render("auth/signup");
+  var input = randPlaceholder()
+  res.render("auth/signup", { input: input });
 });
 
 router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
