@@ -45,7 +45,17 @@ router.post('/kurse', (req, res, next) => {
   const phone = req.body.phone;
   const adress = req.body.adress;
   const message = req.body.message;
-  const preferences = [req.body.choice1, req.body.choice2, req.body.choice3]
+  const preferences = [];
+
+  if (req.body.choice1 != '') {
+    preferences.push(req.body.choice1);
+  }
+  if (req.body.choice2 != '') {
+    preferences.push(req.body.choice2);
+  }
+  if (req.body.choice3 != '') {
+    preferences.push(req.body.choice3);
+  }
 
   if (name === "" || phone === "" || email === "") {
     res.render("anmeldung-kurse", { message: "Indicate username, email and phone" });
