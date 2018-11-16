@@ -68,7 +68,7 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
         to: "elvirasnaehspass@gmail.com",
         subject: "A new post request on the website",
         text: content,
-        html: `<h1>The requested post:</h1><hr><img src="${imgurl}" alt="${imgName}" height="300px"><p>${imgName}</p><h3>${header}</h3><p>${content}</p><p><i>by: ${creatorName}</i></p><br><hr><br><b><a href="http://localhost:3000/admin/confirmPost/${post._id}">Click here to accept and add the post</a></b>`
+        html: `<h1>The requested post:</h1><hr><img src="${imgurl}" alt="${imgName}" height="300px"><p>${imgName}</p><h3>${header}</h3><p>${content}</p><p><i>by: ${creatorName}</i></p><br><hr><br><b><a href="https://naehspass.herokuapp.com/admin/confirmPost/${post._id}">Click here to accept and add the post</a></b>`
       })
         .then(info => res.render('student/successPost'))
         .catch(error => console.log(error));
