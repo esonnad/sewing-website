@@ -140,9 +140,68 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
 
 //Courses pages
 router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  if(Course.find()===[]){
+      res.render("admin/allCourses")
+    } 
+    else if(Course.find({ type: "COURSE", status: "ACTIVE" })===[]||Course.find({ type: "COURSE", status: "FUTURE" })===[]) {
+      Course.find({ type: "WORKSHOP" }).populate("_students")
+      .then(([workshops]) => {
+      res.render('admin/allCourses', {
+        workshops: workshops,
+      })
+      })
+      .catch(err => { console.log(err) })
+    } else if(Course.find({ type: "WORKSHOP" })===[]|| Course.find({ type: "COURSE", status: "ACTIVE" })===[]){
+      Course.find({ type: "COURSE", status: "FUTURE" })
+      .populate("_students")
+      .then(([futureCourses]) => {
+      res.render('admin/allCourses', {
+        futureCourses: futureCourses,
+      })
+      })
+      .catch(err => { console.log(err) })
+    } else if(Course.find({ type: "WORKSHOP" })===[]|| Course.find({ type: "COURSE", status: "FUTURE" })===[]){
+      Course.find({ type: "COURSE", status: "ACTIVE" })
+      .populate("_students")
+      .then(([activeCourses]) => {
+      res.render('admin/allCourses', {
+        activeCourses: activeCourses,
+      })
+      })
+      .catch(err => { console.log(err) })
+    }
+    else if(Course.find({ type: "WORKSHOP" })===[]){
+      Promise.all([Course.find({ type: "COURSE", status: "ACTIVE" }).populate("_students"), Course.find({ type: "COURSE", status: "FUTURE" }).populate("_students")])
+      .then(([activeCourses, futureCourses]) => {
+        res.render('admin/allCourses', {
+          futureCourses: futureCourses,
+          activeCourses: activeCourses,
+        })
+      })
+      .catch(err => { console.log(err) })
+    }
+    else if (Course.find({ type: "COURSE", status: "ACTIVE" })===[]){
+      Promise.all([Course.find({ type: "WORKSHOP" }).populate("_students"), Course.find({ type: "COURSE", status: "FUTURE" }).populate("_students")])
+    .then(([workshops, futureCourses]) => {
+      res.render('admin/allCourses', {
+        workshops: workshops,
+        futureCourses: futureCourses,
+      })
+    })
+    .catch(err => { console.log(err) })
+    }
+    else if (Course.find({ type: "COURSE", status: "FUTURE" })===[]){
+      Promise.all([Course.find({ type: "WORKSHOP" }).populate("_students"), Course.find({ type: "COURSE", status: "ACTIVE" }).populate("_students")])
+      .then(([workshops, activeCourses, futureCourses]) => {
+        res.render('admin/allCourses', {
+          workshops: workshops,
+          activeCourses: activeCourses,
+        })
+      })
+      .catch(err => { console.log(err) })
+    } else {
   Promise.all([Course.find({ type: "WORKSHOP" }).populate("_students"), Course.find({ type: "COURSE", status: "ACTIVE" }).populate("_students"), Course.find({ type: "COURSE", status: "FUTURE" }).populate("_students")])
     .then(([workshops, activeCourses, futureCourses]) => {
-      console.log(activeCourses[0]._students)
       res.render('admin/allCourses', {
         workshops: workshops,
         futureCourses: futureCourses,
@@ -150,6 +209,7 @@ router.get('/courses', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       })
     })
     .catch(err => { console.log(err) })
+  }
 })
 
 router.get('/courses/add', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
