@@ -453,7 +453,7 @@ router.post('/request/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req
         .populate('_user', 'name')
         .populate('_preferences', 'name')
         .then(requests => {
-          Course.find({ status: "FUTURE" })
+          Course.find({ status: "FUTURE", type: "COURSE" })
             .then(courses => {
               res.render('admin/manage', { requests: requests, courses: courses })
             })
