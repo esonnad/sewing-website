@@ -7,9 +7,15 @@
       <div class="card-body">
         <h1>Bearbeite die Email von {{student.name}}</h1>
         <form action="/admin/students/edit/{{student._id}}" method="post">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value="{{student.name}}"><br><br>
+          <label for="adress">Adresse</label>
+          <input type="text" name="adress" id="adress" value="{{student.adress}}"><br><br>
+          <label for="phone">Telefonnummer</label>
+          <input type="text" name="phone" id="phone" value="{{student.phone}}"><br><br>
           <label for="email">Email</label>
-          <input type="text" name="email" id="email" value="{{student.email}}" style="width: 250px;">
-          <button type="submit">Aktualisiere Email</button>
+          <input type="text" name="email" id="email" value="{{student.email}}" style="width: 250px;"><br><br>
+          <button type="submit">Aktualisieren</button>
         </form>
       </div>
     </div>

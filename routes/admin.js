@@ -323,8 +323,11 @@ router.get('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, 
 router.post('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   const email = req.body.email;
+  const name = req.body.name;
+  const adress = req.body.adress;
+  const phone = req.body.phone;
 
-  User.findByIdAndUpdate(id, { email: email })
+  User.findByIdAndUpdate(id, { name:name, email: email, adress: adress, phone: phone, })
     .then(student => { res.redirect('/admin/students') })
     .catch(err => { console.log(err) })
 })
