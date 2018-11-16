@@ -1,9 +1,9 @@
 <div class="page-title">
-  <h1 class="page-title">Manage next cohort page</h1>
+  <h1 class="page-title">Organisiere den nächsten Kurs</h1>
 </div>
 <br>
 <div class="manage-container">
-<h1>Requests</h1>
+<h1>Anfragen</h1>
 </div>
 
 <div class="manage-container">
@@ -11,17 +11,17 @@
 
 <table style="width:100%" class="table">
   <tr>
-    <th>Student Name</th>
-    <th>Delete Request <br>(will refresh page)</th>
-    <th>Choice 1</th>
-    <th>Choice 2</th>
-    <th>Choice 3</th>
+    <th>Schüler Name</th>
+    <th>Lösche Anfrage <br>(lädt Seite neu!)</th>
+    <th>Erste Wahl</th>
+    <th>Zweite Wahl</th>
+    <th>Dritte Wahl</th>
   </tr>
   {{#each requests}}
   <tr>
     <td>{{this._user.name}}</td>
     <form action="/admin/request/delete/{{this._id}}" method="POST">
-      <td><button action="submit" class="btnAll btn2 delete-btn">Delete</button></td>
+      <td><button action="submit" class="btnAll btn2 delete-btn">Löschen</button></td>
     </form>
     {{#each this._preferences}}
     <td>{{this.name}}</td>
@@ -35,7 +35,7 @@
 
 <form action="/admin/generate-enrollment" method="POST">
 <div class="manage-container">
-  <button class="btnAll btn2" action="submit">Generate Suggested Enrollment</button>
+  <button class="btnAll btn2" action="submit">Vorschlag für Kurse generieren!</button>
 </div>
 </form>
 
@@ -64,7 +64,7 @@
 
       {{/each}}
       <br>
-      <button class="btnAll btn2" action="submit">Confirm Enrollment</button>
+      <button class="btnAll btn2" action="submit">Stundenplan bestätigen!</button>
       <br>
 
       
@@ -79,7 +79,7 @@
 
 <div class="manage-container">
 <div class="card" style="width: 80rem;">
-<h3>Remaining Students:</h3>
+<h3>Warteliste(Übrig gebliebene Schüler):</h3>
       {{#each waitlist}}
         {{this.name}}
         <br>
