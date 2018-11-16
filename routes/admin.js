@@ -436,7 +436,7 @@ router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) 
     .populate('_user', 'name')
     .populate('_preferences', 'name')
     .then(requests => {
-      Course.find({ status: "FUTURE" })
+      Course.find({ status: "FUTURE", type: "COURSE" })
         .then(courses => {
           res.render('admin/manage', { requests: requests, courses: courses })
         })
@@ -468,7 +468,7 @@ router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (re
     .populate('_user', 'name')
     .populate('_preferences', 'name')
     .then(requests => {
-      Course.find({ status: "FUTURE" })
+      Course.find({ status: "FUTURE", type: "COURSE"})
         .then(courses => {
           let suggestion = enrollmentSuggestion(requests, courses);
           console.log("suggestion:", suggestion)
