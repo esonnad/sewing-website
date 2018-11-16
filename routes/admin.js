@@ -98,7 +98,7 @@ router.get('/confirmPost/:id', (req, res, next) => {
 
 //Equipment pages
 router.get('/equipment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  Equipment.find()
+  Equipment.find(null, null, { sort: { created_at: -1 }})
     .then(eq => {
       res.render('admin/equipment', { equipment: eq })
     })

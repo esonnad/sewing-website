@@ -61,7 +61,7 @@ router.get('/naehkurse/workshops', (req, res, next) => {
 })
 
 router.get('/atelier', (req, res, next) => {
-  Equipment.find()
+  Equipment.find(null, null, { sort: { created_at: -1 }})
     .then(equipment => {
       res.render('atelier', { equipment: equipment })
     })
