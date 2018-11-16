@@ -187,8 +187,15 @@ router.post('/reset/:token', (req, res, next) => {
               });
             });
           } else {
-            res.render('forgotPassword', { message: 'Confirmation password must be the same!' })
-            return;
+            User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
+              .then(user => {
+                res.render('resetPassword', {
+                token: req.params.token, message: 'Confirmation passwords must be the same!'
+                });
+              })
+              .catch(err => {
+                console.log(err)
+              })
           }
         })
         .catch(err => { console.log(err) })
@@ -203,7 +210,7 @@ router.post('/reset/:token', (req, res, next) => {
       };
       transporter.sendMail(mailOptions)
         .then(mail => {
-          res.render('forgotPassword', { message: 'Success! Your password has been changed.' })
+          res.render('resetPassword', { message: 'Success! Your password has been changed.' })
         })
     }
   ], function (err) {
