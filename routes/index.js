@@ -121,7 +121,7 @@ router.post('/login/forgotPassword', (req, res, next) => {
     function (token, done) {
       User.findOne({ email: email, status: "ACTIVE" }, function (err, user) {
         if (!user) {
-          res.render('forgotPassword', { message: "No active account with that email adress exists." })
+          res.render('forgotPassword', { message: "Mit dieser Email Adress gibt es keinen aktiven Account" })
           return;
         }
 
@@ -138,13 +138,14 @@ router.post('/login/forgotPassword', (req, res, next) => {
         to: email,
         from: '"Elviras Nähspass Website"',
         subject: 'Password Reset',
-        text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        text: 'Du bekommst diese Email, weil du angefragt hast, dein Passwort zurück zu setzen\n\n' +
+          'Klicke auf den folgenden Link oder kopiere den Link in deinen Browser.\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+          'Der Link ist eine Stunde lang gültig\n\n' +
+          'Solltest du das nicht angefragt haben, ignoriere diese Email und das Passwort bleibt unverändert.\n'
       };
       transporter.sendMail(mailOptions)
-        .then(sth => { res.render('forgotPassword', { message: 'An e-mail has been sent to ' + email + ' with further instructions.' }) })
+        .then(sth => { res.render('forgotPassword', { message: 'Es wurde eine Email an ' + email + ' mit weiterer Anleitung gesendet!' }) })
     }
   ], function (err) {
     if (err) return next(err);
@@ -155,7 +156,7 @@ router.get('/reset/:token', function (req, res) {
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
     .then(user => {
       if (!user) {
-        res.render('forgotPassword', { message: 'Password reset token is invalid or has expired.' })
+        res.render('forgotPassword', { message: 'Der Link ist ungültig oder abgelaufen!' })
         return;
       }
       res.render('resetPassword', {
@@ -172,7 +173,7 @@ router.post('/reset/:token', (req, res, next) => {
       User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
         .then(user => {
           if (!user) {
-            res.render('forgotPassword', { message: 'Password reset token is invalid or has expired.' })
+            res.render('forgotPassword', { message: 'Der Link ist ungültig oder abgelaufen!' })
             return;
           }
           if (req.body.newPassw === req.body.confirmPassw) {
@@ -190,7 +191,7 @@ router.post('/reset/:token', (req, res, next) => {
             User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
               .then(user => {
                 res.render('resetPassword', {
-                token: req.params.token, message: 'Confirmation passwords must be the same!'
+                token: req.params.token, message: 'Die neuen Passwörter müssen übereinstimmen!'
                 });
               })
               .catch(err => {
@@ -205,12 +206,12 @@ router.post('/reset/:token', (req, res, next) => {
         to: user.email,
         from: 'passwordreset@demo.com',
         subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        text: 'Hallo,\n\n' +
+          'Dies ist eine Bestätigung dass das Passwort für ' + user.email + ' gerade verändert wurde.\n'
       };
       transporter.sendMail(mailOptions)
         .then(mail => {
-          res.render('resetPassword', { message: 'Success! Your password has been changed.' })
+          res.render('resetPassword', { message: 'Erfolgreich! Das Passwort wurde geändert.' })
         })
     }
   ], function (err) {

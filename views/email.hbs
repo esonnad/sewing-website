@@ -1,21 +1,21 @@
-<h1>You confirmed a course schedule:</h1>
-<p>We sent an test email</p><br>
+<h1>Der neue Studenplan:</h1>
+<br>
 <hr><br>
 {{#allCourses}}
 <p>
-  <h3>{{this.name}}</h3>
+  <h3>Kurs: {{name}}</h3>
   <table>
     <tr>
-      <th>Schüler</th>
-      {{#course.dates}}
-      <th>{{this.date}}</th>
-      {{/course.dates}}
+      <th>Schüler/Daten</th>
+      {{#dates}}
+      <th>{{date}}</th>
+      {{/dates}}
     </tr>
-    {{#this._students}}
+    {{#_students}}
     <tr>
-      <th>{{this.name}}</th>
+      <th>{{name}}</th>
     </tr>
-    {{/this._students}}
+    {{/_students}}
   </table>
 </p><br>
 <hr><br>

@@ -74,13 +74,13 @@ router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
   const phone = req.body.phone;
 
   if (name === "" || email === "") {
-    res.render("auth/signup", { message: "Indicate username and email" });
+    res.render("auth/signup", { message: "Bitte fülle Name und Email aus!" });
     return;
   }
 
   User.findOne({ email }, "email", (err, user) => {
     if (user !== null) {
-      res.render("auth/signup", { message: "This email is already in use" });
+      res.render("auth/signup", { message: "Diese Email gibt es bereits!" });
       return;
     }
     var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -103,15 +103,14 @@ router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       to: email,
       from: '"Elviras Nähspass Website"',
       subject: 'Your login information!',
-      text: 'One of the Admins has made an account for you.\n\n' +
-        'From now on, you can login in on our website, and view your course information.\n\n' +
-        'Here you can find all dates and information you need to know. You are not able to edit anything on the course.\n\n' +
-        'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
-        'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
-        'This is your login information:\n\n' +
-        'Your email:' + email + '\n\n' +
-        'Your temporary password:' + randPassword + '\n\n' +
-        'You can change your password on your profile page. Please do that as soon as possible!\n'
+      text: 'Ein Administrator hat gerade einen Account für dich erstellt!.\n\n' +
+        'Ab jetzt, kannst du dich auf unserer Internetseite einloggen und deine Kurs Informationen einsehen.\n\n' +
+        'Hier findest du alle Daten und Infos, die du brauchst. Du kannst nichts davon bearbeiten!\n\n' +
+        'Auf der Website kannst du ebenfalls Sachen posten! Die Sachen erscheinen dann, nachdem ein Administartor sie genehmigt hat, auf der Start Seite!\n\n' +
+        'Hier ist deine Login information:\n\n' +
+        'Deine Email: ' + email + '\n\n' +
+        'Dein vorläufiges Passwort: ' + randPassword + '\n\n' +
+        'Auf deiner Profilseite kannst du dein Passwort ändern, bitte mache das so bald wie möglich!\n'
     };
     transporter.sendMail(mailOptions)
 
@@ -120,7 +119,7 @@ router.post("/signup", ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
         res.redirect("/");
       })
       .catch(err => {
-        res.render("auth/signup", { message: "Something went wrong" });
+        res.render("auth/signup", { message: "Etwas hat nicht geklappt" });
       })
   });
 });

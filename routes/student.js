@@ -117,7 +117,7 @@ router.post('/myProfile/changePassword', ensureAuthenticated, checkRole("STUDENT
   let id = req.user._id;
   const oldPassw = req.body.oldPassw;
   if (!bcrypt.compareSync(oldPassw, req.user.password)) {
-    res.render('student/myProfile', { message: "Incorrect Password!", user: req.user })
+    res.render('student/myProfile', { message: "Falsches Passwort!", user: req.user })
     return;
   }
 
@@ -130,11 +130,11 @@ router.post('/myProfile/changePassword', ensureAuthenticated, checkRole("STUDENT
     User.findByIdAndUpdate(id, {
       password: hashPass
     })
-      .then(sth => { res.render('student/myProfile', { message: "Password sucessfully changed!", user: req.user }) })
+      .then(sth => { res.render('student/myProfile', { message: "Passwort erfolgreich geändert!", user: req.user }) })
       .catch(err => { console.log(err) })
   }
   else {
-    res.render('student/myProfile', { message: "The new Password was not the same", user: req.user })
+    res.render('student/myProfile', { message: "Die neuen Passwörter stimmen nicht überein", user: req.user })
   }
 })
 

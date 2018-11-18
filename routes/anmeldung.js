@@ -62,16 +62,16 @@ router.post('/kurse', (req, res, next) => {
   console.log("PREFERENCES:", preferences)
 
   if (name === "" || phone === "" || email === "") {
-    res.render("anmeldung-kurse", { message: "Indicate name, email and phone" });
+    res.render("anmeldung-kurse", { message: "Bitte fülle Name, Telefon und Email aus!" });
     return;
   }
 
   transporter.sendMail({
     from: '"Elviras Naehspass Website"',
     to: "elvirasnaehspass@gmail.com",
-    subject: "A new course request on the website",
+    subject: "Eine neue Kurs Anmeldung",
     text: message,
-    html: `<h1>The requested course:</h1><hr><p>${name} requested to join:<br>Choice 1:${preferences[0]}<br>Choice 2:${preferences[1]}<br>Choice 3:${preferences[2]}</p><p>He/She put this extra message:${message}</p><br><hr><br>`
+    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte diesem Kurs betreten:<br>Erste Wahl:${preferences[0]}<br>Zweite Wahl:${preferences[1]}<br>Dritte Wahl:${preferences[2]}</p><p>Weitere Mitteilung:${message}</p><br><hr><br>`
   })
     .then(sth => {
       User.find({ email: email })
@@ -138,16 +138,16 @@ router.post('/workshops', (req, res, next) => {
   const workshop = req.body.workshop;
 
   if (name === "" || phone === "" || email === "") {
-    res.render("anmeldung-workshops", { message: "Indicate name, email and phone" });
+    res.render("anmeldung-workshops", { message: "Bitte fülle Name, Telefon und Email aus!" });
     return;
   }
 
   transporter.sendMail({
     from: '"Elviras Naehspass Website"',
     to: "elvirasnaehspass@gmail.com",
-    subject: "A new workshop request on the website",
+    subject: "Ein neue Workshop Anmeldung",
     text: message,
-    html: `<h1>The requested workshop:</h1><hr><p>${name} requested to join ${workshop}</p><p>The information ${name} put is: <br>Name: ${name}, Email: ${email}, Phone: ${phone}, Adress: ${adress}</p><p>${name} put this extra message:${message}</p><br><hr><br>`
+    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte an ${workshop} teilnehmen</p><p>Die eingetragenen Infos sind:<br>Name: ${name}, Email: ${email}, Telefon: ${phone}, Adresse: ${adress}</p><p>${name}'s weitere Mitteilung: ${message}</p><br><hr><br>`
   })
     .then(sth => {
       res.render('registration-success')

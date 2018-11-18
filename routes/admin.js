@@ -14,6 +14,7 @@ const Hogan = require('hogan.js');
 const fs = require('fs');
 var template = fs.readFileSync('./views/email.hbs', 'utf-8')
 var compiledTemplate = Hogan.compile(template);
+
 function ensureAuthenticated(req, res, next) {
   if (req.user) {
     return next();
@@ -510,11 +511,11 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
                 var mailOptions = {
                   to: student.email,
                   from: '"Elviras Nähspass Website"',
-                  subject: 'You entered a course!',
-                  text: 'You are receiving this because you have signed up for a course!\n\n' +
-                    'You have sucessfully entered the course:' + course.name + '\n\n' +
-                    'The course starts on ' + course.startDate + '\n\n' +
-                    "If you have any questions, don't hesitate to contact us!\n"
+                  subject: 'Du bist Teilnehmer in einem Kurs!',
+                  text: 'Du bekommst diese Email, weil du dich für einen Kurs angemeldet hast!\n\n' +
+                    'Du wurdest erfolgreich in diesem Kurs aufgenommen: ' + course.name + '\n\n' +
+                    'Der Kurs beginnt am: ' + course.startDate + '\n\n' +
+                    'Solltest du noch irgendwelche Fragen haben, kontaktiere uns gerne!\n\n'
                 };
                 transporter.sendMail(mailOptions)
 
@@ -524,12 +525,12 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
                 var mailOptions = {
                   to: student.email,
                   from: '"Elviras Nähspass Website"',
-                  subject: 'You entered a course!',
-                  text: 'You are receiving this because you have signed up for a course!\n\n' +
-                    'You have sucessfully entered the course:' + course.name + '\n\n' +
-                    'The course starts on ' + course.startDate + '\n\n' +
-                    'If you have any questions, don\'t hesitate to contact us!\n\n' +
-                    'You will soon receive an email, with all your login information for the webiste!\n'
+                  subject: 'Du bist Teilnehmer in einem Kurs!',
+                  text: 'Du bekommst diese Email, weil du dich für einen Kurs angemeldet hast!\n\n' +
+                    'Du wurdest erfolgreich in diesem Kurs aufgenommen: ' + course.name + '\n\n' +
+                    'Der Kurs beginnt am: ' + course.startDate + '\n\n' +
+                    'Solltest du noch irgendwelche Fragen haben, kontaktiere uns gerne!\n\n' +
+                    'In kürze bekommst du noch eine Email mit deiner Login Information!\n'
                 };
                 transporter.sendMail(mailOptions)
                 //Login info email
@@ -546,17 +547,16 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
                 var mailOptions = {
                   to: student.email,
                   from: '"Elviras Nähspass Website"',
-                  subject: 'Your login information!',
-                  text: 'You have successfully entered a course, and here comes you login information!\n\n' +
-                    'From now on, you can login in on our website, and view your course information.\n\n' +
-                    'Here you can find all dates, and see on what day you can skip. You are not able to edit anything on the course.\n\n' +
-                    'If you want to a skip one day, please contact us.\n\n' +
-                    'On the website, you can also post things! If you have sewed something, or you just have some experience to share, we would be really grateful, if you post something!\n\n' +
-                    'As soon, as you post is confirmed by one Admin, it will appear on the home page!\n\n' +
-                    'This is your login information:\n\n' +
-                    'Your email:' + student.email + '\n\n' +
-                    'Your temporary password:' + randPassword + '\n\n' +
-                    'You can change your password on your profile page. Please do that as soon as possible!\n'
+                  subject: 'Deine Login Informationen!!',
+                  text: 'Du bist erfolgreich einem Kurs beigetreten, hier kommt deine Login Info!\n\n' +
+                    'Ab jetzt kannst du dich auf der website einloggen, und Informationen über deinen Kurs erhalten.\n\n' +
+                    'Du findest dort alle Daten, und kannst sehen, wann jemand aussetzt. Du kannst den Kalender nicht bearbeiten!\n\n' +
+                    'Wenn du an einem Tag aussetzen möchtest, dann kontaktiere uns bitte.\n\n' +
+                    'Auf der Website kannst du ebenfalls Sachen posten! Die Sachen erscheinen dann, nachdem ein Administartor sie genehmigt hat, auf der Start Seite!\n\n' +
+                    'Hier ist deine Login information:\n\n' +
+                    'Deine Email: ' + student.email + '\n\n' +
+                    'Dein vorläufiges Passwort: ' + randPassword + '\n\n' +
+                    'Auf deiner Profilseite kannst du dein Passwort ändern, bitte mache das so bald wie möglich!\n'
                 };
                 transporter.sendMail(mailOptions)
               }
@@ -571,34 +571,34 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
             .catch(err => { console.log(err) })
         })
       })
-      .then(sth => { res.next() })
+      .then(sth => { res.next() }) // this looks odd.
       .catch(err => { console.log(err) })
   });
+  // res.redirect('/admin/manage')
   setTimeout(function () {
     var allCourses = [] //array with all course objects and each with student objects
-    courseidsfrombody.forEach(id => {
+    courseidfrombody.forEach(id => {
       Course.findById(id)
         .populate('_students')
         .then(course => { allCourses.push(course) })
         .catch(err => { console.log(err) })
     })
-    var mailOptions = {
-      to: 'fee2599@gmail.com',
-      from: '"Elviras Nähspass Website"',
-      subject: 'A html email',
-      html: compiledTemplate.render({ allCourses: allCourses })
-    };
-    transporter.sendMail(mailOptions)
-      .then(sth => {
-        res.redirect('/admin/manage')
-      })
-      .catch(err => { console.log(err) })
-  }, 3000);
-
+    setTimeout(function(){
+      console.log("settimeout", allCourses)
+      var mailOptions = {
+        to: 'elvirasnaehspass@gmail.com',
+        from: '"Elviras Nähspass Website"',
+        subject: 'The new course schedule',
+        html: compiledTemplate.render({ allCourses: allCourses })
+      };
+      transporter.sendMail(mailOptions)
+        .then(sth => {
+          res.redirect('/admin/manage')
+        })
+        .catch(err => { console.log(err) })
+    }, 2000)
+  }, 1000);
 });
-
-
-
 
 
 module.exports = router;
