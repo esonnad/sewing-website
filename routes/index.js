@@ -32,7 +32,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/seeAllPosts', (req, res, next) => {
-  Post.find(null, null, { sort: { created_at: -1 } })
+  Post.find({ status: "ACTIVE" }, null, { sort: { created_at: -1 } })
     .populate('_creator')
     .then(posts => {
       res.render('allPosts', { posts: posts });

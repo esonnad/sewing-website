@@ -50,6 +50,10 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
   const content = req.body.text;
   const creatorName = req.user.name;
   const creatorId = req.user._id;
+  if(content === "" && header === "") {
+    res.render("student/postStudent", {message: "Es muss entweder ein Titel oder ein Text gegeben sein!"});
+    return;
+  }
   if(req.file) {
     const imgurl = req.file.url;
     const imgName = req.file.originalname;
@@ -66,9 +70,9 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
       transporter.sendMail({
         from: '"Elviras Naehspass Website"',
         to: "elvirasnaehspass@gmail.com",
-        subject: "A new post request on the website",
+        subject: "A neuer Post wurde angefragt",
         text: content,
-        html: `<h1>The requested post:</h1><hr><img src="${imgurl}" alt="${imgName}" height="300px"><p>${imgName}</p><h3>${header}</h3><p>${content}</p><p><i>by: ${creatorName}</i></p><br><hr><br><b><a href="https://naehspass.herokuapp.com/admin/confirmPost/${post._id}">Click here to accept and add the post</a></b>`
+        html: `<h1>Der angefragte Kurs:</h1><hr><img src="${imgurl}" alt="${imgName}" height="300px"><p>${imgName}</p><h3>${header}</h3><p>${content}</p><p><i>von: ${creatorName}</i></p><br><hr><br><b><a href="https://naehspass.herokuapp.com/admin/confirmPost/${post._id}">Klicke hier um den Post zu veröffentlichen!</a></b>`
       })
         .then(info => res.render('student/successPost'))
         .catch(error => console.log(error));

@@ -1,16 +1,23 @@
 <div class="page-title">
-  <h1 class="page-title">Admin - New Equipment</h1>
+  <h1 class="page-title">Admin - Neue Ausstattung</h1>
 </div>
-<h1>Add new Equipment</h1>
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+<h1>Neue Ausstattung hinzufügen</h1>
 <form action="/admin/equipment/new" method="post" enctype="multipart/form-data">
-  <label for="photo">Picture:</label>
+  {{#if message }}
+    <div class="error-message">{{ message }}</div>
+  {{/if}}
+  <label for="photo">Bild:</label>
   <input type="file" name="photo" id="photo">
   <br><br>
-  <label for="title">Title:</label>
+  <label for="title">Titel:</label>
   <input type="text" name="title" id="title">
   <br><br>
   <label for="text">Text:</label>
   <input type="text" name="text" id="text">
   <br><br>
-  <button type="submit">Add</button>
-</form>
+  <button type="submit" class="btn2 btnAll">Hinzufügen</button>
+</form></div></div></p></section>

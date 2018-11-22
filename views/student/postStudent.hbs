@@ -6,6 +6,9 @@
   <p>
     <div class="card" style="width: 40rem;">
       <h1>Erstelle einen neuen Post</h1>
+      {{#if message }}
+        <div class="error-message">{{ message }}</div>
+      {{/if}}
       <div class="card-body">
         <form action="/student/postStudent" method="post" enctype="multipart/form-data">
           <label for="photo">Foto:</label>

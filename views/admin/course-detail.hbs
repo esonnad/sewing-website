@@ -31,7 +31,8 @@
           <li>{{this.date}}</li>
           {{/each}}
         </ul>
-        <a href="/admin/courses/details/{{course._id}}/edit" class="btn btn-primary">Bearbeiten</a>
+        <button class="btn1 btnAll"><a href="/admin/courses/details/{{course._id}}/edit">Bearbeiten</a></button>
+        
       </div>
     </div>
     {{#if type}}
@@ -51,7 +52,8 @@
             {{/each}}
           </tr>
         </table>
-        <a href="/admin/courses/details/{{course._id}}/editSkip" class="btn btn-primary">Bearbeiten</a>
+        <button class="btn1 btnAll"><a href="/admin/courses/details/{{course._id}}/editSkip">Bearbeiten</a></button>
+        
       </div>
     </div>
     {{/if}}

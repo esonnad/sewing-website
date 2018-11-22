@@ -47,6 +47,24 @@ router.get('/', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
 })
 
 //Posts
+router.get('/allPosts', ensureAuthenticated, checkRole("ADMIN"), (req,res,next)=>{
+  Promise.all([Post.find({ status: "ACTIVE" }, null, { sort: { created_at: -1 }}).populate('_creator'), Post.find({ status: "PENDING" }, null, { sort: { created_at: -1 }}).populate('_creator')])
+    .then(([activePosts, pendingPosts]) => {
+      res.render('admin/allposts', {activePosts: activePosts, pendingPosts:pendingPosts});
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.get('/allPosts/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req,res,next)=>{
+  let id = req.params.id;
+
+  Post.findByIdAndRemove(id)
+    .then(sth => {
+      res.redirect('/admin/allPosts')
+    })
+    .catch(err => { console.log(err) })
+})
+
 router.get('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/postAdmin')
 })
@@ -55,6 +73,10 @@ router.post('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.s
   const content = req.body.text;
   const header = req.body.title;
   const creatorId = req.user._id;
+  if(content === "" && header === "") {
+    res.render("admin/postAdmin", {message: "Es muss entweder ein Titel oder ein Text gegeben sein!"});
+    return;
+  }
   if(req.file) {
   const newPost = new Post({
     header: header,
@@ -115,18 +137,33 @@ router.get('/equipment/new', ensureAuthenticated, checkRole("ADMIN"), (req, res,
 router.post('/equipment/new', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.single('photo'), (req, res, next) => {
   const content = req.body.text;
   const header = req.body.title;
-
-  const newEquipment = new Equipment({
-    header: header,
-    content: content,
-    imgPath: req.file.url,
-    imgName: req.file.originalname,
-  })
-  newEquipment.save()
-    .then(() => {
-      res.redirect('/admin/equipment')
+  if(content === "" && header === "") {
+    res.render('admin/newEquipment', {message: "Titel oder Beschreibung muss ausgefüllt sein"})
+    return;
+  }
+  if(req.file){
+    const newEquipment = new Equipment({
+      header: header,
+      content: content,
+      imgPath: req.file.url,
+      imgName: req.file.originalname,
     })
-    .catch(err => { console.log(err) })
+    newEquipment.save()
+      .then(() => {
+        res.redirect('/admin/equipment')
+      })
+      .catch(err => { console.log(err) })
+  } else {
+    const newEquipment = new Equipment({
+      header: header,
+      content: content,
+    })
+    newEquipment.save()
+      .then(() => {
+        res.redirect('/admin/equipment')
+      })
+      .catch(err => { console.log(err) })
+  }
 })
 
 router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
