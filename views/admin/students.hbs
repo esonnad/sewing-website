@@ -18,8 +18,9 @@
             {{#if this.adress}}
             Adresse: {{this.adress}},
             {{/if}}
-            <a href="/admin/students/edit/{{this._id}}">Bearbeiten, </a>
-            <a href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></li>
+            <button class="btn2"><a href="/admin/students/edit/{{this._id}}">Bearbeiten, </a></button>
+            <button class="btn2"><a href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></button>
+            </li>
           {{/each}}
         </ul>
       </div>
@@ -33,7 +34,9 @@
             {{#if this.adress}}
             Adresse: {{this.adress}},
             {{/if}}
-            <a href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></li>
+            <button class="btn2"><a href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></button>
+            <button class="btn2"><a href="/admin/students/activate/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler aktivieren möchtest?');">Aktivieren</a></button>            
+            </li>
           {{/each}}
         </ul>
       </div>

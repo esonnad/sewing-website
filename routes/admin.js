@@ -430,8 +430,35 @@ router.post('/students/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req,
     .catch(err => { console.log(err) })
 })
 
+router.get('/students/activate/:id', ensureAuthenticated, checkRole("ADMIN"), (req,res,next)=>{
+  let id = req.params.id;
 
+  var pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var pwdLen = 10;
+  var randPassword = Array(pwdLen).fill(pwdChars).map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+  const salt = bcrypt.genSaltSync(bcryptSalt);
+  const hashPass = bcrypt.hashSync(randPassword, salt);
 
+  User.findByIdAndUpdate(id, { status: "ACTIVE", password: hashPass })
+    .then(user => { 
+      var mailOptions = {
+      to: user.email,
+      from: '"Elviras Nähspass Website"',
+      subject: 'Deine Login Informationen!!',
+      text: 'Ein Admin hat deinen Account aktiviert, hier kommt deine Login Info!\n\n' +
+        'Ab jetzt kannst du dich auf der Website einloggen, und Informationen über deinen Kurs erhalten, solltest du einem beigetreten sein.\n\n' +
+        'Du findest dort alle Daten, und kannst sehen, wann jemand aussetzt. Du kannst den Kalender nicht bearbeiten!\n\n' +
+        'Wenn du an einem Tag aussetzen möchtest, dann kontaktiere uns bitte.\n\n' +
+        'Auf der Website kannst du ebenfalls Sachen posten! Die Sachen erscheinen dann, nachdem ein Administartor sie genehmigt hat, auf der Start Seite!\n\n' +
+        'Hier ist deine Login information:\n\n' +
+        'Deine Email: ' + user.email + '\n\n' +
+        'Dein vorläufiges Passwort: ' + randPassword + '\n\n' +
+        'Auf deiner Profilseite kannst du dein Passwort ändern, bitte mache das so bald wie möglich!\n'
+    };
+    transporter.sendMail(mailOptions);
+    res.redirect('/admin/students') })
+    .catch(err => { console.log(err) })
+})
 
 
 
@@ -466,7 +493,6 @@ function enrollmentSuggestion(requests, courses) {
     }
   }
   return [suggestion, waitlist, allStudents];
-
 }
 
 router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
