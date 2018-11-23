@@ -15,12 +15,7 @@ body {
   background-color: #F9F3FD;
   color: #5A1F69;
   font-family: 'Alegreya', serif;
-  font-size: 1.5rem;
-  background-image: url("../images/woman.png");
-  background-size: 60%;
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-attachment: fixed; }
+  font-size: 1.5rem; }
 
 #header-container {
   display: flex;
@@ -251,7 +246,12 @@ option {
     line-height: 2rem;
     text-align: justify; }
   body {
+    background-image: url("../images/woman.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: 225px;
-    background-position: 100% 85%; } }
+    background-position: 100% 85%; }
+  .women-container {
+    display: none; } }
 
 /*# sourceMappingURL=style.css.map */

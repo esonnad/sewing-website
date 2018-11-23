@@ -18,12 +18,7 @@ body {
   color: #5A1F69;
   font-family: 'Alegreya', serif;
   font-size: 1.5rem;
-  background-image: url("../images/woman.png");
-  background-size: 60%;
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-attachment: fixed;
-
+  
 }
 
 #header-container {
@@ -326,8 +321,15 @@ option {
   }
 
   body {
+    background-image: url("../images/woman.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: 225px;
     background-position: 100% 85%;
+  }
+
+  .women-container {
+    display: none
   }
 
 }
