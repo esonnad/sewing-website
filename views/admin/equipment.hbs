@@ -18,7 +18,7 @@
       <div class="card-body">
         <h5 class="card-title">{{this.header}}</h5>
         <p class="card-text">{{this.content}}</p>
-        <button class="btnAll btn2"><a href="/admin/equipment/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this eqipment?');">Löschen</a></button>
+        <a class="btnHref" href="/admin/equipment/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this eqipment?');">Löschen</a>
       </div>
     </div>
     {{/each}}

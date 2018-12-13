@@ -9,36 +9,71 @@
         <a href="/auth/signup">Füge einen neuen Schüler hinzu</a>
       </div>
     </div>
+  </p>
+</section>
+
+<section class="card-container">
+  <p>
     <div class="card" style="width: 80rem;">
       <div class="card-body">
         <h2>Aktive Schüler</h2>
-        <ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Telefon</th>
+              <th>Adresse</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
           {{#each activeStudents}}
-          <li>{{this.name}}, (Email: {{this.email}}, Telefon: {{this.phone}}),
+          <tr><td>{{this.name}}</td> <td>{{this.email}}</td> <td>{{this.phone}}</td>
+            <td>
             {{#if this.adress}}
             Adresse: {{this.adress}},
             {{/if}}
-            <button class="btn2"><a href="/admin/students/edit/{{this._id}}">Bearbeiten, </a></button>
-            <button class="btn2"><a href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></button>
-            </li>
+            </td>
+            <td><a class="btnTable" href="/admin/students/edit/{{this._id}}">Bearbeiten </a></td>
+            <td><a class="btnTable" href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></td>
+            </tr>
           {{/each}}
-        </ul>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="card" style="width: 80rem;">
       <div class="card-body">
         <h2>Nicht aktive Schüler</h2>
-        <ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Telefon</th>
+              <th>Adresse</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
           {{#each pendingStudents}}
-          <li>{{this.name}}, (Email: {{this.email}}, Telefon: {{this.phone}}),
+          <tr>
+            <li><td>{{this.name}}</td><td>{{this.email}}</td><td>{{this.phone}})</td>
+            <td>
             {{#if this.adress}}
             Adresse: {{this.adress}},
             {{/if}}
-            <button class="btn2"><a href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></button>
-            <button class="btn2"><a href="/admin/students/activate/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler aktivieren möchtest?');">Aktivieren</a></button>            
+            </td>
+            <td><a class="btnHref" href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></td>
+            <td><a class="btnHref" href="/admin/students/activate/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler aktivieren möchtest?');">Aktivieren</a></td>      
             </li>
+            </tr>
           {{/each}}
-        </ul>
+          </tbody>
+        </table>
       </div>
     </div>
   </p>

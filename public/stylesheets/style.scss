@@ -115,6 +115,10 @@ a {
   padding-bottom: 5px;
 }
 
+.book-workshop {
+  align-self: center;
+}
+
 .card-container {
   display: flex;
   flex-direction: column;
@@ -149,6 +153,77 @@ a {
 .card-text {
   font-family: "Open Sans", sans-serif;
   text-align: center;
+}
+
+.flexible-card{
+  width: 30rem;
+  tr {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    th, td {
+      flex: 0 0 auto;
+    }
+  }
+//   tr{
+//     overflow:auto;
+//     // height:100px;
+//     // display:block;
+//  }
+ 
+  // table{
+  //   transform:rotate(-90deg);
+  //   th, td {
+  //     transform: rotate(90deg);
+  //   }
+  //   th {
+  //     height:200px;
+  //   }
+  // }
+  
+}
+
+.about-card {
+  width: 30rem;
+}
+
+.anmeldung-card {
+  width: 30rem;
+  select {
+    background-color: lightgrey; 
+    border: 1px solid #5A1F69
+  }
+}
+
+.btnHref {
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 10px 9px 16px -5px rgba(0,0,0,0.63);
+
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #F9F3FD;
+  border: 1px solid #351F69;
+  color: #351F69;
+}
+.btnHref:hover {
+  color: #A5ABBC;
+  text-decoration: none;
+}
+
+.btnTable {
+  text-decoration: none;
+  box-shadow: 10px 9px 16px -5px rgba(0,0,0,0.63);
+  font-size: 13px;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: #F9F3FD;
+  border: 1px solid #351F69;
+  color: #351F69;
+}
+.btnTable:hover {
+  color: #A5ABBC;
+  text-decoration: none;
 }
 
 .btn1 {
@@ -332,4 +407,14 @@ option {
     display: none
   }
 
+  .flexible-card{
+    width: 60rem;
+  }
+
+  .about-card {
+    width: 45rem;
+  }
+  .anmeldung-card {
+    width: 60rem
+  }
 }

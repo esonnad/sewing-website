@@ -4,7 +4,7 @@
 <p>
   <br>
 <div class="button-container">
-  <button id="class-page-button" class="btnAll btn1"><a href="/anmeldung/kurse">Buchen</a></button>
+  <a id="class-page-button" class="btnHref" href="/anmeldung/kurse">Buchen</a>
   </div>
 
   <section class="card-container">
@@ -22,11 +22,15 @@
       </div>
     </div>
 
-    <div class="card" style="width: 80rem;">
+    <div class="card flexible-card">
       <div class="card-body">
 
-        <h2>Aktuelle Kurse:</h2><br>
+        <h2>Zukünftige Kursdaten:</h2><br>
         <table class="table">
+          {{!-- <tr><th>Terminanzahl</th>{{#each courses}}<td>{{this.dates.length}}</td>{{/each}}</tr>
+          <tr><th>Kurs</th>{{#each courses}}<td>{{this.name}}</td>{{/each}}</tr>
+          <tr><th>Startdatum</th>{{#each courses}}<td>{{this.startDate}}</td>{{/each}}</tr>
+          <tr><th>Lehrer</th>{{#each courses}}<td>{{this.teacher}}</td>{{/each}}</tr> --}}
           <tr>
             <th>Terminanzahl</th>
             <th>Kurs</th>
@@ -48,7 +52,7 @@
 
 
 
-    <div class="card" style="width: 60rem;">
+    <div class="card flexible-card">
       <div class="card-body">
         <p>Jeder Kurs umfasst 5 oder mehr Einheiten gemäß Anmeldungsseite.
           (Bei Verhinderung ist, bei rechtzeitiger Online-Abmeldung , ein Nachholen in den anderen Kursen, nach
@@ -56,5 +60,10 @@
           bezahlen. Aktuelle Starttermine für die nächsten Kurse entnehmen Sie bitte dem Terminkalender.</p>
       </div>
     </div>
+    <div class="card flexible-card">
+      <div class="card-body">
+        <h1>Dauerhafte Kurstermine</h1>
+        <p></p>
+        </div></div>
   </section>
 </p>
