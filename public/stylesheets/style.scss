@@ -157,14 +157,17 @@ a {
 
 .flexible-card{
   width: 30rem;
-  tr {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    th, td {
-      flex: 0 0 auto;
-    }
-  }
+  // table {
+  //   overflow-x: auto
+  // }
+  // tr {
+  //   display: flex;
+  //   flex-wrap: nowrap;
+  //   overflow-x: auto;
+  //   th, td {
+  //     flex: 0 0 auto;
+  //   }
+  // }
 //   tr{
 //     overflow:auto;
 //     // height:100px;

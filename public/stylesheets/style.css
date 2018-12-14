@@ -126,12 +126,6 @@ a {
 
 .flexible-card {
   width: 30rem; }
-  .flexible-card tr {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto; }
-    .flexible-card tr th, .flexible-card tr td {
-      flex: 0 0 auto; }
 
 .about-card {
   width: 30rem; }
