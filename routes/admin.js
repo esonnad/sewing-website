@@ -65,6 +65,32 @@ router.get('/allPosts/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req
     .catch(err => { console.log(err) })
 })
 
+router.get('/allPosts/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+  Post.findById(id)
+    .then(post => {
+      res.render('admin/post-edit', {post:post})
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.post('/allPosts/editinfo/:id', ensureAuthenticated, checkRole("ADMIN"), (req,res,next)=> {
+  let id = req.params.id;
+  let header = req.body.header;
+  let content = req.body.content;
+
+  Post.findByIdAndUpdate(id, {header: header, content: content})
+    .then(sth => res.redirect('/admin/allPosts'))
+    .catch(err => console.log(err))
+})
+
+router.post('/allPosts/editfile/:id', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.single('photo'), (req,res,next)=> {
+  let id = req.params.id;
+  Post.findByIdAndUpdate(id, {imgPath: req.file.url, imgName: req.file.originalname})
+    .then(sth => res.redirect('/admin/allPosts'))
+    .catch(err => console.log(err))
+})
+
 router.get('/postAdmin', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   res.render('admin/postAdmin')
 })
@@ -174,6 +200,32 @@ router.get('/equipment/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (re
       res.redirect('/admin/equipment')
     })
     .catch(err => { console.log(err) })
+})
+
+router.get('/equipment/edit/:id', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
+  let id = req.params.id;
+  Equipment.findById(id)
+    .then(equipment => {
+      res.render('admin/equipment-edit', {equipment:equipment})
+    })
+    .catch(err => { console.log(err) })
+})
+
+router.post('/equipment/editinfo/:id', ensureAuthenticated, checkRole("ADMIN"), (req,res,next)=> {
+  let id = req.params.id;
+  let header = req.body.header;
+  let content = req.body.content;
+
+  Equipment.findByIdAndUpdate(id, {header: header, content: content})
+    .then(sth => res.redirect('/admin/equipment'))
+    .catch(err => console.log(err))
+})
+
+router.post('/equipment/editfile/:id', ensureAuthenticated, checkRole("ADMIN"), uploadCloud.single('photo'), (req,res,next)=> {
+  let id = req.params.id;
+  Equipment.findByIdAndUpdate(id, {imgPath: req.file.url, imgName: req.file.originalname})
+    .then(sth => res.redirect('/admin/equipment'))
+    .catch(err => console.log(err))
 })
 
 //Courses pages

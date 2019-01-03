@@ -303,4 +303,7 @@ option {
   .anmeldung-card {
     width: 60rem; } }
 
+.image-direction img {
+  transform: rotate(180deg); }
+
 /*# sourceMappingURL=style.css.map */

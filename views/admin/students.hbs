@@ -61,7 +61,7 @@
           <tbody>
           {{#each pendingStudents}}
           <tr>
-            <li><td>{{this.name}}</td><td>{{this.email}}</td><td>{{this.phone}})</td>
+            <td>{{this.name}}</td><td>{{this.email}}</td><td>{{this.phone}})</td>
             <td>
             {{#if this.adress}}
             Adresse: {{this.adress}},
@@ -69,7 +69,6 @@
             </td>
             <td><a class="btnHref" href="/admin/students/delete/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler löschen möchtest?');">Löschen</a></td>
             <td><a class="btnHref" href="/admin/students/activate/{{this._id}}" onclick="return confirm('Sicher, dass du diesen Schüler aktivieren möchtest?');">Aktivieren</a></td>      
-            </li>
             </tr>
           {{/each}}
           </tbody>

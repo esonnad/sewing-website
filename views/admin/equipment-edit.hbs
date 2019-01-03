@@ -1,0 +1,33 @@
+<div class="page-title">
+  <h1 class="page-title">Admin - Ausstattung bearbeiten</h1>
+</div>
+<section class="card-container">
+  <p>
+    <div class="card" style="width: 45rem;">
+      <div class="card-body">
+        <form action="/admin/equipment/editinfo/{{equipment._id}}" method="post">
+          <label for="name">Titel</label><br>
+          <input type="text" name="header" id="header" value="{{equipment.header}}">
+          <br><br>
+          <label for="name">Inhalt</label><br>
+          <input type="text" name="content" id="content" value="{{equipment.content}}">
+          <br><br>
+          <button type="submit" class="btn2 btnAll">Aktualisieren</button>
+        </form>
+      </div>
+    </div>
+    <div class="card" style="width: 45rem;">
+      {{#if equipment.imgPath}}
+      <img src="{{ equipment.imgPath }}" alt="{{ equipment.imgName }}" class="card-img-top" />
+      {{/if}}
+      <div class="card-body">
+        <form action="/admin/equipment/editfile/{{equipment._id}}" method="post" enctype="multipart/form-data">
+          <label for="photo">Bild ändern:</label>
+          <input type="file" name="photo" id="photo">
+          <br><br>
+          <button type="submit" class="btn2 btnAll">Aktualisieren</button>
+        </form>
+      </div>
+    </div>
+  </p>
+</section>

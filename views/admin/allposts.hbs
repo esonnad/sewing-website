@@ -27,6 +27,7 @@
         <p class="card-text">{{this.content}}</p>
         <h6 class="card-subtitle mb-2 text-muted">by {{this._creator.name}}</h6>
         <a class="btnHref" href="/admin/allPosts/delete/{{this._id}}" onclick="return confirm('Are you sure you want to delete this active posts?');">Löschen</a>
+        <a class="btnHref" href="/admin/allPosts/edit/{{this._id}}">Bearbeiten</a>
       </div>
     </div>
   {{/each}}
