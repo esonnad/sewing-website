@@ -318,6 +318,11 @@ option {
   justify-content: center;
 }
 
+#alert-container {
+  color: red;
+  background-color: yellow;
+  font-size: 30px
+}
 
 .manage-container {
   display: flex;
