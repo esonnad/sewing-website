@@ -75,7 +75,8 @@ router.get('/about', (req, res, next) => {
 })
 
 router.get('/galerie', (req, res, next) => {
-  res.render('galerie')
+  var allPictures = ["../images/IMG_5978.JPG","../images/IMG_5985.JPG","../images/IMG_6027.JPG","../images/IMG_5989.JPG","../images/IMG_6026.JPG","../images/IMG_6122.JPG","../images/IMG_6127.JPG","../images/IMG_6010.JPG","../images/IMG_6132.JPG","../images/IMG_6011.JPG","../images/IMG_6144.JPG","../images/IMG_6022.JPG","../images/IMG_6148.JPG","../images/IMG_6152.JPG", "../images/IMG_6057 (2).JPG","../images/IMG_6062.JPG","../images/IMG_6151.JPG","../images/pic2.jpg", "../images/pic22.JPG", "../images/pic23.JPG", "../images/pic24.JPG", "../images/pic25.JPG", "../images/pic26.JPG", "../images/pic27.JPG", "../images/pic3.jpg", "../images/pic4.jpg", "../images/pic5.jpg", "../images/pic6.jpg", "../images/pic7.jpg", "../images/pic8.jpg", "../images/pic9.jpg", "../images/pic10.jpg", "../images/pic11.jpg", "../images/pic12.jpg", "../images/pic13.jpg"]
+  res.render('galerie', {pictures:allPictures})
 })
 
 router.get('/contact', (req, res, next) => {
@@ -87,7 +88,7 @@ router.post('/contact', (req, res, next) => {
     return;
   }
   var mailOptions = {
-    to: 'kontakt@elviras-naehspass.de',
+    to: 'elvirasnaehspass@gmail.com',
     from: '"Elviras Nähspass Website"',
     subject: 'Betreff: ' + req.body.subject,
     text: 'Jemand auf der neuen Webiste hat ein Kontaktformular geschickt!\n\n' +
