@@ -12,22 +12,20 @@
   </div>
   </div>
   <section class="card-container">
-
-    {{#each workshops}}
-
     <div class="card" style="width: 30rem;">
       <div class="card-body">
-        <h5 class="card-title">{{this.name}}</h5>
-        <p class="card-text">{{this.description}}</p>
-        <p class="card-text">Daten:
-          <ul>
-            {{#each dates}}<li>{{this.date}}</li>{{/each}}
-          </ul>
-        </p>
-        <h4 class="card-subtitle mb-2 text-muted">Dieser Workshop wird von {{this.teacher}} durchgeführt.</h4>
+        <h5 class="card-title">Dessous Workshops</h5>
+        <p class="card-text">Dieser besondere Nähkurs ist eine tolle Möglichkeit für jede Frau die nie die richtige Unterwäsche im Geschäft findet! Hier kannst Du Dir deinen perfekt passenden und bequemen BH oder Slip selber nähen. Du lernst den Umgang mit tollen Stoffen, schönen Spitzen und Materialien wie Wäschegummis, BH-Bügeln etc. Ob BH, Slip, Hemdchen, Bikini oder Body- alles ist möglich. Alles wird nach Deinen Vorstellungen und Dein eignes Werk sein! Schnitte, Stoffe, Spitzen und Zutaten sind bei Interesse vorhanden. Können aber schon im Vornhinein besorgt und vorbereitet werden. Zur Inspiration und als Tipp für alles rund um Dessous empfehle ich: sewy.de Nähere Infos gibt es nach der Anmeldung. <br/>
+        Merke: Aus Erfahrung weiß Ich, dass Anfängerinnen besser mit einem Slip oder Hemdchen beginnen sollten, da die Zeit begrenzt ist. Erfahrene Dessous-Näherinnen können aber gerne direkt mit einem BH starten.<br/>
+        Die Anmeldung geht direkt an Fr. Beckmann und sie nimmt zeitnah Kontakt mit Ihnen auf.<br/>   
+        Stoffe, Zutaten und Schnittmuster müssen vorher besorgt und die Schnitte vorbereitet werden.<br/> 
+        Nähere Infos dazu nach Anmeldung.<br/>  
+        Teilnehmerzahl mindestens 4 Personen höchstens 6 Personen.</p>
       </div>
     </div>
-    {{/each}}
+
+    
+
 
     <div class="card" style="width: 30rem;">
       <div class="card-body">
@@ -104,5 +102,29 @@
 
       </div>
     </div>
+
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <h5 class="card-title">Ferienkurse</h5>
+        <p class="card-text">Workshops für Jung und Alt; Anfänger und Fortgeschrittene; Eltern und Kind; Oma und Enkel; einfach alle die Spass am Nähen haben.<br/>
+          Ferienworkshops - gut geeignet als Ferienprogramm für Schulkinder<br/>
+          Es können jeweils 6 - 7 Personen teilnehmen.</p>
+      </div>
+    </div>
+    
+    {{#each workshops}}
+
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{this.name}}</h5>
+        <p class="card-text">Daten:
+          <ul>
+            {{#each dates}}<li>{{this.date}}</li>{{/each}}
+          </ul>
+        </p>
+        <h4 class="card-subtitle mb-2 text-muted">Dieser Workshop wird von {{this.teacher}} durchgeführt.</h4>
+      </div>
+    </div>
+    {{/each}}
     <section class="card-container">
 </p>
