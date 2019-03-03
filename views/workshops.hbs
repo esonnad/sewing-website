@@ -111,12 +111,16 @@
           Es können jeweils 6 - 7 Personen teilnehmen.</p>
       </div>
     </div>
-    
+    </section>
+  <section class="card-container">
+
+
     {{#each workshops}}
 
     <div class="card" style="width: 30rem;">
       <div class="card-body">
         <h5 class="card-title">{{this.name}}</h5>
+        <p class="card-text">{{this.description}}</p>
         <p class="card-text">Daten:
           <ul>
             {{#each dates}}<li>{{this.date}}</li>{{/each}}
@@ -126,5 +130,5 @@
       </div>
     </div>
     {{/each}}
-    <section class="card-container">
+    </section>
 </p>
