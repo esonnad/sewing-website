@@ -87,7 +87,7 @@ router.post('/contact', (req, res, next) => {
     return;
   }
   var mailOptions = {
-    to: 'info@elviras-naehspass.de',
+    to: 'kontakt@elviras-naehspass.de',
     from: '"Elviras Nähspass Website"',
     subject: 'Betreff: ' + req.body.subject,
     text: 'Jemand auf der neuen Webiste hat ein Kontaktformular geschickt!\n\n' +
