@@ -67,16 +67,16 @@ router.post('/kurse', async (req, res, next) => {
   }
   var courseOne = await Course.find({_id:preferences[0]})
   console.log("one",courseOne)
-  var html = `<h1>Die Anfrage:</h1><hr><p>${name} möchte diesem Kurs betreten:<br>Erste Wahl:${courseOne[0].name} (ID:${preferences[0]})`
+  var html = `<h1>Die Anfrage:</h1><hr><p>${name} möchte diesem Kurs betreten:<br>Erste Wahl: ${courseOne[0].name} (ID:${preferences[0]})`
   if(preferences[1]!==undefined){
     var courseTwo = await Course.find({_id:preferences[1]})
-    html += `<br>Zweite Wahl:${courseTwo[0].name} (ID:${preferences[1]})`
+    html += `<br>Zweite Wahl: ${courseTwo[0].name} (ID:${preferences[1]})`
   }
   if(preferences[2]!==undefined){
     var courseThree = await Course.find({_id:preferences[2]})
-    html += `<br>Dritte Wahl:${courseThree[0].name} (ID:${preferences[2]})`
+    html += `<br>Dritte Wahl: ${courseThree[0].name} (ID:${preferences[2]})`
   }
-  html += `</p><p>Weitere Mitteilung:${message}</p><br><hr><br>`
+  html += `</p><p>Weitere Mitteilung: ${message}</p><br><hr><br>`
   transporter.sendMail({
     from: '"Elviras Naehspass Website"',
     to: "elvirasnaehspass@gmail.com",
@@ -140,7 +140,7 @@ router.get('/workshops', (req, res, next) => {
   }
 })
 
-router.post('/workshops', (req, res, next) => {
+router.post('/workshops', async (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
   const phone = req.body.phone;
@@ -152,13 +152,13 @@ router.post('/workshops', (req, res, next) => {
     res.render("anmeldung-workshops", { message: "Bitte fülle Name, Telefon und Email aus!" });
     return;
   }
-
+  var workshopName = await Course.find({_id:workshop})
   transporter.sendMail({
     from: '"Elviras Naehspass Website"',
     to: "elvirasnaehspass@gmail.com",
     subject: "Ein neue Workshop Anmeldung",
     text: message,
-    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte an ${workshop} teilnehmen</p><p>Die eingetragenen Infos sind:<br>Name: ${name}, Email: ${email}, Telefon: ${phone}, Adresse: ${adress}</p><p>${name}'s weitere Mitteilung: ${message}</p><br><hr><br>`
+    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte an ${workshopName} (ID: ${workshop}) teilnehmen</p><p>Die eingetragenen Infos sind:<br>Name: ${name}, Email: ${email}, Telefon: ${phone}, Adresse: ${adress}</p><p>${name}'s weitere Mitteilung: ${message}</p><br><hr><br>`
   })
     .then(sth => {
       res.render('registration-success')
