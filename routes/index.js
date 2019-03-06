@@ -91,8 +91,8 @@ router.post('/contact', (req, res, next) => {
     to: 'elvirasnaehspass@gmail.com',
     from: '"Elviras Nähspass Website"',
     subject: 'Betreff: ' + req.body.subject,
-    text: 'Jemand auf der neuen Webiste hat ein Kontaktformular geschickt!\n\n' +
-      'Das Kontakformular wurde von ' + req.body.name + ' gesendet.\n\n' +
+    text: 'Jemand auf der neuen Website hat ein Kontaktformular geschickt!\n\n' +
+      'Das Kontaktformular wurde von ' + req.body.name + ' gesendet.\n\n' +
       'Email: ' + req.body.email + '\n\n' +
       'Die Nachricht: ' + req.body.message + '\n'
   };
