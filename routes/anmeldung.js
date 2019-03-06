@@ -158,7 +158,7 @@ router.post('/workshops', async (req, res, next) => {
     to: "elvirasnaehspass@gmail.com",
     subject: "Ein neue Workshop Anmeldung",
     text: message,
-    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte an ${workshopName} (ID: ${workshop}) teilnehmen</p><p>Die eingetragenen Infos sind:<br>Name: ${name}, Email: ${email}, Telefon: ${phone}, Adresse: ${adress}</p><p>${name}'s weitere Mitteilung: ${message}</p><br><hr><br>`
+    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte an ${workshopName[0].name} (ID: ${workshop}) teilnehmen</p><p>Die eingetragenen Infos sind:<br>Name: ${name}, Email: ${email}, Telefon: ${phone}, Adresse: ${adress}</p><p>${name}'s weitere Mitteilung: ${message}</p><br><hr><br>`
   })
     .then(sth => {
       res.render('registration-success')
