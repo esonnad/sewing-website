@@ -39,7 +39,7 @@ router.get('/kurse', (req, res, next) => {
   }
 })
 
-router.post('/kurse', (req, res, next) => {
+router.post('/kurse', async (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
   const phone = req.body.phone;
@@ -65,13 +65,24 @@ router.post('/kurse', (req, res, next) => {
     res.render("anmeldung-kurse", { message: "Bitte fülle Name, Telefon und Email aus!" });
     return;
   }
-
+  var courseOne = await Course.find({_id:preferences[0]})
+  console.log("one",courseOne)
+  var html = `<h1>Die Anfrage:</h1><hr><p>${name} möchte diesem Kurs betreten:<br>Erste Wahl:${courseOne[0].name} (ID:${preferences[0]})`
+  if(preferences[1]!==undefined){
+    var courseTwo = await Course.find({_id:preferences[1]})
+    html += `<br>Zweite Wahl:${courseTwo[0].name} (ID:${preferences[1]})`
+  }
+  if(preferences[2]!==undefined){
+    var courseThree = await Course.find({_id:preferences[2]})
+    html += `<br>Dritte Wahl:${courseThree[0].name} (ID:${preferences[2]})`
+  }
+  html += `</p><p>Weitere Mitteilung:${message}</p><br><hr><br>`
   transporter.sendMail({
     from: '"Elviras Naehspass Website"',
     to: "elvirasnaehspass@gmail.com",
     subject: "Eine neue Kurs Anmeldung",
     text: message,
-    html: `<h1>Die Anfrage:</h1><hr><p>${name} möchte diesem Kurs betreten:<br>Erste Wahl:${preferences[0]}<br>Zweite Wahl:${preferences[1]}<br>Dritte Wahl:${preferences[2]}</p><p>Weitere Mitteilung:${message}</p><br><hr><br>`
+    html: html
   })
     .then(sth => {
       User.find({ email: email })
