@@ -308,11 +308,11 @@ router.get('/courses/add', ensureAuthenticated, checkRole("ADMIN"), (req, res, n
 router.post('/courses/add', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   const name = req.body.name;
   const teacher = req.body.teacher;
-  const capacity = req.body.capacity;
+  const capacity = Number(req.body.capacity);
   const type = req.body.type;
   const description = req.body.description;
   const startDate = req.body.startDate;
-
+  console.log(typeof(capacity))
   const newCourse = new Course({
     name: name,
     teacher: teacher,
@@ -371,7 +371,7 @@ router.post('/courses/details/:id/add-date', ensureAuthenticated, checkRole("ADM
   let id = req.params.id;
   const date = req.body.date;
   if (date !== "") {
-    Course.findByIdAndUpdate(id, { $push: { dates: { date: date, skip: "No one" } } })
+    Course.findByIdAndUpdate(id, { $push: { dates: { date: date, skip: [] } } })
       .then(sth => { res.redirect(`/admin/courses/details/${id}/edit`) })
       .catch(err => { console.log(err) })
   }
@@ -416,15 +416,25 @@ router.get('/courses/details/:id/editSkip', ensureAuthenticated, checkRole("ADMI
 router.post('/courses/details/:id/editSkip', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   let id = req.params.id;
   console.log(req.body)
+  var placeofplaceholders=[]
+  req.body.names.forEach((val,i)=>{
+    if(val==="placeholder"){
+      placeofplaceholders.push(i)
+    }
+  })
+  placeofplaceholders.push(req.body.names.length)
 
   Course.findById(id)
-    .then(course => {
-      const dates = course.dates
-      console.log(dates)
-      const newArray = []
-      for (i = 0; i < dates.length; i++) {
+  .then(course => {
+    const dates = course.dates
+    console.log(dates)
+    const newArray = []
+    for (i = 0; i < dates.length; i++) {
         var thisdate = dates[i].date
-        var thisskip = req.body.selectSkip[i]
+        var startslice = placeofplaceholders[i]
+        var endslice = placeofplaceholders[i+1]
+        var thissplit = req.body.names.slice(startslice,endslice)
+        var thisskip = thissplit.slice(1)
         newArray.push({ date: thisdate, skip: thisskip })
       }
       Course.findByIdAndUpdate(id, { dates: newArray })
@@ -527,7 +537,14 @@ function enrollmentSuggestion(requests, courses) {
   for (let i = 0; i < requests.length; i++) { //iterates through students
     let request = requests[i];
     let enrolled = false;
-    let student = { name: request._user.name, id: request._user._id }; //student object with name and id values 
+    var student;
+    console.log(request._share)
+    if(request._share){
+      student = { name: request._user.name+"/"+request._share.name, id: request._user._id+"/"+request._share.id }; //student object with name and id values 
+    } else {
+      student = { name: request._user.name, id: request._user._id }; //student object with name and id values 
+    }
+    
     allStudents.push({ name: student.name, id: student.id }); //adds student object to array of all students 
     for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
       if (request._preferences[j] != '') {
@@ -542,6 +559,9 @@ function enrollmentSuggestion(requests, courses) {
     }
     if (enrolled == false) {
       waitlist.push(request._user);
+      if(request._share){
+        waitlist.push((request._share))
+      }
     }
   }
   return [suggestion, waitlist, allStudents];
@@ -550,6 +570,7 @@ function enrollmentSuggestion(requests, courses) {
 router.get('/manage', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Request.find()
     .populate('_user', 'name')
+    .populate('_share', 'name')
     .populate('_preferences', 'name')
     .then(requests => {
       Course.find({ status: "FUTURE", type: "COURSE" })
@@ -565,24 +586,16 @@ router.post('/request/delete/:id', ensureAuthenticated, checkRole("ADMIN"), (req
   let id = req.params.id;
   Request.findByIdAndDelete(id)
     .then(
-      Request.find()
-        .populate('_user', 'name')
-        .populate('_preferences', 'name')
-        .then(requests => {
-          Course.find({ status: "FUTURE", type: "COURSE" })
-            .then(courses => {
-              res.render('admin/manage', { requests: requests, courses: courses })
-            })
-            .catch(err => { console.log(err) })
-        })
-        .catch(err => { console.log(err) })
+      res.redirect('/admin/manage')
     )
     .catch(err => { console.log(err) })
 })
+
 router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   Request.find()
     .populate('_user', 'name')
     .populate('_preferences', 'name')
+    .populate('_share', 'name')
     .then(requests => {
       Course.find({ status: "FUTURE", type: "COURSE"})
         .then(courses => {
@@ -596,26 +609,41 @@ router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (re
 })
 
 router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
-  const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids
-
+  console.log("body", req.body)
+  const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids//in dem falle nur 1: 
+  console.log("courseidFromBody", courseidfrombody)
   courseidfrombody.forEach(courseid => {
-    const studentArray = req.body[courseid]
+    const studentArray = req.body[courseid] //'Feli/elvira, 5c8171452f8721046138851d/5c8171452f8721046138851e'
+    console.log(studentArray)
     const studentIdArray = [] // am Ende ein array mit allen Student Ids
     if (typeof studentArray == "string") {
       var studentArrayarray = []
       studentArrayarray.push(studentArray)
       studentArrayarray.forEach(str => {
         var input = str.split(", ")
-        studentIdArray.push(input[1])
+        if(input[1].includes("/")){
+          var inputsplit = input[1].split("/")
+          studentIdArray.push(inputsplit[0])
+          studentIdArray.push(inputsplit[1])
+        } else {
+          studentIdArray.push(input[1])
+        }
       })
     } else {
       studentArray.forEach(str => {
         var input = str.split(", ")
-        studentIdArray.push(input[1])
+        if(input[1].includes("/")){
+          var inputsplit = input[1].split("/")
+          studentIdArray.push(inputsplit[0])
+          studentIdArray.push(inputsplit[1])
+        } else {
+          studentIdArray.push(input[1])
+        }
       })
     }
+    console.log(studentIdArray)//[ '5c8171452f8721046138851d', '5c8171452f8721046138851e' ]
 
-    Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray })
+    Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray, capacity: studentIdArray.length })
       .then(course => {
         studentIdArray.forEach(studentid => {
           User.findById(studentid)

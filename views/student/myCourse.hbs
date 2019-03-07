@@ -6,6 +6,7 @@
   <div class="card" style="width: 100rem;">
     <div class="card-body">
       <h2>{{this.name}}</h2>
+      <h3>Pro Abend können in diesem Kurs {{this.skippingSpots}} Personen aussetzen</h3>
       <table class="table">
         <tr>
           <th>Daten:</th>
@@ -15,8 +16,10 @@
         </tr>
         <tr>
           <th>Aussetzende Schüler:</th>
-          {{#each this.dates}}
-          <td>{{this.skip}}</td>
+          {{#each this.dates}}<td>
+            {{#each this.skip}}
+              {{this}}<br/>
+            {{/each}}</td>
           {{/each}}
         </tr>
       </table>

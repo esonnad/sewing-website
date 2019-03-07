@@ -108,6 +108,7 @@ router.post('/postStudent', ensureAuthenticated, checkRole("STUDENT"), uploadClo
 router.get('/myCourse', ensureAuthenticated, checkRole("STUDENT"), (req, res, next) => {
   Promise.all([Course.find({ _students: { $in: req.user._id }, type: "COURSE" }), Course.find({ _students: { $in: req.user._id }, type: "WORKSHOP" })])
     .then(([courses, workshops]) => {
+      courses.forEach(course=>{course.skippingSpots = course._students.length-7})
       res.render('student/myCourse', { course: courses, workshop: workshops })
     })
     .catch(err => { console.log(err) })

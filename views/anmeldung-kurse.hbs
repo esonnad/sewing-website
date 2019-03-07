@@ -27,6 +27,16 @@
 
         <label for="adress">Adresse</label>
         <input type="text" name="adress" id="adress" {{#if user}} value="{{user.address}}" {{/if}}>
+        
+        <br><br>
+
+        <input type="checkbox" value="sharing" name="sharingBox"> Ich teile mir den Kurs mit:
+        <br>
+        <label for="shareName">Name <font color="red" size="5px">*</font></label>
+        <input type="text" name="shareName" id="shareName">
+        <br/>
+        <label for="shareEmail">E-mail <font color="red" size="5px">*</font></label>
+        <input type="text" name="shareEmail" id="shareEmail">
 
         <br><br>
         <label for="choice1">Erste Wahl <font color="red" size="5px">*</font></label>

@@ -17,13 +17,28 @@
             <tr>
               <th>Aussetzender Schüler</th>
               {{#each course.dates}}
-              <td><select name="selectSkip" id="selectSkip">
+                <td>
+                  {{#each this.skip}}
+                    {{this}}<br>
+                  {{/each}}
+                </td>
+              {{/each}}
+            </tr>
+            <tr>
+              <th>Neu auswählen</th>
+              {{#each course.dates}}
+              {{!-- <td><select name="selectSkip" id="selectSkip">
                   <option value="{{this.skip}}" selected>{{this.skip}}</option>
                   <option value="Niemand">Niemand</option>
                   {{#each ../course._students}}
                   <option value="{{this.name}}">{{this.name}}</option>
                   {{/each}}
-                </select></td>
+                </select></td> --}}
+                <td>
+                <input type="checkbox" value="placeholder" hidden name="names" checked>
+                {{#each ../course._students}}
+                  {{this.name}}<input type="checkbox" value={{this.name}} name="names"><br/>
+                {{/each}}</td>
               {{/each}}
             </tr>
           </table>

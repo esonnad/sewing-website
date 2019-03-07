@@ -47,8 +47,10 @@
           </tr>
           <tr>
             <th scope="row">Aussetzende Schüler</th>
-            {{#each course.dates}}
-            <td>{{this.skip}}</td>
+            {{#each course.dates}}<td>
+            {{#each this.skip}}
+              {{this}}<br/>
+            {{/each}}</td>
             {{/each}}
           </tr>
         </table>

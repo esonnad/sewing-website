@@ -19,7 +19,11 @@
   </tr>
   {{#each requests}}
   <tr>
+    {{#if this._share.name}}
+    <td>{{this._user.name}}/{{this._share.name}}</td>
+    {{else}}
     <td>{{this._user.name}}</td>
+    {{/if}}
     <form action="/admin/request/delete/{{this._id}}" method="POST">
       <td><button action="submit" class="btnAll btn2 delete-btn">Löschen</button></td>
     </form>
