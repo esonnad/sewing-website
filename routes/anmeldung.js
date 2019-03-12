@@ -101,6 +101,7 @@ router.post('/kurse', async (req, res, next) => {
   })
     .then(sth => {
       if(checkbox==="sharing"){//kursplatz teilen
+        console.log("sharing")
         Promise.all([User.find({email:email}), User.find({email:shareEmail})])
           .then((bothUsers)=>{
             var userOne = bothUsers[0]
@@ -201,13 +202,15 @@ router.post('/kurse', async (req, res, next) => {
           .catch(err => { res.render('registration-failed'), console.log(err) })
 
       }else { //kursplatz nicht teilen
+        console.log("not sharing")
+
       User.find({ email: email })
         .then(user => {
           if (user[0]) {
             console.log("PREFERENCES2", preferences)
             const newRequest = new Request({
               _user: user[0]._id,
-              preferences: preferences,
+              _preferences: preferences,
             })
             newRequest.save()
               .then(sth => { res.render('registration-success') })

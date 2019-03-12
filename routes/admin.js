@@ -538,7 +538,7 @@ function enrollmentSuggestion(requests, courses) {
     let request = requests[i];
     let enrolled = false;
     var student;
-    console.log(request._share)
+    // console.log(request._share)
     if(request._share){
       student = { name: request._user.name+"/"+request._share.name, id: request._user._id+"/"+request._share.id }; //student object with name and id values 
     } else {
@@ -549,6 +549,7 @@ function enrollmentSuggestion(requests, courses) {
     for (let j = 0; j < request._preferences.length; j++) { //iterates through preferences
       if (request._preferences[j] != '') {
         let course = request._preferences[j]; //course is the current preference 
+        // console.log(course)
         let courseCopy = suggestion[course.name]; //copy of the current preference (to not alter real course)
         if (courseCopy.students.length < courseCopy.capacity) {
           courseCopy.students.push(student)
@@ -564,6 +565,18 @@ function enrollmentSuggestion(requests, courses) {
       }
     }
   }
+  var enrolledCourses = Object.keys(suggestion)
+  enrolledCourses.forEach(course=>{
+    // console.log(suggestion[course].students[0])
+    if(suggestion[course].students.length < suggestion[course].capacity){
+      var leftInputs = suggestion[course].capacity-suggestion[course].students.length
+      for(var i = 0; i<leftInputs; i++){
+        suggestion[course].students.push({empty:"empty"})
+      }
+    }
+  })
+  
+  console.log("enrollment suggestion",suggestion)
   return [suggestion, waitlist, allStudents];
 }
 
@@ -600,8 +613,43 @@ router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (re
       Course.find({ status: "FUTURE", type: "COURSE"})
         .then(courses => {
           let suggestion = enrollmentSuggestion(requests, courses);
-          console.log("suggestion:", suggestion)
-          res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2] })
+          // console.log("suggestion:", suggestion)
+          var courses = Object.keys(suggestion[0])
+          var courseAmount = courses.length
+          if(courseAmount>4){
+            var keysOne = courses.slice(0,4)
+            var keysTwo = courses.slice(4)
+            if(keysTwo.length > 4){
+              var suggestionOne = {}
+              keysOne.forEach(key => {
+                suggestionOne[key] = suggestion[0][key]
+              })
+              var suggestionTwo = {}
+              var keyTwo = keysTwo.slice(0,4)
+              keyTwo.forEach(key => {
+                suggestionTwo[key] = suggestion[0][key]
+              })
+              var suggestionThree = {}
+              var keyThree = keysTwo.slice(4)
+              keyThree.forEach(key => {
+                suggestionThree[key] = suggestion[0][key]
+              })
+              res.render('admin/manage', { requests: requests, courses: courses, suggestionOne: suggestionOne,suggestionTwo: suggestionTwo, suggestionThree:suggestionThree, waitlist: suggestion[1], allStudents: suggestion[2] })
+            } else {
+              var suggestionOne = {}
+              keysOne.forEach(key => {
+                suggestionOne[key] = suggestion[0][key]
+              })
+              var suggestionTwo = {}
+              keysTwo.forEach(key => {
+                suggestionTwo[key] = suggestion[0][key]
+              })
+              console.log(suggestionOne, suggestionTwo)
+              res.render('admin/manage', { requests: requests, courses: courses, suggestionOne: suggestionOne,suggestionTwo: suggestionTwo, waitlist: suggestion[1], allStudents: suggestion[2] })
+            }
+          } else {
+            res.render('admin/manage', { requests: requests, courses: courses, suggestion: suggestion[0], waitlist: suggestion[1], allStudents: suggestion[2] })
+          }
         })
         .catch(err => { console.log(err) })
     })
@@ -611,7 +659,7 @@ router.post('/generate-enrollment', ensureAuthenticated, checkRole("ADMIN"), (re
 router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next) => {
   console.log("body", req.body)
   const courseidfrombody = Object.keys(req.body) //ein Array mit allen Course ids//in dem falle nur 1: 
-  console.log("courseidFromBody", courseidfrombody)
+  // console.log("courseidFromBody", courseidfrombody)
   courseidfrombody.forEach(courseid => {
     const studentArray = req.body[courseid] //'Feli/elvira, 5c8171452f8721046138851d/5c8171452f8721046138851e'
     console.log(studentArray)
@@ -620,29 +668,36 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       var studentArrayarray = []
       studentArrayarray.push(studentArray)
       studentArrayarray.forEach(str => {
-        var input = str.split(", ")
-        if(input[1].includes("/")){
-          var inputsplit = input[1].split("/")
-          studentIdArray.push(inputsplit[0])
-          studentIdArray.push(inputsplit[1])
-        } else {
-          studentIdArray.push(input[1])
-        }
+        if(str !== ", "&&str !== ",  "&&str !== " ,  "){
+          console.log("normal str", str)
+          var input = str.split(", ")
+          if(input[1].includes("/")){
+            var inputsplit = input[1].split("/")
+            studentIdArray.push(inputsplit[0])
+            studentIdArray.push(inputsplit[1])
+          } else {
+            studentIdArray.push(input[1])
+          }
+        } else {console.log("string weird str")}
       })
     } else {
       studentArray.forEach(str => {
-        var input = str.split(", ")
-        if(input[1].includes("/")){
-          var inputsplit = input[1].split("/")
-          studentIdArray.push(inputsplit[0])
-          studentIdArray.push(inputsplit[1])
-        } else {
-          studentIdArray.push(input[1])
-        }
+        if(str !== ", "&&str !== ",  "&&str !== " ,  "){
+          console.log("normal", str)
+          var input = str.split(", ")
+          if(input[1].includes("/")){
+            var inputsplit = input[1].split("/")
+            studentIdArray.push(inputsplit[0])
+            studentIdArray.push(inputsplit[1])
+          } else {
+            studentIdArray.push(input[1])
+          }
+        }else {console.log("weird str")}
       })
     }
-    console.log(studentIdArray)//[ '5c8171452f8721046138851d', '5c8171452f8721046138851e' ]
-
+    // console.log("array",typeof(studentIdArray), studentIdArray)//[ '5c8171452f8721046138851d', '5c8171452f8721046138851e' ]
+    if(studentIdArray.length < 1){console.log("array empty")}else{
+      console.log("array not empty")
     Course.findByIdAndUpdate(courseid, { status: "ACTIVE", _students: studentIdArray, capacity: studentIdArray.length })
       .then(course => {
         studentIdArray.forEach(studentid => {
@@ -685,7 +740,7 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
 
                 User.findByIdAndUpdate(studentid, { status: "ACTIVE", password: hashPass })
                   .then(user => { console.log(user) })
-                  .catch(err => { console.log(err) })
+                  .catch(err => { console.log(err), res.render('admin/enrollment-failed') })
 
                 var mailOptions = {
                   to: student.email,
@@ -704,18 +759,19 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
                 transporter.sendMail(mailOptions)
               }
             })
-            .catch(err => { console.log(err) })
+            .catch(err => { console.log(err), res.render('admin/enrollment-failed') })
         })
       })
       .then(course => {
         studentIdArray.forEach(studentid => {
           Request.findOneAndDelete({ _user: studentid })
             .then(sth => { console.log(sth) })
-            .catch(err => { console.log(err) })
+            .catch(err => { console.log(err), res.render('admin/enrollment-failed') })
         })
       })
       .then(sth => { res.next() }) // this looks odd.
-      .catch(err => { console.log(err) })
+      .catch(err => { console.log(err), res.render('admin/enrollment-failed') })
+    } 
   });
   // res.redirect('/admin/manage')
   setTimeout(function () {
@@ -724,7 +780,7 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       Course.findById(id)
         .populate('_students')
         .then(course => { allCourses.push(course) })
-        .catch(err => { console.log(err) })
+        .catch(err => { console.log(err), res.render('admin/enrollment-failed') })
     })
     setTimeout(function(){
       console.log("settimeout", allCourses)
@@ -736,9 +792,9 @@ router.post('/enroll', ensureAuthenticated, checkRole("ADMIN"), (req, res, next)
       };
       transporter.sendMail(mailOptions)
         .then(sth => {
-          res.redirect('/admin/manage')
+          res.render('admin/enrollment-success')
         })
-        .catch(err => { console.log(err) })
+        .catch(err => { console.log(err), res.render('admin/enrollment-failed') })
     }, 2000)
   }, 1000);
 });

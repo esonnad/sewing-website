@@ -47,6 +47,7 @@
 
 <div class="manage-container">
 <div class="card" style="width: 130rem">
+{{#if suggestion}}
 <table style="width:100%" class="table">
   <tr>
     {{#each suggestion}}
@@ -67,6 +68,7 @@
       </td>
 
       {{/each}}
+
       <br>
       <button class="btnAll btn2" action="submit">Stundenplan bestätigen!</button>
       <br>
@@ -78,6 +80,79 @@
 
   
 </table>
+{{/if}}
+{{#if suggestionOne}}
+  <table style="width:100%" class="table">
+    <form action="/admin/enroll" method="POST">
+  <tr>
+    {{#each suggestionOne}}
+    <th>{{@key}}</th>
+    {{/each}}
+  </tr>
+  <tr>
+
+      {{#each suggestionOne}}
+
+      <td>
+        {{#each this.students}}
+        <input name="{{../this.id}}" class="tags" type="text" value="{{this.name}}, {{this.id}}">
+
+        <br>
+        {{/each}}
+      </td>
+
+      {{/each}}
+
+  </tr>
+  <tr>
+    {{#each suggestionTwo}}
+    <th>{{@key}}</th>
+    {{/each}}
+  </tr>
+  <tr>
+
+      {{#each suggestionTwo}}
+
+      <td>
+        {{#each this.students}}
+        <input name="{{../this.id}}" class="tags" type="text" value="{{this.name}}, {{this.id}}">
+
+        <br>
+        {{/each}}
+      </td>
+
+      {{/each}}
+
+  </tr>
+  {{#if suggestionThree}}
+  <tr>
+    {{#each suggestionThree}}
+    <th>{{@key}}</th>
+    {{/each}}
+  </tr>
+  <tr>
+
+      {{#each suggestionThree}}
+
+      <td>
+        {{#each this.students}}
+        <input name="{{../this.id}}" class="tags" type="text" value="{{this.name}}, {{this.id}}">
+
+        <br>
+        {{/each}}
+      </td>
+
+      {{/each}}
+
+  </tr>
+  {{/if}}
+
+    <br>
+      <button class="btnAll btn2" action="submit">Stundenplan bestätigen!</button>
+    <br>
+    </form>
+</table>
+{{/if}}
 </div>
 </div>
 
