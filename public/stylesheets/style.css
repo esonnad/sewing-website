@@ -219,6 +219,12 @@ input {
   color: #351F69;
   font-family: "Open Sans", san-serif; }
 
+textarea {
+  border-radius: 5px;
+  color: #9A9A9A;
+  font-family: "Open Sans", san-serif;
+  box-shadow: inset 0 0 5px #000000; }
+
 label {
   color: #351F69;
   font-family: "Open Sans", san-serif; }
