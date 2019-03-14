@@ -123,8 +123,6 @@ a {
 .card-text {
   font-family: "Open Sans", sans-serif;
   text-align: center; }
-  .card-text b {
-    font-weight: bold; }
 
 .flexible-card {
   width: 30rem; }
@@ -301,8 +299,6 @@ option {
     padding-bottom: 10px;
     line-height: 2rem;
     text-align: justify; }
-    .card-text b {
-      font-weight: bold; }
   body {
     background-image: url("../images/woman.png");
     background-repeat: no-repeat;
